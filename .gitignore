@@ -1,0 +1,13 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Secrets
+.env
+
+# Asset pipeline cache (raw downloads)
+/tools/assets/.cache/
+/tools/assets/node_modules/
+
+# Builds
+/build/

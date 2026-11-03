@@ -1,0 +1,2097 @@
+{
+  "air_filter_unit": {
+    "file": "res://assets/models/air_filter_unit/air_filter_unit.glb",
+    "title": "Ventilation-Marmok'a",
+    "author": "JollanERX",
+    "author_url": "https://sketchfab.com/JollanXD",
+    "source_url": "https://sketchfab.com/3d-models/ventilation-marmoka-db23aa8b8d704fe5ab90a7b01da7c221",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "db23aa8b8d704fe5ab90a7b01da7c221",
+    "rot": [
+      90,
+      0,
+      0
+    ],
+    "faces": 11390,
+    "size_m": [
+      1.2,
+      1.2,
+      0.33
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: material:MASK, material_1:MASK"
+  },
+  "apartment_block": {
+    "file": "res://assets/models/apartment_block/apartment_block.glb",
+    "title": "Russian panel house (asset)",
+    "author": "Yury Misiyuk",
+    "author_url": "https://sketchfab.com/Tim0",
+    "source_url": "https://sketchfab.com/3d-models/russian-panel-house-asset-d537595db4bf4a60b955b31cde198432",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "d537595db4bf4a60b955b31cde198432",
+    "faces": 34490,
+    "size_m": [
+      17.668,
+      15,
+      93.603
+    ],
+    "tex": 1024,
+    "notes": "long axis Z; alpha: Balkon_01:BLEND, Balkon_03:BLEND"
+  },
+  "bench": {
+    "file": "res://assets/models/bench/bench.glb",
+    "title": "Park Bench",
+    "author": "RBG_illustrations",
+    "author_url": "https://sketchfab.com/RBG_illustrations",
+    "source_url": "https://sketchfab.com/3d-models/park-bench-2ee2bc87756d4bf0932d83ab860ddb8f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "2ee2bc87756d4bf0932d83ab860ddb8f",
+    "faces": 2924,
+    "size_m": [
+      1.8,
+      0.528,
+      0.413
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "boulder": {
+    "file": "res://assets/models/boulder/boulder.glb",
+    "title": "Namaqualand Boulder 02",
+    "author": "Greg Zaal, Rico Cilliers",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/namaqualand_boulder_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:namaqualand_boulder_02",
+    "faces": 19991,
+    "size_m": [
+      3.2,
+      1.115,
+      1.555
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "branches_dry": {
+    "file": "res://assets/models/branches_dry/branches_dry.glb",
+    "title": "Dry Branches Medium 01",
+    "author": "Rico Cilliers",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/dry_branches_medium_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:dry_branches_medium_01",
+    "faces": 8997,
+    "size_m": [
+      1.794,
+      0.577,
+      2.2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "bucket": {
+    "file": "res://assets/models/bucket/bucket.glb",
+    "title": "Old Rusted Bucket v1",
+    "author": "Coozy",
+    "author_url": "https://sketchfab.com/GameDevNick",
+    "source_url": "https://sketchfab.com/3d-models/old-rusted-bucket-v1-4712f95b38524c57b8dfc9d882122314",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "4712f95b38524c57b8dfc9d882122314",
+    "faces": 2936,
+    "size_m": [
+      0.301,
+      0.35,
+      0.308
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "bunk_bed": {
+    "file": "res://assets/models/bunk_bed/bunk_bed.glb",
+    "title": "bunk bed",
+    "author": "filthycent",
+    "author_url": "https://sketchfab.com/filthycent",
+    "source_url": "https://sketchfab.com/3d-models/bunk-bed-ea60847abaaf4662b5f7c75b44f3ce9d",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "ea60847abaaf4662b5f7c75b44f3ce9d",
+    "faces": 2328,
+    "size_m": [
+      2.116,
+      1.8,
+      0.939
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "bunker_entrance": {
+    "file": "res://assets/models/bunker_entrance/bunker_entrance.glb",
+    "title": "Underground Enterance",
+    "author": "roatti",
+    "author_url": "https://sketchfab.com/roatti",
+    "source_url": "https://sketchfab.com/3d-models/underground-enterance-358b1a2abeaf470ea15a57656388241d",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "358b1a2abeaf470ea15a57656388241d",
+    "faces": 1220,
+    "size_m": [
+      6.414,
+      3.2,
+      2.446
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "bunker_hut": {
+    "file": "res://assets/models/bunker_hut/bunker_hut.glb",
+    "title": "Military Style Building (with animations)",
+    "author": "TampaJoey",
+    "author_url": "https://sketchfab.com/TampaJoey",
+    "source_url": "https://sketchfab.com/3d-models/military-style-building-with-animations-1671685e1dd94b6e9216ead632f08f6e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "1671685e1dd94b6e9216ead632f08f6e",
+    "faces": 16784,
+    "size_m": [
+      7.846,
+      4,
+      13.089
+    ],
+    "tex": 1024,
+    "animations": [
+      "Camera1",
+      "Camera2",
+      "Front_Door",
+      "Blast_Shutters",
+      "Blast_Doors",
+      "Garage_Door"
+    ],
+    "notes": "long axis Z; skinned; alpha: Keypads_SecurityLight_Tracks_Brackets_mao:BLEND, Florescent_Lights_map:BLEND, Window_Frames_map:BLEND, Windows_map:BLEND, Window_Glass_map:BLEND"
+  },
+  "burnt_truck": {
+    "file": "res://assets/models/burnt_truck/burnt_truck.glb",
+    "title": "GAZ-66 Offroad Truck",
+    "author": "Yo.Ri",
+    "author_url": "https://sketchfab.com/grox777",
+    "source_url": "https://sketchfab.com/3d-models/gaz-66-offroad-truck-1cc3374ed6874124991c8058ec79c3d3",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "1cc3374ed6874124991c8058ec79c3d3",
+    "faces": 5743,
+    "size_m": [
+      2.288,
+      2.609,
+      5.8
+    ],
+    "tex": 1024,
+    "notes": "long axis Z; alpha: glass:BLEND"
+  },
+  "bus_stop": {
+    "file": "res://assets/models/bus_stop/bus_stop.glb",
+    "title": "Old Soviet Bus Stop",
+    "author": "Coozy",
+    "author_url": "https://sketchfab.com/GameDevNick",
+    "source_url": "https://sketchfab.com/3d-models/old-soviet-bus-stop-fe4d132434c24e1c8447a6d1190e8c6d",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "fe4d132434c24e1c8447a6d1190e8c6d",
+    "faces": 4364,
+    "size_m": [
+      1.623,
+      2.981,
+      4
+    ],
+    "tex": 1024,
+    "notes": "long axis Z; alpha: glass:BLEND"
+  },
+  "bus_wreck": {
+    "file": "res://assets/models/bus_wreck/bus_wreck.glb",
+    "title": "Abandoned Old Bus",
+    "author": "dylanheyes",
+    "author_url": "https://sketchfab.com/dylanheyes",
+    "source_url": "https://sketchfab.com/3d-models/abandoned-old-bus-7acca98c959a4740b5aa8a42647dfc58",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "7acca98c959a4740b5aa8a42647dfc58",
+    "faces": 110254,
+    "size_m": [
+      11,
+      3.658,
+      3.46
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "camping_stove": {
+    "file": "res://assets/models/camping_stove/camping_stove.glb",
+    "title": "Portable Kitchen Stove",
+    "author": "ivan.keramik",
+    "author_url": "https://sketchfab.com/ivan.keramik",
+    "source_url": "https://sketchfab.com/3d-models/portable-kitchen-stove-fc7b9b2644754ef0ae427ea9ee55210f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "fc7b9b2644754ef0ae427ea9ee55210f",
+    "faces": 2447,
+    "size_m": [
+      0.35,
+      0.095,
+      0.314
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "canned_food": {
+    "file": "res://assets/models/canned_food/canned_food.glb",
+    "title": "Can Rusted",
+    "author": "Rahul Chaudhary",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/can_rusted",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:can_rusted",
+    "faces": 3520,
+    "size_m": [
+      0.099,
+      0.12,
+      0.099
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "car_battery": {
+    "file": "res://assets/models/car_battery/car_battery.glb",
+    "title": "Car Battery",
+    "author": "amt16",
+    "author_url": "https://sketchfab.com/amt16",
+    "source_url": "https://sketchfab.com/3d-models/car-battery-5b60936580ab43eb9f0a21164a2ac40e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5b60936580ab43eb9f0a21164a2ac40e",
+    "faces": 1778,
+    "size_m": [
+      0.3,
+      0.222,
+      0.196
+    ],
+    "tex": 512,
+    "notes": "long axis X"
+  },
+  "car_sedan": {
+    "file": "res://assets/models/car_sedan/car_sedan.glb",
+    "title": "Old Car - VAZ 2107",
+    "author": "Arkady Gribachev",
+    "author_url": "https://sketchfab.com/prephonat",
+    "source_url": "https://sketchfab.com/3d-models/old-car-vaz-2107-91270dab9d1a47c7ba7ffaaf8c8b0beb",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "91270dab9d1a47c7ba7ffaaf8c8b0beb",
+    "faces": 19905,
+    "size_m": [
+      1.795,
+      1.493,
+      4.2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z; alpha: Windows:BLEND, Details_Transparent:BLEND"
+  },
+  "car_wreck": {
+    "file": "res://assets/models/car_wreck/car_wreck.glb",
+    "title": "Destroyed Car 03 / Backrooms Car (Gameready ver)",
+    "author": "Renafox",
+    "author_url": "https://sketchfab.com/kryik1023",
+    "source_url": "https://sketchfab.com/3d-models/destroyed-car-03-backrooms-car-gameready-ver-efc4dfe2c7284a64bc9281eb4f61d402",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "efc4dfe2c7284a64bc9281eb4f61d402",
+    "faces": 9995,
+    "size_m": [
+      4.2,
+      1.276,
+      2.187
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "chair": {
+    "file": "res://assets/models/chair/chair.glb",
+    "title": "Old Metal Folding Chair",
+    "author": "MaX3Dd",
+    "author_url": "https://sketchfab.com/MaX3Dd",
+    "source_url": "https://sketchfab.com/3d-models/old-metal-folding-chair-bc526e9ae4954ecf82c9caf35d8e6bdd",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "bc526e9ae4954ecf82c9caf35d8e6bdd",
+    "faces": 1282,
+    "size_m": [
+      0.65,
+      0.9,
+      0.564
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "concrete_barrier": {
+    "file": "res://assets/models/concrete_barrier/concrete_barrier.glb",
+    "title": "Jersey Barrier",
+    "author": "emran.bayati",
+    "author_url": "https://sketchfab.com/emran.bayati",
+    "source_url": "https://sketchfab.com/3d-models/jersey-barrier-b52246c9611a42a99a03b425535a0237",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "b52246c9611a42a99a03b425535a0237",
+    "faces": 1714,
+    "size_m": [
+      0.708,
+      1,
+      1.841
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "concrete_fence": {
+    "file": "res://assets/models/concrete_fence/concrete_fence.glb",
+    "title": "PO-2 concrete fence wall.",
+    "author": "Cyril Demetrius",
+    "author_url": "https://sketchfab.com/oyez",
+    "source_url": "https://sketchfab.com/3d-models/po-2-concrete-fence-wall-44a71074b609419685d29f7c19100fee",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "44a71074b609419685d29f7c19100fee",
+    "faces": 5642,
+    "size_m": [
+      2.409,
+      2.5,
+      0.138
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "crt_computer": {
+    "file": "res://assets/models/crt_computer/crt_computer.glb",
+    "title": "Metro Show Computer",
+    "author": "gbrl.n.freire",
+    "author_url": "https://sketchfab.com/gbrl.n.freire",
+    "source_url": "https://sketchfab.com/3d-models/metro-show-computer-af54a32c8ca3491b956d367ef2b59886",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "af54a32c8ca3491b956d367ef2b59886",
+    "faces": 1072,
+    "size_m": [
+      0.424,
+      0.323,
+      0.5
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "debris_slab": {
+    "file": "res://assets/models/debris_slab/debris_slab.glb",
+    "title": "Destroyed concrete slab with reinforcement",
+    "author": "recoshet",
+    "author_url": "https://sketchfab.com/recoshet",
+    "source_url": "https://sketchfab.com/3d-models/destroyed-concrete-slab-with-reinforcement-3da06992308049c7a351942c54fbe8ba",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "3da06992308049c7a351942c54fbe8ba",
+    "faces": 7566,
+    "size_m": [
+      2.995,
+      0.142,
+      3
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "diesel_generator": {
+    "file": "res://assets/models/diesel_generator/diesel_generator.glb",
+    "title": "Diesel generator",
+    "author": "epilogueronin",
+    "author_url": "https://sketchfab.com/epilogueronin",
+    "source_url": "https://sketchfab.com/3d-models/diesel-generator-7a0b72c7d01944a8aafab59d44eb120e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "7a0b72c7d01944a8aafab59d44eb120e",
+    "faces": 10428,
+    "size_m": [
+      1.6,
+      1.199,
+      0.779
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "electrical_panel": {
+    "file": "res://assets/models/electrical_panel/electrical_panel.glb",
+    "title": "Power Box 01",
+    "author": "Rico Cilliers, Yann Kervran",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/power_box_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:power_box_01",
+    "faces": 21272,
+    "size_m": [
+      0.825,
+      0.9,
+      0.714
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "enemy_bandit": {
+    "file": "res://assets/models/enemy_bandit/enemy_bandit.glb",
+    "title": "Game Ready Military Character",
+    "author": "Pure Gamer Studios",
+    "author_url": "https://sketchfab.com/jayb3e",
+    "source_url": "https://sketchfab.com/3d-models/game-ready-military-character-8cd04f8d8ca94f7fb911fef2d3802f13",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "8cd04f8d8ca94f7fb911fef2d3802f13",
+    "faces": 66768,
+    "size_m": [
+      1.811,
+      1.8,
+      0.382
+    ],
+    "tex": 1024,
+    "animations": [
+      "Punching",
+      "Pistol Idle (1)",
+      "Kicking",
+      "Idle (3)",
+      "Jump Down",
+      "Pistol Jump",
+      "Pistol Walk",
+      "Rifle Idle",
+      "Rifle Run (1)",
+      "Walk With Rifle",
+      "Pistol Run (3)",
+      "Walking (5)",
+      "Jumping Up",
+      "Rifle Aiming Idle",
+      "T-Pose",
+      "Running (1)"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "enemy_dog": {
+    "file": "res://assets/models/enemy_dog/enemy_dog.glb",
+    "title": "Cry Wolf Game Character",
+    "author": "SkinRender",
+    "author_url": "https://sketchfab.com/SkinRender",
+    "source_url": "https://sketchfab.com/3d-models/cry-wolf-game-character-c8ae11fe9aa44455ae1bc93f7744b3df",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "c8ae11fe9aa44455ae1bc93f7744b3df",
+    "faces": 18920,
+    "size_m": [
+      0.696,
+      0.8,
+      0.892
+    ],
+    "tex": 1024,
+    "animations": [
+      "rig|ATK 1",
+      "rig|ATK 2",
+      "rig|DAMAGE 1",
+      "rig|DAMAGE 2",
+      "rig|DAMAGE DEATH",
+      "rig|DAMAGE Stagger",
+      "rig|IDDLE1",
+      "rig|IDDLE2",
+      "rig|IDDLE3",
+      "rig|MOVE_Walk"
+    ],
+    "notes": "long axis Z; skinned"
+  },
+  "enemy_hazmat": {
+    "file": "res://assets/models/enemy_hazmat/enemy_hazmat.glb",
+    "title": "Zombie Hazmat",
+    "author": "LxNazarov",
+    "author_url": "https://sketchfab.com/LxNazarov",
+    "source_url": "https://sketchfab.com/3d-models/zombie-hazmat-49b3b4307f6a4d2386fdb02354158d04",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "49b3b4307f6a4d2386fdb02354158d04",
+    "faces": 15521,
+    "size_m": [
+      0.889,
+      1.9,
+      1.085
+    ],
+    "tex": 1024,
+    "animations": [
+      "Zombie_EnemySpotted",
+      "Zombie_Skill",
+      "Zombie_Idle",
+      "Zombie_Walk_Root"
+    ],
+    "notes": "long axis Z; skinned; alpha: HazMatSuit:MASK"
+  },
+  "enemy_mutant": {
+    "file": "res://assets/models/enemy_mutant/enemy_mutant.glb",
+    "title": "Zombie",
+    "author": "pxltiger",
+    "author_url": "https://sketchfab.com/pxltiger",
+    "source_url": "https://sketchfab.com/3d-models/zombie-73ef58af341e46afba1da53366ed79cf",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "73ef58af341e46afba1da53366ed79cf",
+    "faces": 4824,
+    "size_m": [
+      1.512,
+      1.9,
+      0.339
+    ],
+    "tex": 1024,
+    "animations": [
+      "Idle",
+      "Walk1_InPlace",
+      "Walk_InPlace",
+      "Run_InPlace",
+      "Attack",
+      "FallingBack",
+      "FallingForward",
+      "Walk",
+      "Run",
+      "Walk1"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "enemy_raider": {
+    "file": "res://assets/models/enemy_raider/enemy_raider.glb",
+    "title": "German KSK operator - rigged",
+    "author": "42manako",
+    "author_url": "https://sketchfab.com/42manako",
+    "source_url": "https://sketchfab.com/3d-models/german-ksk-operator-rigged-110daf3d1884412989e41dc95866c579",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "110daf3d1884412989e41dc95866c579",
+    "faces": 10943,
+    "size_m": [
+      1.557,
+      1.8,
+      0.871
+    ],
+    "tex": 1024,
+    "animations": [
+      "mixamo.com"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "enemy_zombie": {
+    "file": "res://assets/models/enemy_zombie/enemy_zombie.glb",
+    "title": "Zombie Walk Test",
+    "author": "OSCAR CREATIVO",
+    "author_url": "https://sketchfab.com/oscar_creativo",
+    "source_url": "https://sketchfab.com/3d-models/zombie-walk-test-165fd9342c364216bfdd8c2f1102223c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "165fd9342c364216bfdd8c2f1102223c",
+    "faces": 32880,
+    "size_m": [
+      2.018,
+      1.85,
+      0.367
+    ],
+    "tex": 1024,
+    "animations": [
+      "ANIMATION ZOMBIE"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "factory_hall": {
+    "file": "res://assets/models/factory_hall/factory_hall.glb",
+    "title": "Old Industrial Building",
+    "author": "Hrvoje Wächter",
+    "author_url": "https://sketchfab.com/gazdahrco",
+    "source_url": "https://sketchfab.com/3d-models/old-industrial-building-0dafa7aaadfd4666bb4a32776c84b14e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "0dafa7aaadfd4666bb4a32776c84b14e",
+    "faces": 67127,
+    "size_m": [
+      9.947,
+      13,
+      29.563
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "fire_extinguisher": {
+    "file": "res://assets/models/fire_extinguisher/fire_extinguisher.glb",
+    "title": "Fire Extinguisher",
+    "author": "Loïc",
+    "author_url": "https://sketchfab.com/loichuet1",
+    "source_url": "https://sketchfab.com/3d-models/fire-extinguisher-5676b179b3b744c0aaae53a3dcea2300",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5676b179b3b744c0aaae53a3dcea2300",
+    "faces": 2792,
+    "size_m": [
+      0.324,
+      0.6,
+      0.165
+    ],
+    "tex": 512,
+    "notes": "long axis X"
+  },
+  "first_aid_kit": {
+    "file": "res://assets/models/first_aid_kit/first_aid_kit.glb",
+    "title": "Medkit",
+    "author": "Brandon Baldwin",
+    "author_url": "https://sketchfab.com/Hepatitis_Bee",
+    "source_url": "https://sketchfab.com/3d-models/medkit-e5bbfa708fce411fb6ffbd18d50c971f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "e5bbfa708fce411fb6ffbd18d50c971f",
+    "faces": 2346,
+    "size_m": [
+      0.35,
+      0.222,
+      0.114
+    ],
+    "tex": 512,
+    "notes": "long axis X"
+  },
+  "flashlight": {
+    "file": "res://assets/models/flashlight/flashlight.glb",
+    "title": "Flashlight",
+    "author": "MAR.COS.",
+    "author_url": "https://sketchfab.com/mar.cos.",
+    "source_url": "https://sketchfab.com/3d-models/flashlight-5fa9a65e7b0141ee877ed18f4f42d953",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5fa9a65e7b0141ee877ed18f4f42d953",
+    "faces": 1464,
+    "size_m": [
+      0.25,
+      0.059,
+      0.141
+    ],
+    "tex": 512,
+    "notes": "long axis X; alpha: M_Flashlight_V01:BLEND"
+  },
+  "fluorescent_lamp": {
+    "file": "res://assets/models/fluorescent_lamp/fluorescent_lamp.glb",
+    "title": "Weathered Fluorescent Light/Lamp - 4096px²",
+    "author": "Mark Peters",
+    "author_url": "https://sketchfab.com/mark-peters",
+    "source_url": "https://sketchfab.com/3d-models/weathered-fluorescent-lightlamp-4096px2-5d29d2370ec846a2a461de351bba8872",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5d29d2370ec846a2a461de351bba8872",
+    "faces": 6217,
+    "size_m": [
+      0.128,
+      0.088,
+      1.2
+    ],
+    "tex": 512,
+    "notes": "long axis Z"
+  },
+  "fps_pistol": {
+    "file": "res://assets/models/fps_pistol/fps_pistol.glb",
+    "title": "FPS pistol animations",
+    "author": "Cransh",
+    "author_url": "https://sketchfab.com/ccransh",
+    "source_url": "https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "0d7a343dcb6f401197a73c91aee93f6d",
+    "faces": 32670,
+    "size_m": [
+      0.583,
+      0.298,
+      0.636
+    ],
+    "tex": 1024,
+    "animations": [
+      "Armature|FPS_Pistol_Idle",
+      "Armature|FPS_Pistol_Walk",
+      "Armature|FPS_Pistol_Fire",
+      "Armature|FPS_Pistol_Reload_easy",
+      "Armature|FPS_Pistol_Reload_full"
+    ],
+    "anim_ranges": [
+      [
+        "Armature|FPS_Pistol_Idle",
+        0,
+        1.983
+      ],
+      [
+        "Armature|FPS_Pistol_Walk",
+        0,
+        0.65
+      ],
+      [
+        "Armature|FPS_Pistol_Fire",
+        0,
+        0.233
+      ],
+      [
+        "Armature|FPS_Pistol_Reload_easy",
+        0,
+        1.317
+      ],
+      [
+        "Armature|FPS_Pistol_Reload_full",
+        0,
+        1.65
+      ]
+    ],
+    "notes": "roughly square footprint; skinned"
+  },
+  "fps_rifle": {
+    "file": "res://assets/models/fps_rifle/fps_rifle.glb",
+    "title": "FPS AK-74m animations",
+    "author": "Cransh",
+    "author_url": "https://sketchfab.com/ccransh",
+    "source_url": "https://sketchfab.com/3d-models/fps-ak-74m-animations-94be8385c402474cacd39bc096c6ca14",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "94be8385c402474cacd39bc096c6ca14",
+    "faces": 40023,
+    "size_m": [
+      0.952,
+      1.16,
+      2.801
+    ],
+    "tex": 1024,
+    "animations": [
+      "Rig|AK_Idle",
+      "Rig|AK_Draw",
+      "Rig|AK_Walk",
+      "Rig|AK_Run",
+      "Rig|AK_Shot",
+      "Rig|AK_Reload",
+      "Rig|AK_Reload_var2",
+      "Rig|AK_Reload_full"
+    ],
+    "anim_ranges": [
+      [
+        "Rig|AK_Idle",
+        0,
+        1.982
+      ],
+      [
+        "Rig|AK_Draw",
+        0,
+        0.648
+      ],
+      [
+        "Rig|AK_Walk",
+        0,
+        0.982
+      ],
+      [
+        "Rig|AK_Run",
+        0,
+        0.398
+      ],
+      [
+        "Rig|AK_Shot",
+        0,
+        0.315
+      ],
+      [
+        "Rig|AK_Reload",
+        0,
+        2.648
+      ],
+      [
+        "Rig|AK_Reload_var2",
+        0,
+        2.815
+      ],
+      [
+        "Rig|AK_Reload_full",
+        0,
+        3.498
+      ]
+    ],
+    "notes": "long axis Z; skinned"
+  },
+  "fps_shotgun": {
+    "file": "res://assets/models/fps_shotgun/fps_shotgun.glb",
+    "title": "FPS Arms saiga animations remake",
+    "author": "Cransh",
+    "author_url": "https://sketchfab.com/ccransh",
+    "source_url": "https://sketchfab.com/3d-models/fps-arms-saiga-animations-remake-74e30b71e4a049b2a82b9d18f58e623c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "74e30b71e4a049b2a82b9d18f58e623c",
+    "faces": 35786,
+    "size_m": [
+      1.46,
+      0.862,
+      2.963
+    ],
+    "tex": 1024,
+    "animations": [
+      "Rig|Saiga_Idle",
+      "Rig|Saiga_Fire",
+      "Rig|Saiga_Reload_Fast",
+      "Rig|Saiga_Reload_Full",
+      "Rig|Saiga_Run",
+      "Rig|Saiga_Walk"
+    ],
+    "anim_ranges": [
+      [
+        "Rig|Saiga_Idle",
+        0,
+        3.317
+      ],
+      [
+        "Rig|Saiga_Fire",
+        0,
+        0.983
+      ],
+      [
+        "Rig|Saiga_Reload_Fast",
+        0,
+        2.65
+      ],
+      [
+        "Rig|Saiga_Reload_Full",
+        0,
+        4.317
+      ],
+      [
+        "Rig|Saiga_Run",
+        0,
+        0.65
+      ],
+      [
+        "Rig|Saiga_Walk",
+        0,
+        1.65
+      ]
+    ],
+    "notes": "long axis Z; skinned"
+  },
+  "fridge_old": {
+    "file": "res://assets/models/fridge_old/fridge_old.glb",
+    "title": "USSR Old refrigerator",
+    "author": "Chernorot Bogdan",
+    "author_url": "https://sketchfab.com/Chernorotbogdan",
+    "source_url": "https://sketchfab.com/3d-models/ussr-old-refrigerator-7d12f05773a6403c9ca259ed43604c69",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "7d12f05773a6403c9ca259ed43604c69",
+    "faces": 9378,
+    "size_m": [
+      1.58,
+      1.7,
+      1.035
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "gas_mask": {
+    "file": "res://assets/models/gas_mask/gas_mask.glb",
+    "title": "Russian GP-5  Gas Mask - (Filter Damaged)",
+    "author": "MattMakesSwords",
+    "author_url": "https://sketchfab.com/frankthefish",
+    "source_url": "https://sketchfab.com/3d-models/russian-gp-5-gas-mask-filter-damaged-a4cea22eddbf4e3fa7dd8d622642e635",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "a4cea22eddbf4e3fa7dd8d622642e635",
+    "faces": 4712,
+    "size_m": [
+      0.152,
+      0.3,
+      0.275
+    ],
+    "tex": 1024,
+    "animations": [
+      "Take 001"
+    ],
+    "notes": "long axis Z; skinned"
+  },
+  "geiger_counter": {
+    "file": "res://assets/models/geiger_counter/geiger_counter.glb",
+    "title": "Civil Defense Geiger-Counter",
+    "author": "Steven Janes",
+    "author_url": "https://sketchfab.com/Ebethrone",
+    "source_url": "https://sketchfab.com/3d-models/civil-defense-geiger-counter-0abaa2af0d17487382a35942dde68f9a",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "0abaa2af0d17487382a35942dde68f9a",
+    "faces": 6540,
+    "size_m": [
+      0.25,
+      0.145,
+      0.087
+    ],
+    "tex": 512,
+    "notes": "long axis X; alpha: 02_-_Default:BLEND"
+  },
+  "house_small": {
+    "file": "res://assets/models/house_small/house_small.glb",
+    "title": "Old vilage house_LOD_0",
+    "author": "Nikolay Fedorov",
+    "author_url": "https://sketchfab.com/tomich516",
+    "source_url": "https://sketchfab.com/3d-models/old-vilage-house-lod-0-065cb734d68446ec90e3b43da86a5530",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "065cb734d68446ec90e3b43da86a5530",
+    "faces": 9500,
+    "size_m": [
+      11.399,
+      7,
+      10.937
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "hydroponic_rack": {
+    "file": "res://assets/models/hydroponic_rack/hydroponic_rack.glb",
+    "title": "Sci-fi plant rack + pot free",
+    "author": "thiezubu",
+    "author_url": "https://sketchfab.com/thiezubu",
+    "source_url": "https://sketchfab.com/3d-models/sci-fi-plant-rack-pot-free-f93eb8020d1942b7b3fe858d327b325c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f93eb8020d1942b7b3fe858d327b325c",
+    "faces": 16701,
+    "size_m": [
+      0.549,
+      0.73,
+      1.4
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "jerrycan": {
+    "file": "res://assets/models/jerrycan/jerrycan.glb",
+    "title": "Metal Jerrycan Green",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/metal_jerrycan_green",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:metal_jerrycan_green",
+    "faces": 7998,
+    "size_m": [
+      0.324,
+      0.45,
+      0.154
+    ],
+    "tex": 512,
+    "notes": "long axis X"
+  },
+  "lamp_cage": {
+    "file": "res://assets/models/lamp_cage/lamp_cage.glb",
+    "title": "Hanging Industrial Lamp",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/hanging_industrial_lamp",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:hanging_industrial_lamp",
+    "faces": 9530,
+    "size_m": [
+      0.142,
+      0.35,
+      0.142
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "locker": {
+    "file": "res://assets/models/locker/locker.glb",
+    "title": "Locker",
+    "author": "Loïc",
+    "author_url": "https://sketchfab.com/loichuet1",
+    "source_url": "https://sketchfab.com/3d-models/locker-ed00cf5ea92741eab1d9ce1371681618",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "ed00cf5ea92741eab1d9ce1371681618",
+    "faces": 10302,
+    "size_m": [
+      1.522,
+      1.9,
+      0.846
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "log_fallen": {
+    "file": "res://assets/models/log_fallen/log_fallen.glb",
+    "title": "Dead Tree Trunk",
+    "author": "Rob Tuytel",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/dead_tree_trunk",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:dead_tree_trunk",
+    "faces": 24000,
+    "size_m": [
+      6.5,
+      0.619,
+      0.591
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "metal_door": {
+    "file": "res://assets/models/metal_door/metal_door.glb",
+    "title": "Old metal bunker door",
+    "author": "rakutin",
+    "author_url": "https://sketchfab.com/rakutin",
+    "source_url": "https://sketchfab.com/3d-models/old-metal-bunker-door-a602f52789fb4bc1a46cc1d0633def60",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "a602f52789fb4bc1a46cc1d0633def60",
+    "faces": 14188,
+    "size_m": [
+      1.292,
+      2.1,
+      1.133
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "metal_shelf": {
+    "file": "res://assets/models/metal_shelf/metal_shelf.glb",
+    "title": "Worn Metal Rack",
+    "author": "Luca B",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/worn_metal_rack",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:worn_metal_rack",
+    "faces": 6372,
+    "size_m": [
+      0.964,
+      2,
+      0.632
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "military_crate": {
+    "file": "res://assets/models/military_crate/military_crate.glb",
+    "title": "Old Military Crate",
+    "author": "Jack Mava",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/old_military_crate",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:old_military_crate",
+    "keep": "_a$",
+    "faces": 10476,
+    "size_m": [
+      1,
+      0.369,
+      0.659
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "mushrooms": {
+    "file": "res://assets/models/mushrooms/mushrooms.glb",
+    "title": "Mushrooms",
+    "author": "leha_pu",
+    "author_url": "https://sketchfab.com/leha_pu",
+    "source_url": "https://sketchfab.com/3d-models/mushrooms-f9dbd4c34a4f4389bf3901527ecc89a0",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f9dbd4c34a4f4389bf3901527ecc89a0",
+    "faces": 9370,
+    "size_m": [
+      0.486,
+      0.15,
+      0.423
+    ],
+    "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "oil_barrel": {
+    "file": "res://assets/models/oil_barrel/oil_barrel.glb",
+    "title": "Oil barrel",
+    "author": "farsmok",
+    "author_url": "https://sketchfab.com/farsmok",
+    "source_url": "https://sketchfab.com/3d-models/oil-barrel-ec37cc2a844f4f0ca0873d85a8b3b976",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "ec37cc2a844f4f0ca0873d85a8b3b976",
+    "keep": "^barrel_oil$",
+    "faces": 1276,
+    "size_m": [
+      0.563,
+      0.9,
+      0.563
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "plant_lettuce": {
+    "file": "res://assets/models/plant_lettuce/plant_lettuce.glb",
+    "title": "Cabbage",
+    "author": "Meerschaum Digital",
+    "author_url": "https://sketchfab.com/meerschaumdigital",
+    "source_url": "https://sketchfab.com/3d-models/cabbage-654306fc3ae344c7b9e7a9a40faca45b",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "654306fc3ae344c7b9e7a9a40faca45b",
+    "faces": 3072,
+    "size_m": [
+      0.415,
+      0.3,
+      0.43
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "plant_pepper": {
+    "file": "res://assets/models/plant_pepper/plant_pepper.glb",
+    "title": "Jalapeno Plant",
+    "author": "zvanstone",
+    "author_url": "https://sketchfab.com/zvanstone",
+    "source_url": "https://sketchfab.com/3d-models/jalapeno-plant-3f11de4c1de5494ab5f60476b42f454f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "3f11de4c1de5494ab5f60476b42f454f",
+    "faces": 2033,
+    "size_m": [
+      0.359,
+      0.6,
+      0.336
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: lambert2SG:MASK"
+  },
+  "plant_tomato": {
+    "file": "res://assets/models/plant_tomato/plant_tomato.glb",
+    "title": "Tomato Plant",
+    "author": "zvanstone",
+    "author_url": "https://sketchfab.com/zvanstone",
+    "source_url": "https://sketchfab.com/3d-models/tomato-plant-e0b559690e384fc0a9f3a05913f609c4",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "e0b559690e384fc0a9f3a05913f609c4",
+    "faces": 3079,
+    "size_m": [
+      0.599,
+      0.9,
+      0.509
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: lambert4SG:MASK"
+  },
+  "planter_box": {
+    "file": "res://assets/models/planter_box/planter_box.glb",
+    "title": "Planter Box 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/planter_box_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:planter_box_01",
+    "faces": 8094,
+    "size_m": [
+      1.2,
+      0.559,
+      0.544
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "radiation_sign": {
+    "file": "res://assets/models/radiation_sign/radiation_sign.glb",
+    "title": "Radiation Sign Dirty Destroyed",
+    "author": "seba0456",
+    "author_url": "https://sketchfab.com/sebaonlline",
+    "source_url": "https://sketchfab.com/3d-models/radiation-sign-dirty-destroyed-e483a3a18aa344a8808ee8656dec9e1b",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "e483a3a18aa344a8808ee8656dec9e1b",
+    "faces": 736,
+    "size_m": [
+      0.919,
+      2.2,
+      0.059
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "radio_antenna": {
+    "file": "res://assets/models/radio_antenna/radio_antenna.glb",
+    "title": "Antenna_Roof_TV - 5MB",
+    "author": "Mehdi Shahsavan",
+    "author_url": "https://sketchfab.com/ahmagh2e",
+    "source_url": "https://sketchfab.com/3d-models/antenna-roof-tv-5mb-2bcae1a760d641339eb1ad63e1f7cf89",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "2bcae1a760d641339eb1ad63e1f7cf89",
+    "faces": 6226,
+    "size_m": [
+      2.6,
+      4,
+      0.915
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "radio_station": {
+    "file": "res://assets/models/radio_station/radio_station.glb",
+    "title": "Military Radio",
+    "author": "curichenkow",
+    "author_url": "https://sketchfab.com/curichenkow",
+    "source_url": "https://sketchfab.com/3d-models/military-radio-f5c8f0420f054b32a2e977fbcd248d84",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f5c8f0420f054b32a2e977fbcd248d84",
+    "faces": 28807,
+    "size_m": [
+      0.514,
+      0.278,
+      0.6
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "road_sign": {
+    "file": "res://assets/models/road_sign/road_sign.glb",
+    "title": "Rusty Stop Sign",
+    "author": "Yanez Designs",
+    "author_url": "https://sketchfab.com/Yanez-Designs",
+    "source_url": "https://sketchfab.com/3d-models/rusty-stop-sign-2225bb40891b4ed083a75bd17e447dd0",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "2225bb40891b4ed083a75bd17e447dd0",
+    "faces": 5576,
+    "size_m": [
+      0.833,
+      2.5,
+      0.078
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "rock_a": {
+    "file": "res://assets/models/rock_a/rock_a.glb",
+    "title": "Rock 07",
+    "author": "Jenelle van Heerden",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/rock_07",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:rock_07",
+    "faces": 12000,
+    "size_m": [
+      0.844,
+      0.718,
+      1.6
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "rock_b": {
+    "file": "res://assets/models/rock_b/rock_b.glb",
+    "title": "Rock 09",
+    "author": "Jenelle van Heerden",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/rock_09",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:rock_09",
+    "faces": 12416,
+    "size_m": [
+      0.614,
+      0.273,
+      1.2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "rubble_pile": {
+    "file": "res://assets/models/rubble_pile/rubble_pile.glb",
+    "title": "A Pile Of Concrete Debris - 3D Scan",
+    "author": "Alben Tan",
+    "author_url": "https://sketchfab.com/albentan2012",
+    "source_url": "https://sketchfab.com/3d-models/a-pile-of-concrete-debris-3d-scan-194bec2429da4b74b3926ac981616da8",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "194bec2429da4b74b3926ac981616da8",
+    "faces": 48975,
+    "size_m": [
+      2.924,
+      0.894,
+      3
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "ruin_block": {
+    "file": "res://assets/models/ruin_block/ruin_block.glb",
+    "title": "Ruin Building",
+    "author": "nermin",
+    "author_url": "https://sketchfab.com/nermin",
+    "source_url": "https://sketchfab.com/3d-models/ruin-building-184d70cc473540749206cc7d8f9917b8",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "184d70cc473540749206cc7d8f9917b8",
+    "faces": 33349,
+    "size_m": [
+      7.57,
+      14,
+      7.407
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: Polysurface521Mtl:BLEND, Polysurface481Mtl:BLEND"
+  },
+  "ruin_corner": {
+    "file": "res://assets/models/ruin_corner/ruin_corner.glb",
+    "title": "Destroyed brick walls",
+    "author": "David Flores",
+    "author_url": "https://sketchfab.com/davidcorchea",
+    "source_url": "https://sketchfab.com/3d-models/destroyed-brick-walls-1e69010a8091477186fac5615365d70e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "1e69010a8091477186fac5615365d70e",
+    "keep": "^Object_10$",
+    "faces": 11808,
+    "size_m": [
+      2.035,
+      1.003,
+      5.2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "ruin_house": {
+    "file": "res://assets/models/ruin_house/ruin_house.glb",
+    "title": "Destroyed Building shell",
+    "author": "FWTeastwood",
+    "author_url": "https://sketchfab.com/FWTeastwood",
+    "source_url": "https://sketchfab.com/3d-models/destroyed-building-shell-d74a108fc7814ad9944138a6e9f5ee71",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "d74a108fc7814ad9944138a6e9f5ee71",
+    "faces": 7528,
+    "size_m": [
+      11.116,
+      8,
+      9.608
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "ruin_wall_a": {
+    "file": "res://assets/models/ruin_wall_a/ruin_wall_a.glb",
+    "title": "Graffiti- Covered Concrete Wall With Eye Drawing",
+    "author": "ffedo",
+    "author_url": "https://sketchfab.com/ffedo",
+    "source_url": "https://sketchfab.com/3d-models/graffiti-covered-concrete-wall-with-eye-drawing-34190f9957184eee91ce17f8ddf7699b",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "34190f9957184eee91ce17f8ddf7699b",
+    "faces": 22441,
+    "size_m": [
+      0.402,
+      3.177,
+      5
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "ruin_wall_b": {
+    "file": "res://assets/models/ruin_wall_b/ruin_wall_b.glb",
+    "title": "Destroyed brick walls",
+    "author": "David Flores",
+    "author_url": "https://sketchfab.com/davidcorchea",
+    "source_url": "https://sketchfab.com/3d-models/destroyed-brick-walls-1e69010a8091477186fac5615365d70e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "1e69010a8091477186fac5615365d70e",
+    "keep": "^Object_4$",
+    "faces": 9532,
+    "size_m": [
+      0.279,
+      2.422,
+      7
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "ruined_building": {
+    "file": "res://assets/models/ruined_building/ruined_building.glb",
+    "title": "War Damaged building 2",
+    "author": "local.yany",
+    "author_url": "https://sketchfab.com/local.yany",
+    "source_url": "https://sketchfab.com/3d-models/war-damaged-building-2-03c5583c895b432697dbfa62ed5d35f3",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "03c5583c895b432697dbfa62ed5d35f3",
+    "faces": 177051,
+    "size_m": [
+      14.161,
+      14,
+      8.732
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: XI_WDS_BMill_WIN_MAT:BLEND"
+  },
+  "sandbags": {
+    "file": "res://assets/models/sandbags/sandbags.glb",
+    "title": "Sandbag Barrier (Ready for Unreal Engine)",
+    "author": "G4AGamingLabs",
+    "author_url": "https://sketchfab.com/G4AGamingLabs",
+    "source_url": "https://sketchfab.com/3d-models/sandbag-barrier-ready-for-unreal-engine-593800671c8e45eca93b8b7c765c0f77",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "593800671c8e45eca93b8b7c765c0f77",
+    "faces": 19975,
+    "size_m": [
+      2.5,
+      0.562,
+      0.403
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "scrap_pile": {
+    "file": "res://assets/models/scrap_pile/scrap_pile.glb",
+    "title": "Pile of construction waste [3D SCAN; 8K; PBR]",
+    "author": "MrUnity",
+    "author_url": "https://sketchfab.com/MrUnityCreations",
+    "source_url": "https://sketchfab.com/3d-models/pile-of-construction-waste-3d-scan-8k-pbr-dd40f5b267f84146ad7ec912cf12fbe8",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "dd40f5b267f84146ad7ec912cf12fbe8",
+    "faces": 8742,
+    "size_m": [
+      2.5,
+      0.247,
+      2.264
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "shop_ruin": {
+    "file": "res://assets/models/shop_ruin/shop_ruin.glb",
+    "title": "Simple 90's Kiosk",
+    "author": "Vagabondare",
+    "author_url": "https://sketchfab.com/Vagabondare",
+    "source_url": "https://sketchfab.com/3d-models/simple-90s-kiosk-a04e69a838054f7cb39a635943ab9b0d",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "a04e69a838054f7cb39a635943ab9b0d",
+    "faces": 1668,
+    "size_m": [
+      4.18,
+      3.2,
+      4.466
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: win_transA__trans:BLEND"
+  },
+  "shovel": {
+    "file": "res://assets/models/shovel/shovel.glb",
+    "title": "Old Shovel",
+    "author": "Oliver Triplett",
+    "author_url": "https://sketchfab.com/OliverTriplett",
+    "source_url": "https://sketchfab.com/3d-models/old-shovel-5ea945cb4d9a4bd387fb9d6ed74527f1",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5ea945cb4d9a4bd387fb9d6ed74527f1",
+    "faces": 1040,
+    "size_m": [
+      0.183,
+      1.1,
+      0.257
+    ],
+    "tex": 512,
+    "notes": "long axis Z"
+  },
+  "sofa_old": {
+    "file": "res://assets/models/sofa_old/sofa_old.glb",
+    "title": "Old Couch",
+    "author": "oisougabo",
+    "author_url": "https://sketchfab.com/oisougabo",
+    "source_url": "https://sketchfab.com/3d-models/old-couch-443d9bb95e944afe8ebc4ff489e2886c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "443d9bb95e944afe8ebc4ff489e2886c",
+    "faces": 7964,
+    "size_m": [
+      2,
+      0.892,
+      1.012
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "solar_panel": {
+    "file": "res://assets/models/solar_panel/solar_panel.glb",
+    "title": "Solar Panel",
+    "author": "rivetech",
+    "author_url": "https://sketchfab.com/rivetech",
+    "source_url": "https://sketchfab.com/3d-models/solar-panel-83483a66f8974d7e8f2e7bbde518d606",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "83483a66f8974d7e8f2e7bbde518d606",
+    "faces": 1854,
+    "size_m": [
+      1.7,
+      0.67,
+      0.683
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "stone_small": {
+    "file": "res://assets/models/stone_small/stone_small.glb",
+    "title": "Stone 01",
+    "author": "Dario Barresi, Rico Cilliers",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/stone_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:stone_01",
+    "faces": 5998,
+    "size_m": [
+      0.7,
+      0.342,
+      0.424
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "street_lamp": {
+    "file": "res://assets/models/street_lamp/street_lamp.glb",
+    "title": "Street Lamp",
+    "author": "bez_glaza",
+    "author_url": "https://sketchfab.com/bez_glaza",
+    "source_url": "https://sketchfab.com/3d-models/street-lamp-6881aa1e84b047d79860fa9297e05e22",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "6881aa1e84b047d79860fa9297e05e22",
+    "faces": 7810,
+    "size_m": [
+      1.021,
+      7,
+      0.461
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: light:BLEND"
+  },
+  "supermarket_shelf": {
+    "file": "res://assets/models/supermarket_shelf/supermarket_shelf.glb",
+    "title": "Modular Shelves",
+    "author": "billionlioe",
+    "author_url": "https://sketchfab.com/billionlioe",
+    "source_url": "https://sketchfab.com/3d-models/modular-shelves-ae4e079225ee4982b61b048ea4c1081a",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "ae4e079225ee4982b61b048ea4c1081a",
+    "keep": "^shelf_Base_Expo(00[0-5])?$|^shelf_piece_exp0(0[89]|1[0-9]|2[3-9]|3[01])$",
+    "faces": 4752,
+    "size_m": [
+      1.092,
+      1.8,
+      3.243
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "survivor_npc": {
+    "file": "res://assets/models/survivor_npc/survivor_npc.glb",
+    "title": "Bearded man - Low poly animated",
+    "author": "Agor_2012",
+    "author_url": "https://sketchfab.com/Agor_",
+    "source_url": "https://sketchfab.com/3d-models/bearded-man-low-poly-animated-5718a53d18a142f686b1d9f02a637773",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "5718a53d18a142f686b1d9f02a637773",
+    "faces": 3480,
+    "size_m": [
+      0.64,
+      1.75,
+      0.402
+    ],
+    "tex": 1024,
+    "animations": [
+      "walk",
+      "run",
+      "idle",
+      "fight_idle",
+      "fight",
+      "death",
+      "steal",
+      "open_door",
+      "picking_up",
+      "push_button"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "table_metal": {
+    "file": "res://assets/models/table_metal/table_metal.glb",
+    "title": "Metal Office Desk",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/metal_office_desk",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:metal_office_desk",
+    "faces": 6898,
+    "size_m": [
+      1.6,
+      0.63,
+      0.758
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "tank_wreck": {
+    "file": "res://assets/models/tank_wreck/tank_wreck.glb",
+    "title": "damaged EE-9 Cascavel tank",
+    "author": "Aj Alhejaj",
+    "author_url": "https://sketchfab.com/ajalhejaj",
+    "source_url": "https://sketchfab.com/3d-models/damaged-ee-9-cascavel-tank-7ef593b344624e6388eaa44b5551fad7",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "7ef593b344624e6388eaa44b5551fad7",
+    "faces": 39746,
+    "size_m": [
+      7,
+      3.8,
+      6.833
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "tire_pile": {
+    "file": "res://assets/models/tire_pile/tire_pile.glb",
+    "title": "Old, dirty, stacked tires, PBR textures [free]",
+    "author": "ZiemniaQ",
+    "author_url": "https://sketchfab.com/ZiemniaQ",
+    "source_url": "https://sketchfab.com/3d-models/old-dirty-stacked-tires-pbr-textures-free-f9d64bd1fdde49fe8571f83f59114663",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f9d64bd1fdde49fe8571f83f59114663",
+    "faces": 2478,
+    "size_m": [
+      1.285,
+      1.5,
+      1.283
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "toolbox": {
+    "file": "res://assets/models/toolbox/toolbox.glb",
+    "title": "Old Tool Box",
+    "author": "Марк",
+    "author_url": "https://sketchfab.com/Mark-kon",
+    "source_url": "https://sketchfab.com/3d-models/old-tool-box-31b3d48ddc8f4b40a4099647fa016305",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "31b3d48ddc8f4b40a4099647fa016305",
+    "faces": 904,
+    "size_m": [
+      0.5,
+      0.181,
+      0.199
+    ],
+    "tex": 512,
+    "notes": "long axis X"
+  },
+  "trash_bin": {
+    "file": "res://assets/models/trash_bin/trash_bin.glb",
+    "title": "Trash can",
+    "author": "bazz4r",
+    "author_url": "https://sketchfab.com/bazz4r",
+    "source_url": "https://sketchfab.com/3d-models/trash-can-3836ff67877248c2a820e6a969984aac",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "3836ff67877248c2a820e6a969984aac",
+    "keep": "^group$",
+    "faces": 2010,
+    "size_m": [
+      1.383,
+      1.2,
+      1.208
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "tree_dead": {
+    "file": "res://assets/models/tree_dead/tree_dead.glb",
+    "title": "Dead Tree",
+    "author": "MaX3Dd",
+    "author_url": "https://sketchfab.com/MaX3Dd",
+    "source_url": "https://sketchfab.com/3d-models/dead-tree-33ccce6111604656a4b5709483670ec3",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "33ccce6111604656a4b5709483670ec3",
+    "faces": 3252,
+    "size_m": [
+      6.352,
+      7,
+      4.831
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "tree_dead_b": {
+    "file": "res://assets/models/tree_dead_b/tree_dead_b.glb",
+    "title": "Dead Quiver Trunk",
+    "author": "James Ray Cock, Dario Barresi, Rico Cilliers",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/dead_quiver_trunk",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:dead_quiver_trunk",
+    "faces": 17978,
+    "size_m": [
+      0.999,
+      6.5,
+      0.874
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "tree_leafy": {
+    "file": "res://assets/models/tree_leafy/tree_leafy.glb",
+    "title": "oak trees",
+    "author": "DJMaesen",
+    "author_url": "https://sketchfab.com/bumstrum",
+    "source_url": "https://sketchfab.com/3d-models/oak-trees-d841c3bcc5324daebee50f45619e05fc",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "d841c3bcc5324daebee50f45619e05fc",
+    "faces": 14475,
+    "size_m": [
+      8.682,
+      9,
+      9.154
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: leaf1:MASK"
+  },
+  "tree_stump": {
+    "file": "res://assets/models/tree_stump/tree_stump.glb",
+    "title": "Tree Stump 01",
+    "author": "Rob Tuytel",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/tree_stump_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:tree_stump_01",
+    "faces": 9996,
+    "size_m": [
+      1.743,
+      0.7,
+      1.944
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "utility_pole": {
+    "file": "res://assets/models/utility_pole/utility_pole.glb",
+    "title": "Electric pole",
+    "author": "DJMaesen",
+    "author_url": "https://sketchfab.com/bumstrum",
+    "source_url": "https://sketchfab.com/3d-models/electric-pole-19be5e32d7a44fcf8c6eb4f83e17bd25",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "19be5e32d7a44fcf8c6eb4f83e17bd25",
+    "faces": 1718,
+    "size_m": [
+      2.711,
+      9,
+      1.183
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "vault_door": {
+    "file": "res://assets/models/vault_door/vault_door.glb",
+    "title": "Bank vault | Armored Door | Low poly",
+    "author": "tasha.kosaykina",
+    "author_url": "https://sketchfab.com/tasha.kosaykina",
+    "source_url": "https://sketchfab.com/3d-models/bank-vault-armored-door-low-poly-627c684249a848f99f84b6941caddc49",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "627c684249a848f99f84b6941caddc49",
+    "yaw": -9,
+    "faces": 48566,
+    "size_m": [
+      3.97,
+      2.6,
+      3.501
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: lambert2SG:BLEND",
+    "parts": {
+      "leaf": "res://assets/models/vault_door/vault_door_leaf.glb",
+      "frame": "res://assets/models/vault_door/vault_door_frame.glb"
+    },
+    "hinge_hint": {
+      "part": "leaf",
+      "axis": "Y",
+      "point": [
+        -1.258,
+        0,
+        0.874
+      ],
+      "close_rotation_deg": -90,
+      "note": "Use vault_door_frame.glb + vault_door_leaf.glb placed at the same transform. Leaf is modeled OPEN (swung toward -Z). Put the leaf under a pivot Node3D at the hinge point, offset the leaf by -point, and rotate the pivot about +Y by about -90 deg to CLOSE (plug moves into the round opening, centered ~x=0.25,y=1.22,r~1.2m). Hinge position is estimated from geometry: tune visually. Corridor/outside side is -Z (the side the door opens toward)."
+    },
+    "notes_extra": "full model has the door OPEN; slab front face at z~0.9, slab spans x -1.98..1.98; alpha: lambert2SG:BLEND (small glass part)"
+  },
+  "warehouse": {
+    "file": "res://assets/models/warehouse/warehouse.glb",
+    "title": "Warehouse Building",
+    "author": "OmegaRedZA",
+    "author_url": "https://sketchfab.com/OmegaRedZA",
+    "source_url": "https://sketchfab.com/3d-models/warehouse-building-0c37b0f92cb54e07a1e1c6c3df9f8439",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "0c37b0f92cb54e07a1e1c6c3df9f8439",
+    "faces": 946,
+    "size_m": [
+      22.227,
+      9,
+      30.647
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "water_jug": {
+    "file": "res://assets/models/water_jug/water_jug.glb",
+    "title": "Plastic Bottle Gallon",
+    "author": "Rahul Chaudhary",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/plastic_bottle_gallon",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:plastic_bottle_gallon",
+    "faces": 7550,
+    "size_m": [
+      0.242,
+      0.4,
+      0.184
+    ],
+    "tex": 512,
+    "notes": "long axis X; simplified x0.55"
+  },
+  "water_purifier": {
+    "file": "res://assets/models/water_purifier/water_purifier.glb",
+    "title": "Old Water Pressure Booster Pump",
+    "author": "Dasamura",
+    "author_url": "https://sketchfab.com/Dasamura",
+    "source_url": "https://sketchfab.com/3d-models/old-water-pressure-booster-pump-41c1a132baf544fa9ffd668bb056f52e",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "41c1a132baf544fa9ffd668bb056f52e",
+    "faces": 39631,
+    "size_m": [
+      1.454,
+      1.4,
+      1.528
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "water_tank": {
+    "file": "res://assets/models/water_tank/water_tank.glb",
+    "title": "Rusted Tank storage",
+    "author": "Mkc",
+    "author_url": "https://sketchfab.com/ixMkc1",
+    "source_url": "https://sketchfab.com/3d-models/rusted-tank-storage-57be2eaf4d6b4d2980bcee4ccb35f780",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "57be2eaf4d6b4d2980bcee4ccb35f780",
+    "faces": 5769,
+    "size_m": [
+      1.278,
+      2,
+      1.421
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "water_tower": {
+    "file": "res://assets/models/water_tower/water_tower.glb",
+    "title": "Water Tower Water Tanker_14_MB",
+    "author": "Mehdi Shahsavan",
+    "author_url": "https://sketchfab.com/ahmagh2e",
+    "source_url": "https://sketchfab.com/3d-models/water-tower-water-tanker-14-mb-69811beb5b2d4c31901b3c99e1fcf219",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "69811beb5b2d4c31901b3c99e1fcf219",
+    "faces": 12482,
+    "size_m": [
+      8.237,
+      18,
+      8.636
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "weapon_axe": {
+    "file": "res://assets/models/weapon_axe/weapon_axe.glb",
+    "title": "Fire Axe",
+    "author": "denis_cliofas",
+    "author_url": "https://sketchfab.com/denis_cliofas",
+    "source_url": "https://sketchfab.com/3d-models/fire-axe-b9d83055bb3b467c88496299c27ceae0",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "b9d83055bb3b467c88496299c27ceae0",
+    "faces": 912,
+    "size_m": [
+      0.214,
+      0.072,
+      0.7
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "weapon_pistol": {
+    "file": "res://assets/models/weapon_pistol/weapon_pistol.glb",
+    "title": "Service Pistol",
+    "author": "Mateusz Sadek",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/service_pistol",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:service_pistol",
+    "keep": "_a$|magazine_loaded",
+    "faces": 16650,
+    "size_m": [
+      0.2,
+      0.087,
+      0.021
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "weapon_rack": {
+    "file": "res://assets/models/weapon_rack/weapon_rack.glb",
+    "title": "Gun Rack",
+    "author": "Javier_Fernandez",
+    "author_url": "https://sketchfab.com/Javier.Fernandez",
+    "source_url": "https://sketchfab.com/3d-models/gun-rack-394e6e2958e04c3bbc8bc7c305e48f4c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "394e6e2958e04c3bbc8bc7c305e48f4c",
+    "faces": 1396,
+    "size_m": [
+      0.472,
+      1.439,
+      1.2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "weapon_rifle": {
+    "file": "res://assets/models/weapon_rifle/weapon_rifle.glb",
+    "title": "AK-47  - Game Ready Assault Rifle Weapon",
+    "author": "Billy Jackman",
+    "author_url": "https://sketchfab.com/billyjackman3d",
+    "source_url": "https://sketchfab.com/3d-models/ak-47-game-ready-assault-rifle-weapon-dc58144409534abbb60970638d171f9f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "dc58144409534abbb60970638d171f9f",
+    "faces": 9152,
+    "size_m": [
+      0.9,
+      0.271,
+      0.059
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "weapon_saiga": {
+    "file": "res://assets/models/weapon_saiga/weapon_saiga.glb",
+    "title": "FPS Arms saiga animations remake",
+    "author": "Cransh",
+    "author_url": "https://sketchfab.com/ccransh",
+    "source_url": "https://sketchfab.com/3d-models/fps-arms-saiga-animations-remake-74e30b71e4a049b2a82b9d18f58e623c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "74e30b71e4a049b2a82b9d18f58e623c",
+    "keep": "^Object_9[56]$",
+    "faces": 20934,
+    "size_m": [
+      0.121,
+      0.321,
+      1
+    ],
+    "tex": 1024,
+    "animations": [
+      "Rig|Saiga_Idle",
+      "Rig|Saiga_Fire",
+      "Rig|Saiga_Reload_Fast",
+      "Rig|Saiga_Reload_Full",
+      "Rig|Saiga_Run",
+      "Rig|Saiga_Walk"
+    ],
+    "notes": "long axis Z; skinned"
+  },
+  "weapon_shotgun": {
+    "file": "res://assets/models/weapon_shotgun/weapon_shotgun.glb",
+    "title": "Double Barrel Shotgun",
+    "author": "Sebastian Kansik",
+    "author_url": "https://sketchfab.com/Pepego",
+    "source_url": "https://sketchfab.com/3d-models/double-barrel-shotgun-04741a40f2224cffafc343b0236d5bbe",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "04741a40f2224cffafc343b0236d5bbe",
+    "faces": 4978,
+    "size_m": [
+      1,
+      0.191,
+      0.063
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "wooden_crate": {
+    "file": "res://assets/models/wooden_crate/wooden_crate.glb",
+    "title": "Wooden Crate 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/wooden_crate_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:wooden_crate_01",
+    "faces": 6576,
+    "size_m": [
+      1.416,
+      0.6,
+      0.702
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "workbench": {
+    "file": "res://assets/models/workbench/workbench.glb",
+    "title": "Old Work Bench",
+    "author": "Oliver Triplett",
+    "author_url": "https://sketchfab.com/OliverTriplett",
+    "source_url": "https://sketchfab.com/3d-models/old-work-bench-9fbc30ba31a546fe9370e6de2dcc0707",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "9fbc30ba31a546fe9370e6de2dcc0707",
+    "faces": 24886,
+    "size_m": [
+      0.561,
+      1.715,
+      2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  }
+}

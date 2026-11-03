@@ -1,0 +1,393 @@
+{
+  "_doc": "Textures, HDRIs and audio catalog. Contracts below. Only free licenses usable in a (possibly commercial) game: CC0 / public domain preferred, CC-BY / CC-BY-SA ok with credit. No NC/ND.",
+  "textures": {
+    "_contract": "res://assets/textures/<id>/albedo.jpg, normal.jpg (OpenGL/+Y convention), roughness.jpg, ao.jpg (optional), metallic.jpg (optional), height.jpg (optional). 2K resolution. Sources: Poly Haven (api.polyhaven.com) or ambientCG.",
+    "items": [
+      {
+        "id": "concrete_wall",
+        "prio": 1,
+        "hint": "raw cast concrete wall, slightly dirty, bunker/industrial"
+      },
+      {
+        "id": "concrete_floor",
+        "prio": 1,
+        "hint": "worn industrial concrete floor with stains"
+      },
+      {
+        "id": "painted_metal",
+        "prio": 1,
+        "hint": "chipped painted metal (green/grey), doors, panels"
+      },
+      {
+        "id": "rusty_metal",
+        "prio": 1,
+        "hint": "rusty corroded metal sheet"
+      },
+      {
+        "id": "metal_plate",
+        "prio": 2,
+        "hint": "diamond / tread plate floor"
+      },
+      {
+        "id": "tiles_wall",
+        "prio": 2,
+        "hint": "old white ceramic wall tiles, dirty"
+      },
+      {
+        "id": "brick_wall",
+        "prio": 1,
+        "hint": "red/old brick wall"
+      },
+      {
+        "id": "asphalt",
+        "prio": 1,
+        "hint": "road asphalt, cracked"
+      },
+      {
+        "id": "grass",
+        "prio": 1,
+        "hint": "lawn grass ground (pre-apocalypse)"
+      },
+      {
+        "id": "ground_dirt",
+        "prio": 1,
+        "hint": "dirt / mud ground"
+      },
+      {
+        "id": "ground_ash",
+        "prio": 1,
+        "hint": "burnt / ashy / dry dead ground for wasteland"
+      },
+      {
+        "id": "soil",
+        "prio": 1,
+        "hint": "garden soil for planters"
+      },
+      {
+        "id": "wood_planks",
+        "prio": 2,
+        "hint": "old wooden planks"
+      },
+      {
+        "id": "gravel",
+        "prio": 2,
+        "hint": "gravel / rubble ground"
+      },
+      {
+        "id": "pavement",
+        "prio": 2,
+        "hint": "sidewalk paving stones / concrete slabs"
+      }
+    ]
+  },
+  "hdri": {
+    "_contract": "res://assets/hdri/<id>.hdr, 4K for sky_* used as visible sky. Poly Haven.",
+    "items": [
+      {
+        "id": "sky_morning",
+        "prio": 1,
+        "hint": "clear or partly cloudy bright morning sky, outdoor, open horizon (intro, before the blast)"
+      },
+      {
+        "id": "sky_overcast",
+        "prio": 1,
+        "hint": "dark, heavy overcast / stormy sky, gloomy (post-apocalypse wasteland)"
+      },
+      {
+        "id": "sky_sunset",
+        "prio": 3,
+        "hint": "dramatic orange sunset/dusk"
+      }
+    ]
+  },
+  "audio": {
+    "_contract": "res://assets/audio/<id>.ogg (preferred; .wav or .mp3 also accepted by the game loader). Normalize loudness roughly (peak ~ -1 dBFS). Loops (marked loop) should be trimmed to loop cleanly if possible. Sources: Wikimedia Commons (PD/CC), OpenGameArt (CC0/CC-BY), Kenney (CC0), incompetech (CC-BY music), or procedurally generated if nothing suitable.",
+    "items": [
+      {
+        "id": "siren_air_raid",
+        "prio": 1,
+        "hint": "air raid / civil defense siren, long wail, 30s+"
+      },
+      {
+        "id": "explosion_nuclear",
+        "prio": 1,
+        "hint": "huge distant explosion, deep boom + long rumble, 10s+"
+      },
+      {
+        "id": "shockwave_wind",
+        "prio": 1,
+        "hint": "roaring violent wind / blast wave, 6s+"
+      },
+      {
+        "id": "door_vault_close",
+        "prio": 1,
+        "hint": "heavy metal door closing, big slam/clank at the end"
+      },
+      {
+        "id": "metal_impact",
+        "prio": 2,
+        "hint": "metal clang hit"
+      },
+      {
+        "id": "footstep_concrete",
+        "prio": 1,
+        "hint": "footsteps on concrete; ideally several variants footstep_concrete_1.._4"
+      },
+      {
+        "id": "footstep_grass",
+        "prio": 2,
+        "hint": "footsteps on grass/dirt; variants _1.._4"
+      },
+      {
+        "id": "ambient_bunker",
+        "prio": 1,
+        "loop": true,
+        "hint": "low machine hum, ventilation, underground room tone"
+      },
+      {
+        "id": "ambient_wasteland",
+        "prio": 1,
+        "loop": true,
+        "hint": "desolate wind, eerie"
+      },
+      {
+        "id": "ambient_morning",
+        "prio": 1,
+        "loop": true,
+        "hint": "morning birds, distant town"
+      },
+      {
+        "id": "generator_loop",
+        "prio": 1,
+        "loop": true,
+        "hint": "diesel generator engine running"
+      },
+      {
+        "id": "radio_static",
+        "prio": 1,
+        "loop": true,
+        "hint": "radio static / white noise crackle"
+      },
+      {
+        "id": "geiger_click",
+        "prio": 1,
+        "hint": "single geiger counter click (can be generated)"
+      },
+      {
+        "id": "ui_click",
+        "prio": 1,
+        "hint": "UI click"
+      },
+      {
+        "id": "ui_hover",
+        "prio": 2,
+        "hint": "soft UI hover tick"
+      },
+      {
+        "id": "pickup",
+        "prio": 1,
+        "hint": "item pickup / rustle"
+      },
+      {
+        "id": "eat",
+        "prio": 2,
+        "hint": "eating / chewing"
+      },
+      {
+        "id": "drink",
+        "prio": 2,
+        "hint": "drinking / gulp"
+      },
+      {
+        "id": "craft",
+        "prio": 1,
+        "hint": "hammering / workbench crafting"
+      },
+      {
+        "id": "dig",
+        "prio": 2,
+        "hint": "shovel digging"
+      },
+      {
+        "id": "gunshot_pistol",
+        "prio": 2,
+        "hint": "pistol shot"
+      },
+      {
+        "id": "gunshot_rifle",
+        "prio": 2,
+        "hint": "rifle shot"
+      },
+      {
+        "id": "reload",
+        "prio": 2,
+        "hint": "weapon reload"
+      },
+      {
+        "id": "melee_swing",
+        "prio": 2,
+        "hint": "whoosh swing"
+      },
+      {
+        "id": "melee_hit",
+        "prio": 2,
+        "hint": "blunt hit flesh"
+      },
+      {
+        "id": "creature_growl",
+        "prio": 2,
+        "hint": "monster / mutant growl"
+      },
+      {
+        "id": "creature_attack",
+        "prio": 2,
+        "hint": "monster attack scream"
+      },
+      {
+        "id": "heartbeat",
+        "prio": 2,
+        "hint": "heartbeat loop"
+      },
+      {
+        "id": "water_pour",
+        "prio": 2,
+        "hint": "pouring water"
+      },
+      {
+        "id": "gasmask_breath",
+        "prio": 2,
+        "loop": true,
+        "hint": "breathing through gas mask"
+      },
+      {
+        "id": "power_down",
+        "prio": 2,
+        "hint": "electric power down / lights off"
+      },
+      {
+        "id": "power_up",
+        "prio": 2,
+        "hint": "electric hum power up"
+      },
+      {
+        "id": "music_menu",
+        "prio": 1,
+        "loop": true,
+        "hint": "dark ambient, post-apocalyptic, cinematic, slow"
+      },
+      {
+        "id": "music_bunker",
+        "prio": 1,
+        "loop": true,
+        "hint": "calm melancholic ambient, hopeful undertone"
+      },
+      {
+        "id": "music_tension",
+        "prio": 2,
+        "loop": true,
+        "hint": "tense dark ambient for expeditions / danger"
+      },
+      {
+        "id": "rifle_shot",
+        "prio": 2,
+        "hint": "round 3: AK-type rifle single shot"
+      },
+      {
+        "id": "shotgun_shot",
+        "prio": 2,
+        "hint": "round 3: shotgun shot"
+      },
+      {
+        "id": "dry_fire",
+        "prio": 2,
+        "hint": "round 3: empty gun click"
+      },
+      {
+        "id": "shell_casing",
+        "prio": 2,
+        "hint": "round 3: brass casing on floor, variants _1.._3"
+      },
+      {
+        "id": "weapon_equip",
+        "prio": 2,
+        "hint": "round 3: weapon raise / handling"
+      },
+      {
+        "id": "reload_rifle",
+        "prio": 2,
+        "hint": "round 3: rifle reload"
+      },
+      {
+        "id": "reload_shotgun",
+        "prio": 2,
+        "hint": "round 3: shotgun reload"
+      },
+      {
+        "id": "impact_concrete",
+        "prio": 2,
+        "hint": "round 3: bullet hit concrete, _1.._3"
+      },
+      {
+        "id": "impact_metal",
+        "prio": 2,
+        "hint": "round 3: bullet hit metal, _1.._3"
+      },
+      {
+        "id": "impact_flesh",
+        "prio": 2,
+        "hint": "round 3: bullet hit flesh, _1.._2"
+      },
+      {
+        "id": "bullet_whizz",
+        "prio": 2,
+        "hint": "round 3: bullet passing by"
+      },
+      {
+        "id": "build_place",
+        "prio": 2,
+        "hint": "round 3: placing heavy object"
+      },
+      {
+        "id": "demolish",
+        "prio": 2,
+        "hint": "round 3: dismantle"
+      },
+      {
+        "id": "upgrade_done",
+        "prio": 2,
+        "hint": "round 3: upgrade finished"
+      },
+      {
+        "id": "map_open",
+        "prio": 2,
+        "hint": "round 3: map open"
+      },
+      {
+        "id": "ui_confirm",
+        "prio": 2,
+        "hint": "round 3: UI confirm"
+      },
+      {
+        "id": "ui_deny",
+        "prio": 2,
+        "hint": "round 3: UI deny"
+      },
+      {
+        "id": "door_vault_open",
+        "prio": 2,
+        "hint": "round 3: heavy vault door opening"
+      },
+      {
+        "id": "footstep_metal",
+        "prio": 2,
+        "hint": "round 3: steps on metal, _1.._4"
+      },
+      {
+        "id": "breath_heavy",
+        "prio": 2,
+        "loop": true,
+        "hint": "round 3: exhausted breathing loop"
+      }
+    ]
+  }
+}

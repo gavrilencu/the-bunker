@@ -1,0 +1,329 @@
+{
+  "vault_door": {
+    "ref": "627c684249a848f99f84b6941caddc49",
+    "yaw": -9
+  },
+  "bunk_bed": {
+    "ref": "ea60847abaaf4662b5f7c75b44f3ce9d"
+  },
+  "metal_shelf": {
+    "ref": "ph:worn_metal_rack"
+  },
+  "wooden_crate": {
+    "ref": "ph:wooden_crate_01"
+  },
+  "military_crate": {
+    "ref": "ph:old_military_crate",
+    "keep": "_a$"
+  },
+  "oil_barrel": {
+    "ref": "ec37cc2a844f4f0ca0873d85a8b3b976",
+    "keep": "^barrel_oil$"
+  },
+  "canned_food": {
+    "ref": "ph:can_rusted"
+  },
+  "jerrycan": {
+    "ref": "ph:metal_jerrycan_green"
+  },
+  "diesel_generator": {
+    "ref": "7a0b72c7d01944a8aafab59d44eb120e"
+  },
+  "electrical_panel": {
+    "ref": "ph:power_box_01"
+  },
+  "water_jug": {
+    "ref": "ph:plastic_bottle_gallon",
+    "simplify": 0.55
+  },
+  "water_tank": {
+    "ref": "57be2eaf4d6b4d2980bcee4ccb35f780"
+  },
+  "water_purifier": {
+    "ref": "41c1a132baf544fa9ffd668bb056f52e"
+  },
+  "workbench": {
+    "ref": "9fbc30ba31a546fe9370e6de2dcc0707"
+  },
+  "radio_station": {
+    "ref": "f5c8f0420f054b32a2e977fbcd248d84"
+  },
+  "table_metal": {
+    "ref": "ph:metal_office_desk"
+  },
+  "chair": {
+    "ref": "bc526e9ae4954ecf82c9caf35d8e6bdd"
+  },
+  "first_aid_kit": {
+    "ref": "e5bbfa708fce411fb6ffbd18d50c971f"
+  },
+  "gas_mask": {
+    "ref": "a4cea22eddbf4e3fa7dd8d622642e635"
+  },
+  "lamp_cage": {
+    "ref": "ph:hanging_industrial_lamp"
+  },
+  "planter_box": {
+    "ref": "ph:planter_box_01"
+  },
+  "plant_tomato": {
+    "ref": "e0b559690e384fc0a9f3a05913f609c4"
+  },
+  "plant_lettuce": {
+    "ref": "654306fc3ae344c7b9e7a9a40faca45b"
+  },
+  "house_small": {
+    "ref": "065cb734d68446ec90e3b43da86a5530"
+  },
+  "car_sedan": {
+    "ref": "91270dab9d1a47c7ba7ffaaf8c8b0beb"
+  },
+  "car_wreck": {
+    "ref": "efc4dfe2c7284a64bc9281eb4f61d402"
+  },
+  "tree_leafy": {
+    "ref": "d841c3bcc5324daebee50f45619e05fc"
+  },
+  "tree_dead": {
+    "ref": "33ccce6111604656a4b5709483670ec3"
+  },
+  "ruined_building": {
+    "ref": "03c5583c895b432697dbfa62ed5d35f3"
+  },
+  "enemy_mutant": {
+    "ref": "73ef58af341e46afba1da53366ed79cf"
+  },
+  "apartment_block": {
+    "ref": "d537595db4bf4a60b955b31cde198432"
+  },
+  "air_filter_unit": {
+    "ref": "db23aa8b8d704fe5ab90a7b01da7c221",
+    "rot": [
+      90,
+      0,
+      0
+    ]
+  },
+  "rubble_pile": {
+    "ref": "194bec2429da4b74b3926ac981616da8"
+  },
+  "bunker_entrance": {
+    "ref": "358b1a2abeaf470ea15a57656388241d"
+  },
+  "metal_door": {
+    "ref": "a602f52789fb4bc1a46cc1d0633def60"
+  },
+  "bunker_hut": {
+    "ref": "1671685e1dd94b6e9216ead632f08f6e"
+  },
+  "toolbox": {
+    "ref": "31b3d48ddc8f4b40a4099647fa016305"
+  },
+  "locker": {
+    "ref": "ed00cf5ea92741eab1d9ce1371681618"
+  },
+  "fluorescent_lamp": {
+    "ref": "5d29d2370ec846a2a461de351bba8872"
+  },
+  "crt_computer": {
+    "ref": "af54a32c8ca3491b956d367ef2b59886"
+  },
+  "geiger_counter": {
+    "ref": "0abaa2af0d17487382a35942dde68f9a"
+  },
+  "camping_stove": {
+    "ref": "fc7b9b2644754ef0ae427ea9ee55210f"
+  },
+  "fire_extinguisher": {
+    "ref": "5676b179b3b744c0aaae53a3dcea2300"
+  },
+  "sandbags": {
+    "ref": "593800671c8e45eca93b8b7c765c0f77"
+  },
+  "car_battery": {
+    "ref": "5b60936580ab43eb9f0a21164a2ac40e"
+  },
+  "shovel": {
+    "ref": "5ea945cb4d9a4bd387fb9d6ed74527f1"
+  },
+  "street_lamp": {
+    "ref": "6881aa1e84b047d79860fa9297e05e22"
+  },
+  "trash_bin": {
+    "ref": "3836ff67877248c2a820e6a969984aac",
+    "keep": "^group$"
+  },
+  "concrete_barrier": {
+    "ref": "b52246c9611a42a99a03b425535a0237"
+  },
+  "utility_pole": {
+    "ref": "19be5e32d7a44fcf8c6eb4f83e17bd25"
+  },
+  "supermarket_shelf": {
+    "ref": "ae4e079225ee4982b61b048ea4c1081a",
+    "keep": "^shelf_Base_Expo(00[0-5])?$|^shelf_piece_exp0(0[89]|1[0-9]|2[3-9]|3[01])$"
+  },
+  "weapon_pistol": {
+    "ref": "ph:service_pistol",
+    "keep": "_a$|magazine_loaded"
+  },
+  "weapon_rifle": {
+    "ref": "dc58144409534abbb60970638d171f9f"
+  },
+  "weapon_axe": {
+    "ref": "b9d83055bb3b467c88496299c27ceae0"
+  },
+  "enemy_hazmat": {
+    "ref": "49b3b4307f6a4d2386fdb02354158d04"
+  },
+  "enemy_raider": {
+    "ref": "110daf3d1884412989e41dc95866c579"
+  },
+  "mushrooms": {
+    "ref": "f9dbd4c34a4f4389bf3901527ecc89a0"
+  },
+  "flashlight": {
+    "ref": "5fa9a65e7b0141ee877ed18f4f42d953"
+  },
+  "fridge_old": {
+    "ref": "7d12f05773a6403c9ca259ed43604c69"
+  },
+  "sofa_old": {
+    "ref": "443d9bb95e944afe8ebc4ff489e2886c"
+  },
+  "bucket": {
+    "ref": "4712f95b38524c57b8dfc9d882122314"
+  },
+  "bus_wreck": {
+    "ref": "7acca98c959a4740b5aa8a42647dfc58"
+  },
+  "bench": {
+    "ref": "2ee2bc87756d4bf0932d83ab860ddb8f"
+  },
+  "bus_stop": {
+    "ref": "fe4d132434c24e1c8447a6d1190e8c6d"
+  },
+  "tank_wreck": {
+    "ref": "7ef593b344624e6388eaa44b5551fad7"
+  },
+  "survivor_npc": {
+    "ref": "5718a53d18a142f686b1d9f02a637773"
+  },
+  "plant_pepper": {
+    "ref": "3f11de4c1de5494ab5f60476b42f454f"
+  },
+  "enemy_bandit": {
+    "ref": "8cd04f8d8ca94f7fb911fef2d3802f13"
+  },
+  "enemy_dog": {
+    "ref": "c8ae11fe9aa44455ae1bc93f7744b3df"
+  },
+  "factory_hall": {
+    "ref": "0dafa7aaadfd4666bb4a32776c84b14e"
+  },
+  "warehouse": {
+    "ref": "0c37b0f92cb54e07a1e1c6c3df9f8439"
+  },
+  "concrete_fence": {
+    "ref": "44a71074b609419685d29f7c19100fee"
+  },
+  "ruin_wall_a": {
+    "ref": "34190f9957184eee91ce17f8ddf7699b"
+  },
+  "ruin_house": {
+    "ref": "d74a108fc7814ad9944138a6e9f5ee71"
+  },
+  "ruin_block": {
+    "ref": "184d70cc473540749206cc7d8f9917b8"
+  },
+  "water_tower": {
+    "ref": "69811beb5b2d4c31901b3c99e1fcf219"
+  },
+  "ruin_wall_b": {
+    "ref": "1e69010a8091477186fac5615365d70e",
+    "keep": "^Object_4$"
+  },
+  "ruin_corner": {
+    "ref": "1e69010a8091477186fac5615365d70e",
+    "keep": "^Object_10$"
+  },
+  "debris_slab": {
+    "ref": "3da06992308049c7a351942c54fbe8ba"
+  },
+  "tire_pile": {
+    "ref": "f9d64bd1fdde49fe8571f83f59114663"
+  },
+  "scrap_pile": {
+    "ref": "dd40f5b267f84146ad7ec912cf12fbe8"
+  },
+  "road_sign": {
+    "ref": "2225bb40891b4ed083a75bd17e447dd0"
+  },
+  "radiation_sign": {
+    "ref": "e483a3a18aa344a8808ee8656dec9e1b"
+  },
+  "burnt_truck": {
+    "ref": "1cc3374ed6874124991c8058ec79c3d3"
+  },
+  "shop_ruin": {
+    "ref": "a04e69a838054f7cb39a635943ab9b0d"
+  },
+  "weapon_shotgun": {
+    "ref": "04741a40f2224cffafc343b0236d5bbe"
+  },
+  "solar_panel": {
+    "ref": "83483a66f8974d7e8f2e7bbde518d606"
+  },
+  "radio_antenna": {
+    "ref": "2bcae1a760d641339eb1ad63e1f7cf89"
+  },
+  "hydroponic_rack": {
+    "ref": "f93eb8020d1942b7b3fe858d327b325c"
+  },
+  "weapon_rack": {
+    "ref": "394e6e2958e04c3bbc8bc7c305e48f4c"
+  },
+  "fps_pistol": {
+    "ref": "0d7a343dcb6f401197a73c91aee93f6d"
+  },
+  "fps_rifle": {
+    "ref": "94be8385c402474cacd39bc096c6ca14",
+    "recolor": [
+      3
+    ]
+  },
+  "fps_shotgun": {
+    "ref": "74e30b71e4a049b2a82b9d18f58e623c"
+  },
+  "enemy_zombie": {
+    "ref": "165fd9342c364216bfdd8c2f1102223c"
+  },
+  "rock_a": {
+    "ref": "ph:rock_07"
+  },
+  "rock_b": {
+    "ref": "ph:rock_09"
+  },
+  "boulder": {
+    "ref": "ph:namaqualand_boulder_02"
+  },
+  "stone_small": {
+    "ref": "ph:stone_01"
+  },
+  "log_fallen": {
+    "ref": "ph:dead_tree_trunk"
+  },
+  "tree_stump": {
+    "ref": "ph:tree_stump_01"
+  },
+  "branches_dry": {
+    "ref": "ph:dry_branches_medium_01"
+  },
+  "tree_dead_b": {
+    "ref": "ph:dead_quiver_trunk"
+  },
+  "weapon_saiga": {
+    "ref": "74e30b71e4a049b2a82b9d18f58e623c",
+    "keep": "^Object_9[56]$"
+  }
+}

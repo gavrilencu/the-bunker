@@ -1,0 +1,26 @@
+{
+  "sky_morning": {
+    "file": "res://assets/hdri/sky_morning.hdr",
+    "title": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+    "author": "Greg Zaal, Jarod Guest",
+    "source_url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven HDRI 'kloofendal_48d_partly_cloudy_puresky', 4K .hdr (pure sky, below-horizon is synthetic)."
+  },
+  "sky_overcast": {
+    "file": "res://assets/hdri/sky_overcast.hdr",
+    "title": "Overcast Soil (Pure Sky)",
+    "author": "Jarod Guest, Sergej Majboroda",
+    "source_url": "https://polyhaven.com/a/overcast_soil_puresky",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven HDRI 'overcast_soil_puresky', 4K .hdr (pure sky, below-horizon is synthetic)."
+  },
+  "sky_sunset": {
+    "file": "res://assets/hdri/sky_sunset.hdr",
+    "title": "Belfast Sunset (Pure Sky)",
+    "author": "Greg Zaal, Dimitrios Savva, Jarod Guest",
+    "source_url": "https://polyhaven.com/a/belfast_sunset_puresky",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven HDRI 'belfast_sunset_puresky', 2K .hdr (pure sky, below-horizon is synthetic)."
+  }
+}

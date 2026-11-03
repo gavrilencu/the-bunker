@@ -1,0 +1,244 @@
+{
+  "concrete_wall": {
+    "file": "res://assets/textures/concrete_wall/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Layers 02",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/concrete_layers_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_layers_02', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "concrete_floor": {
+    "file": "res://assets/textures/concrete_floor/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Floor 02",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/concrete_floor_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_floor_02', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "painted_metal": {
+    "file": "res://assets/textures/painted_metal/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Green Metal Rust",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/green_metal_rust",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'green_metal_rust', 2K. Real-world size ~1.0m.",
+    "real_size_m": 1
+  },
+  "rusty_metal": {
+    "file": "res://assets/textures/rusty_metal/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "metallic",
+      "normal",
+      "roughness"
+    ],
+    "title": "Rusty Metal 04",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/rusty_metal_04",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'rusty_metal_04', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "metal_plate": {
+    "file": "res://assets/textures/metal_plate/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "metallic",
+      "normal",
+      "roughness"
+    ],
+    "title": "Metal Plate",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/metal_plate",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'metal_plate', 2K. Real-world size ~0.5m.",
+    "real_size_m": 0.5
+  },
+  "tiles_wall": {
+    "file": "res://assets/textures/tiles_wall/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Long White Tiles",
+    "author": "Jenelle van Heerden, Sergej Majboroda",
+    "source_url": "https://polyhaven.com/a/long_white_tiles",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'long_white_tiles', 2K. Real-world size ~1.3m.",
+    "real_size_m": 1.27
+  },
+  "brick_wall": {
+    "file": "res://assets/textures/brick_wall/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Red Brick 03",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/red_brick_03",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'red_brick_03', 2K. Real-world size ~1.0m.",
+    "real_size_m": 1
+  },
+  "asphalt": {
+    "file": "res://assets/textures/asphalt/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Asphalt 02",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/asphalt_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'asphalt_02', 2K. Real-world size ~3.0m.",
+    "real_size_m": 3
+  },
+  "grass": {
+    "file": "res://assets/textures/grass/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Grass004",
+    "author": "Lennart Demes (ambientCG)",
+    "source_url": "https://ambientcg.com/view?id=Grass004",
+    "license": "CC0 1.0",
+    "notes": "ambientCG material 'Grass004', 2K.",
+    "real_size_m": null
+  },
+  "ground_dirt": {
+    "file": "res://assets/textures/ground_dirt/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Brown Mud Dry",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/brown_mud_dry",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'brown_mud_dry', 2K. Real-world size ~1.3m.",
+    "real_size_m": 1.3
+  },
+  "ground_ash": {
+    "file": "res://assets/textures/ground_ash/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Burned Ground 01",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/burned_ground_01",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'burned_ground_01', 2K. Real-world size ~1.0m.",
+    "real_size_m": 1
+  },
+  "soil": {
+    "file": "res://assets/textures/soil/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Farm Soil",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/farm_soil",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'farm_soil', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "wood_planks": {
+    "file": "res://assets/textures/wood_planks/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Old Planks 02",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/old_planks_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'old_planks_02', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "gravel": {
+    "file": "res://assets/textures/gravel/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Rubble",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/rubble",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'rubble', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "pavement": {
+    "file": "res://assets/textures/pavement/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Pavement",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/concrete_pavement",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_pavement', 2K. Real-world size ~1.8m.",
+    "real_size_m": 1.8
+  }
+}
