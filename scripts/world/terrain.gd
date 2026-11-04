@@ -409,6 +409,9 @@ func scatter_grass(rng: RandomNumberGenerator, extent: float, density: float, ke
 	var chunk := 16.0
 	var mat := ShaderMaterial.new()
 	mat.shader = load("res://shaders/grass.gdshader")
+	# real dry-grass clumps when the model is there (procedural cards otherwise)
+	var real := Foliage.available("grass_dry")
+	var fmat: Material = Foliage.material("grass_dry", Color(0.92, 0.88, 0.8)) if real else null
 	var cz := -extent
 	while cz < extent:
 		var cx := -extent
@@ -427,7 +430,9 @@ func scatter_grass(rng: RandomNumberGenerator, extent: float, density: float, ke
 				var s := rng.randf_range(0.6, 1.25) * lerpf(0.75, 1.1, g)
 				var b := Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.8, 1.3), s))
 				xfs.append(Transform3D(b, Vector3(x, h - 0.03, z)))
-			if not xfs.is_empty():
+			if real and not xfs.is_empty():
+				Foliage.instance(self, "grass_dry", xfs, fmat, 75.0)
+			elif not xfs.is_empty():
 				var mm := MultiMesh.new()
 				mm.transform_format = MultiMesh.TRANSFORM_3D
 				mm.mesh = mesh

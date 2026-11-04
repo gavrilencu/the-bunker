@@ -19,7 +19,7 @@ func setup(p_key: String, p_title: String, size: Vector3) -> DigSite:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(key)
 	var mat := Assets.pbr("gravel", {"tile": 1.0, "fallback": Color(0.4, 0.38, 0.35)})
-	var cmat := Assets.pbr("concrete_wall", {"tile": 1.5, "fallback": Color(0.5, 0.5, 0.48)})
+	var cmat := Assets.pbr("bunker_wall" if Assets.has_texture_set("bunker_wall") else "concrete_wall", {"tile": 1.5, "fallback": Color(0.5, 0.5, 0.48)})
 	var pile := Assets.model("rubble_pile")
 	rubble.add_child(pile)
 	var aabb := Assets.model_aabb(pile)

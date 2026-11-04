@@ -85,6 +85,17 @@ export const SOURCES = {
   oga_100cc0:         OGA('100-cc0-sfx', 'https://opengameart.org/sites/default/files/100-CC0-SFX_0.zip', '100 CC0 SFX', 'rubberduck', 'CC0 1.0'),
   bsb_ratchet_large:  BSB('0795', 'Large ratchet'),
   bsb_metal_door_creak: BSB('0616', 'Creaking metallic door'),
+  // round 4 (consume / bandage / sleep actions)
+  bsb_spoon_mug:      BSB('0411', 'Spoon in a mug empty'),
+  bsb_cloth_tear:     BSB('0013', 'Cloth'),
+  bsb_bottle_caps:    BSB('1392', 'Bottle Caps'),
+  bsb_sigh_nose:      BSB('1404', 'Sigh by the nose'),
+  bsb_sigh_mouth:     BSB('1405', 'Sigh by the Mouth'),
+  bsb_spring_large:   BSB('0206', 'Large spring'),
+  wm_ketchup_bottle:  WM('File:Ketchup bottle opening and closing screw top.ogg', 'stephan', 'Public domain'),
+  wm_yawn_1:          WM('File:Yawning 1.ogg', 'ezwa', 'Public domain'),
+  wm_yawn_2:          WM('File:Yawning 2.ogg', 'ezwa', 'Public domain'),
+  wm_pill_shake:      WM('File:Pill bottle shake once (Gravity Sound).wav', 'Gravity Sound', 'CC BY 4.0'),
   // --- Music: Kevin MacLeod (CC BY 4.0) ---
   km_thunder_dreams:  KM('Thunder Dreams'),
   km_heavy_heart:     KM('Heavy Heart'),

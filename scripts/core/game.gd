@@ -51,19 +51,22 @@ const SCENE_MODELS := {
 	"intro": ["apartment_block", "bus_stop", "bench", "trash_bin", "car_sedan", "utility_pole", "street_lamp", "tree_leafy",
 		"house_small", "oil_barrel", "military_crate", "concrete_barrier", "car_wreck", "lamp_cage", "metal_shelf",
 		"fire_extinguisher", "vault_door", "factory_hall", "warehouse", "concrete_fence", "water_tower", "tire_pile",
-		"burnt_truck", "scrap_pile"],
+		"burnt_truck", "scrap_pile",
+		"civ_coat", "civ_fuse", "civ_woman", "enemy_bandit", "car_volga", "car_lada", "grass_green", "fps_pistol"],
 	"bunker": ["vault_door", "locker", "sandbags", "fire_extinguisher", "bunk_bed", "table_metal", "chair", "canned_food",
 		"water_jug", "radio_station", "workbench", "crt_computer", "sofa_old", "metal_shelf", "wooden_crate", "military_crate",
 		"jerrycan", "first_aid_kit", "oil_barrel", "diesel_generator", "electrical_panel", "water_tank", "water_purifier",
 		"air_filter_unit", "toolbox", "planter_box", "lamp_cage", "bucket", "car_battery", "fridge_old", "rubble_pile",
-		"plant_tomato", "plant_lettuce", "plant_pepper", "mushrooms"],
+		"plant_tomato", "plant_lettuce", "plant_pepper", "mushrooms",
+		"fps_pistol", "fluoro_lights", "duct_straight", "cable_run", "fire_alarm", "utility_box", "security_cam", "pipe_fitting", "water_bottle_m", "bandage_roll"],
 	"surface": ["ruined_building", "car_wreck", "bus_wreck", "rubble_pile", "tree_dead", "utility_pole", "concrete_barrier",
 		"wooden_crate", "military_crate", "metal_shelf", "locker", "oil_barrel", "first_aid_kit", "toolbox", "supermarket_shelf",
 		"tank_wreck", "sandbags", "enemy_mutant", "enemy_hazmat", "enemy_dog", "enemy_bandit", "survivor_npc", "weapon_axe",
 		"weapon_pistol", "weapon_rifle", "ruin_wall_a", "ruin_wall_b", "ruin_house", "ruin_block", "debris_slab", "tire_pile",
 		"scrap_pile", "road_sign", "radiation_sign", "burnt_truck", "shop_ruin", "enemy_zombie", "fps_pistol", "fps_rifle",
 		"fps_shotgun", "tree_dead_b", "rock_a", "rock_b", "stone_small", "boulder", "log_fallen", "tree_stump", "branches_dry",
-		"vault_door", "lamp_cage", "radio_antenna", "jerrycan", "apartment_block"],
+		"vault_door", "lamp_cage", "radio_antenna", "jerrycan", "apartment_block",
+		"grass_dry", "bed_old", "wardrobe_old", "table_wood", "bathtub_old", "sink_old", "toilet", "stove_electric", "cabinet_tall_b", "drawer_cabinet", "nightstand", "nightstand_b", "dresser_old", "hospital_bed", "bookshelf_worn", "books_set", "tv_old", "masonry_heater", "office_desk", "suitcase", "backpack_old", "display_fridge", "drill_press", "chair_wood", "chair_dining", "jug", "pot_enamel", "food_cans", "kettle", "cash_register", "fluoro_lights", "lamp_pendant", "chandelier", "wall_clock", "picture_frame", "picture_frame_b", "mirror", "potted_plant", "cardboard_box", "plastic_crate", "water_bottle_m", "bandage_roll", "canned_food"],
 }
 const SCENE_TITLES := {"menu": "Meniul principal", "intro": "14 octombrie 2031 · 07:41", "bunker": "Obiectivul 17", "surface": "Suprafața"}
 
@@ -179,8 +182,9 @@ func sleep(hours: float) -> void:
 	var p := player
 	if p and is_instance_valid(p):
 		p.can_move = false
-		p.lie_down(true)
-		await get_tree().create_timer(0.5).timeout
+		var bed: Node3D = p.interaction_target() if p.has_method("interaction_target") else null
+		p.lie_down(true, 1.0, bed)
+		await get_tree().create_timer(1.3 if bed else 0.5).timeout
 	await HUD.fade_to(1.0, 0.9)
 	State.simulate(hours * 60.0, true)
 	State.save_game()
@@ -463,6 +467,14 @@ func _debug_act(what: String) -> void:
 		"hands":
 			p.weapons.switch("hands")
 		"sleep":
+			# debug: lie on the nearest bed (in play the bed is the one E was pressed on)
+			var best: Node3D = null
+			for n in get_tree().current_scene.find_children("*", "Interactable", true, false):
+				var it := n as Interactable
+				if it and it.get_prompt().contains("Dormi") and (best == null or it.global_position.distance_to(p.global_position) < best.global_position.distance_to(p.global_position)):
+					best = it
+			if best:
+				p._last_used = best
 			sleep(float(args.get("sleeph", "8")))
 		"dragtest":
 			_drag_test()
@@ -507,6 +519,16 @@ func _debug_act(what: String) -> void:
 				under += "  touching=%s n=%s at=%s" % [(kc.get_collider() as Node).get_path(), str(kc.get_normal().snapped(Vector3.ONE * 0.01)), str(kc.get_position().snapped(Vector3.ONE * 0.01))]
 			print("[pos] %.2f %.2f %.2f  on_floor=%s  vel=%s paused=%s phys=%d can_move=%s  under=%s" % [p.global_position.x, p.global_position.y, p.global_position.z, p.is_on_floor(),
 				str(p.velocity.snapped(Vector3.ONE * 0.01)), get_tree().paused, Engine.get_physics_frames(), p.can_move, under])
+		"eat", "drink", "bandage", "soup", "bite", "bread", "potato", "pills":
+			# takes the item into the hands; "use" then holds the button --usehold s
+			var item := {"eat": "canned_meat", "drink": "water_bottle", "bandage": "bandage", "soup": "mushroom_soup",
+				"bite": "tomato", "bread": "crackers", "potato": "potato", "pills": "antirad"}[what] as String
+			State.add(item, 1, true)
+			p.use_item_animated(item)
+		"use":
+			p.weapons.debug_hold = float(args.get("usehold", "3"))
+		"putaway":
+			p.weapons.put_away()
 		"fps":
 			var vp := get_viewport().get_viewport_rid()
 			RenderingServer.viewport_set_measure_render_time(vp, true)

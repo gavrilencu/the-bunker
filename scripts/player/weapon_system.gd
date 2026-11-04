@@ -75,12 +75,17 @@ class ViewRig extends RefCounted:
 	var axe_desired := Transform3D() # its rest pose in (pre-offset) holder space
 	var axe_hand0 := Transform3D()   # the hand bone at build time, holder space
 	var palm := Vector3.ZERO         # grip point, pre-offset holder space
+	var ik := {}                     # arm IK data (empty-hand rig), see _setup_ik
+	var grips := {}                  # prop key -> {fingers: [[bone, rel]], prop: rel} (Blender grip solver)
 	var rest_xf := Transform3D()     # melee rest lean about the fist (view space)
 	var fire_len := 0.3
 	var reload_len := {}            # key -> seconds
 
 
 signal fired(id: String)
+
+const VM_LAYER := 1 << 19
+var vm_fill: OmniLight3D
 
 var player: Player
 var cam: Camera3D
@@ -94,6 +99,7 @@ var cam_anim := Vector3.ZERO
 
 var squash: Node3D
 var holder: Node3D
+var stowed := false  ## arms hidden (lying in bed)
 var rigs := {}  # id -> ViewRig
 var flash_mesh: MeshInstance3D
 var flash_light: OmniLight3D
@@ -135,6 +141,18 @@ func setup(p: Player) -> void:
 	add_child(squash)
 	holder = Node3D.new()
 	squash.add_child(holder)
+	# fill light that only touches the viewmodel (its own render layer): hands and guns
+	# never turn into black silhouettes in the shade or against a bright sky
+	vm_fill = OmniLight3D.new()
+	vm_fill.name = "ViewmodelFill"
+	vm_fill.position = Vector3(-0.35, 0.3, 0.15)
+	vm_fill.omni_range = 1.6
+	vm_fill.omni_attenuation = 0.5
+	vm_fill.light_color = Color(0.92, 0.93, 1.0)
+	vm_fill.light_specular = 0.25
+	vm_fill.light_cull_mask = VM_LAYER
+	vm_fill.shadow_enabled = false
+	add_child(vm_fill)
 	flash_mesh = MeshInstance3D.new()
 	var qm := QuadMesh.new()
 	qm.size = Vector2(0.2, 0.2)
@@ -184,6 +202,9 @@ func is_gun() -> bool:
 # --------------------------------------------------------------------------
 
 func switch(id: String) -> void:
+	if held != "" and id != "hands":
+		put_away(id)
+		return
 	if id != "" and id != "hands" and State.count(id) <= 0:
 		HUD.toast("Nu ai %s." % ItemDB.item_name(id).to_lower(), "warn")
 		return
@@ -239,6 +260,12 @@ func _find_bone(skel: Skeleton3D, prefix: String) -> int:
 	return -1
 
 
+## Puts every mesh of the viewmodel on the world layer + the viewmodel-light layer.
+func _vm_layers(n: Node) -> void:
+	Assets.for_each_geometry(n, func(g: GeometryInstance3D) -> void:
+		g.layers = 1 | VM_LAYER)
+
+
 func _build_rig(id: String) -> ViewRig:
 	var cfg: Dictionary = RIGS.get(id, {})
 	var r := ViewRig.new()
@@ -252,6 +279,7 @@ func _build_rig(id: String) -> ViewRig:
 	Assets.set_shadows(r.root, false)
 	r.skel = _find_skel(r.root)
 	if r.skel == null:
+		_vm_layers(r.anchor)
 		return r
 	r.cam_bone = _find_bone(r.skel, "Head_Cam")
 	r.body_bone = _find_bone(r.skel, String(cfg.get("body", "PBody")))
@@ -287,6 +315,7 @@ func _build_rig(id: String) -> ViewRig:
 		_place_hands(r)
 	else:
 		_probe_geometry(r)
+	_vm_layers(r.anchor)
 	return r
 
 
@@ -305,6 +334,8 @@ func _place_hands(r: ViewRig) -> void:
 	var c: Vector3 = grip.get("center", (to_h * r.skel.get_bone_global_pose(hb)).origin)
 	var tilt := Basis.from_euler((r.cfg.get("tilt", Vector3.ZERO) as Vector3) * (PI / 180.0))
 	r.melee_offset = HAND_REST - tilt * c - (r.cfg.get("offset", Vector3.ZERO) as Vector3)
+	r.palm = (to_h * r.skel.get_bone_global_pose(hb)).affine_inverse() * c  # palm in hand-bone space
+	_setup_ik(r, grip, to_h)
 
 
 func _find_skel(n: Node) -> Skeleton3D:
@@ -870,6 +901,8 @@ func tick(delta: float, sprinting: bool, moving_speed: float, on_floor: bool) ->
 		_equip = move_toward(_equip, 0.0, delta * 6.0)
 		if _equip <= 0.0:
 			_apply_switch()
+	elif held != "" and _hs == "wait":
+		_equip = move_toward(_equip, 0.0, delta * 6.0)
 	else:
 		_equip = move_toward(_equip, 1.0, delta * 4.0)
 	# reload: ammo goes in near the end of the animation
@@ -923,6 +956,10 @@ func tick(delta: float, sprinting: bool, moving_speed: float, on_floor: bool) ->
 func _process(delta: float) -> void:
 	if holder == null:
 		return
+	_use_tick(delta)
+	# stronger fill outdoors in daylight (deep shade under roofs), soft in the bunker
+	var fill_goal := 0.9 if State.context in ["intro", "surface"] else 0.32
+	vm_fill.light_energy = lerpf(vm_fill.light_energy, fill_goal, minf(delta * 2.0, 1.0))
 	_flash_t -= delta
 	if _flash_t <= 0.0:
 		flash_mesh.visible = false
@@ -931,7 +968,7 @@ func _process(delta: float) -> void:
 		holder.visible = false
 		cam_anim = cam_anim.lerp(Vector3.ZERO, minf(delta * 8.0, 1.0))
 		return
-	holder.visible = true
+	holder.visible = not stowed
 	# viewmodel FOV: squash camera-space depth so the rig projects as if seen with VM_FOV
 	var vm_fov := float(rigs[current].cfg.get("vm_fov", VM_FOV)) * lerpf(1.0, 0.88, ads)
 	var k := tan(deg_to_rad(vm_fov) * 0.5) / tan(deg_to_rad(maxf(cam.fov, 1.0)) * 0.5)
@@ -960,6 +997,7 @@ func _process(delta: float) -> void:
 		cam_anim = cam_anim.lerp(e * lerpf(0.6, 0.15, ads), minf(delta * 20.0, 1.0))
 	_springs(delta)
 	_compose(delta, rig)
+	_act_apply(rig, delta)
 
 
 func _springs(delta: float) -> void:
@@ -1012,6 +1050,12 @@ func _compose(delta: float, rig: ViewRig) -> void:
 	if cfg.get("hands", false):
 		pos += Vector3(-0.09, 0.05, -0.16) * rk
 		rot += Vector3(4, -16, 14) * rk
+		if held != "" and _hs not in ["", "wait"]:
+			# the arms are placed by the IK in view space; the rig sits with its
+			# shoulders lower and behind the eye (the FPS rig has them at eye height,
+			# which would bring the elbows in front of the camera)
+			pos = _shoulders()
+			rot = Vector3.ZERO
 	else:
 		pos += Vector3(0.03, -0.07, 0.03) * rk
 		rot += Vector3(-12, 10, 4) * rk
@@ -1199,6 +1243,936 @@ func _melee_hit() -> void:
 			# solid surface: a longer stop and the axe rebounds a little
 			_hitstop = HITSTOP * 1.4
 			_swing = maxf(_swing - 0.03, SWING_HIT - 0.02)
+
+
+# --------------------------------------------------------------------------
+# Things held in the hands (DayZ-style): food, water, bandages, pills
+#
+# The item is taken into the hands (`hold_item`); holding the attack button uses it
+# for as long as it is held (gulp after gulp, spoonful after spoonful, turn after
+# turn of the bandage) and every gulp / bite applies its share of the item (see
+# State.consume_part). Both arms of the empty-hand rig are placed by a two-bone IK
+# (upper arm + forearm, the forearm twist spread over the twist bones) on keyframed
+# grip targets in view space; the fingers keep the rig's authored grip. The props sit
+# in the fists, the camera follows the motion (head back to drink, down to the arm,
+# chewing) and the sounds fire on the keys.
+# --------------------------------------------------------------------------
+
+## item id -> how it is used
+const HOLD_KINDS := {
+	"water_bottle": "drink",
+	"canned_meat": "eat", "canned_beans": "eat", "stew": "eat",
+	"mushroom_soup": "bowl", "tomato_salad": "bowl",
+	"crackers": "bite", "tomato": "bite", "lettuce": "bite", "potato": "bite", "mushroom": "bite", "baked_potato": "bite",
+	"bandage": "bandage", "medkit": "bandage",
+	"antirad": "pills",
+}
+## bite items -> [model, max size (m)]
+const BITE_PROPS := {"crackers": ["food_cracker", 0.085], "tomato": ["food_tomato", 0.075], "potato": ["food_potato", 0.09],
+	"baked_potato": ["food_potato", 0.09], "mushroom": ["mushrooms", 0.08], "lettuce": ["plant_lettuce", 0.11]}
+
+## Grip poses: [position (view space, m), rotation (deg)]. Grip frame: Y along the
+## held object, -Z where the fist points.
+const _BR := [Vector3(0.17, -0.5, -0.27), Vector3(-30, 10, 0)]
+const _BL := [Vector3(-0.17, -0.52, -0.27), Vector3(-30, -10, 0)]
+const _DR_IDLE := [Vector3(0.115, -0.14, -0.33), Vector3(4, 0, -6)]
+const _DR_TIP := [Vector3(0.07, -0.12, -0.27), Vector3(65, 0, -8), Vector3(0, 20, 0)]
+const _DR_MOUTH := [Vector3(0.04, -0.11, -0.21), Vector3(125, 0, -10), Vector3(0, 40, 0)]
+const _DR_GULP := [Vector3(0.04, -0.106, -0.207), Vector3(131, 0, -10), Vector3(0, 40, 0)]
+const _PL_IDLE := [Vector3(0.1, -0.14, -0.32), Vector3(4, 0, -8)]
+const _PL_MOUTH := [Vector3(0.04, -0.11, -0.21), Vector3(116, 0, -10), Vector3(0, 40, 0)]
+const _EA_IDLE_R := [Vector3(0.11, -0.17, -0.3), Vector3(-25, 0, -18)]
+const _EA_IDLE_L := [Vector3(-0.08, -0.14, -0.3), Vector3(30, 30, 10), Vector3(0, -70, 0)]
+const _EA_UP_L := [Vector3(-0.076, -0.132, -0.29), Vector3(30, 30, 10), Vector3(0, -70, 0)]
+const _BW_IDLE_L := [Vector3(-0.08, -0.145, -0.3), Vector3(12, 30, 6), Vector3(0, -70, 0)]
+const _BW_UP_L := [Vector3(-0.076, -0.137, -0.29), Vector3(12, 30, 6), Vector3(0, -70, 0)]
+const _EA_READY := [Vector3(0.05, -0.14, -0.27), Vector3(-10, 0, 25)]
+const _EA_DIP := [Vector3(0.002, -0.152, -0.286), Vector3(-25, 0, 55)]
+const _EA_SCOOP := [Vector3(0.006, -0.146, -0.285), Vector3(-8, 0, 44)]
+const _EA_MOUTH := [Vector3(0.03, -0.1, -0.19), Vector3(40, 0, 0)]
+const _BI_IDLE := [Vector3(0.11, -0.15, -0.32), Vector3(10, 0, -10)]
+const _BI_NEAR := [Vector3(0.05, -0.12, -0.24), Vector3(25, 0, -10)]
+const _BI_BITE := [Vector3(0.035, -0.105, -0.19), Vector3(40, 0, -8)]
+const _BA_IDLE := [Vector3(0.12, -0.15, -0.32), Vector3(0, 0, -30)]
+const _BA_READY := [Vector3(0.06, -0.1, -0.29), Vector3(0, 0, -40)]
+const _BA_ARM := [Vector3(-0.04, -0.035, -0.35), Vector3(72, 0, -28)]
+const _BA_LOOK := [Vector3(-0.045, -0.035, -0.34), Vector3(72, 45, -28)]
+
+## Per kind: props per hand, the idle pose, and the clips (keys {t, r, l, cam}).
+## loop: repeated while the button is held; "use" = when in the loop the share is
+## consumed ("per" of a unit); bandage: "turns" loops, then "finish" applies it.
+## sfx: [t, id, dB] per clip.
+const HOLD := {
+	"drink": {"props": {"r": "bottle"}, "verb": "Bea", "per": 0.085, "use": 0.3,
+		"idle": [{"t": 0.0, "r": _DR_IDLE}],
+		"start": [{"t": 0.0, "r": _DR_IDLE}, {"t": 0.3, "r": _DR_TIP, "cam": Vector3(5, 0, 0)}, {"t": 0.6, "r": _DR_MOUTH, "cam": Vector3(15, 0, 1.5)}],
+		"loop": [{"t": 0.0, "r": _DR_MOUTH, "cam": Vector3(15, 0, 1.5)}, {"t": 0.31, "r": _DR_GULP, "cam": Vector3(16.5, 0, 1.5)}, {"t": 0.62, "r": _DR_MOUTH, "cam": Vector3(15, 0, 1.5)}],
+		"end": [{"t": 0.0, "r": _DR_MOUTH, "cam": Vector3(15, 0, 1.5)}, {"t": 0.28, "r": _DR_TIP, "cam": Vector3(5, 0, 0)}, {"t": 0.6, "r": _DR_IDLE, "cam": Vector3.ZERO}],
+		"sfx": {"start": [[0.05, "pickup", -16.0]], "loop": [[0.14, "gulp", -3.0]], "end": [[0.35, "breath_out", -9.0]]}},
+	"pills": {"props": {"r": "pills"}, "verb": "Ia o pastilă", "per": 1.0, "use": 0.35,
+		"idle": [{"t": 0.0, "r": _PL_IDLE}],
+		"start": [{"t": 0.0, "r": _PL_IDLE}, {"t": 0.14, "r": [Vector3(0.1, -0.135, -0.32), Vector3(-8, 0, -14)]},
+			{"t": 0.28, "r": [Vector3(0.1, -0.14, -0.32), Vector3(8, 0, -4)]}, {"t": 0.6, "r": [Vector3(0.07, -0.12, -0.27), Vector3(70, 0, -10), Vector3(0, 20, 0)], "cam": Vector3(4, 0, 0)},
+			{"t": 0.9, "r": _PL_MOUTH, "cam": Vector3(9, 0, 0)}],
+		"loop": [{"t": 0.0, "r": _PL_MOUTH, "cam": Vector3(9, 0, 0)}, {"t": 0.35, "r": [Vector3(0.04, -0.107, -0.207), Vector3(122, 0, -10), Vector3(0, 40, 0)], "cam": Vector3(10, 0, 0)}, {"t": 0.7, "r": _PL_MOUTH, "cam": Vector3(9, 0, 0)}],
+		"end": [{"t": 0.0, "r": _PL_MOUTH, "cam": Vector3(9, 0, 0)}, {"t": 0.6, "r": _PL_IDLE, "cam": Vector3.ZERO}],
+		"sfx": {"start": [[0.04, "pills", -4.0], [0.3, "pills", -9.0]], "loop": [[0.45, "gulp", -6.0]]}},
+	"eat": {"props": {"r": "spoon", "l": "can"}, "verb": "Mănâncă", "per": 0.2, "use": 0.78, "chew": [0.85, 1.3],
+		"idle": [{"t": 0.0, "r": _EA_IDLE_R, "l": _EA_IDLE_L}],
+		"start": [{"t": 0.0, "r": _EA_IDLE_R, "l": _EA_IDLE_L}, {"t": 0.35, "r": _EA_READY, "l": _EA_IDLE_L, "cam": Vector3(-1, 0, 0)}],
+		"loop": [{"t": 0.0, "r": _EA_READY, "l": _EA_IDLE_L, "cam": Vector3(-1, 0, 0)}, {"t": 0.26, "r": _EA_DIP, "cam": Vector3(-3, 0, 0)},
+			{"t": 0.46, "r": _EA_SCOOP, "cam": Vector3(-3, 0, 0)}, {"t": 0.78, "r": _EA_MOUTH, "l": _EA_UP_L, "cam": Vector3(2, 0, 0)},
+			{"t": 1.3, "r": _EA_READY, "l": _EA_IDLE_L, "cam": Vector3(-1, 0, 0)}],
+		"end": [{"t": 0.0, "r": _EA_READY, "l": _EA_IDLE_L, "cam": Vector3(-1, 0, 0)}, {"t": 0.4, "r": _EA_IDLE_R, "l": _EA_IDLE_L, "cam": Vector3.ZERO}],
+		"sfx": {"loop": [[0.27, "spoon_can", -6.0], [0.86, "chew", -6.0]]}},
+	"bowl": {"props": {"r": "spoon", "l": "bowl"}, "verb": "Mănâncă", "per": 0.2, "use": 0.78, "chew": [0.85, 1.3],
+		"idle": [{"t": 0.0, "r": _EA_IDLE_R, "l": _BW_IDLE_L}],
+		"start": [{"t": 0.0, "r": _EA_IDLE_R, "l": _BW_IDLE_L}, {"t": 0.35, "r": _EA_READY, "l": _BW_IDLE_L, "cam": Vector3(-1, 0, 0)}],
+		"loop": [{"t": 0.0, "r": _EA_READY, "l": _BW_IDLE_L, "cam": Vector3(-1, 0, 0)}, {"t": 0.26, "r": _EA_DIP, "cam": Vector3(-3, 0, 0)},
+			{"t": 0.46, "r": _EA_SCOOP, "cam": Vector3(-3, 0, 0)}, {"t": 0.78, "r": _EA_MOUTH, "l": _BW_UP_L, "cam": Vector3(2, 0, 0)},
+			{"t": 1.3, "r": _EA_READY, "l": _BW_IDLE_L, "cam": Vector3(-1, 0, 0)}],
+		"end": [{"t": 0.0, "r": _EA_READY, "l": _BW_IDLE_L, "cam": Vector3(-1, 0, 0)}, {"t": 0.4, "r": _EA_IDLE_R, "l": _BW_IDLE_L, "cam": Vector3.ZERO}],
+		"sfx": {"loop": [[0.27, "spoon_can", -9.0], [0.86, "chew", -6.0]]}},
+	"bite": {"props": {"r": "bite"}, "verb": "Mănâncă", "per": 0.25, "use": 0.3, "chew": [0.45, 1.1],
+		"idle": [{"t": 0.0, "r": _BI_IDLE}],
+		"start": [{"t": 0.0, "r": _BI_IDLE}, {"t": 0.4, "r": _BI_NEAR, "cam": Vector3(2, 0, 0)}],
+		"loop": [{"t": 0.0, "r": _BI_NEAR, "cam": Vector3(2, 0, 0)}, {"t": 0.3, "r": _BI_BITE, "cam": Vector3(4, 0, 0)},
+			{"t": 0.48, "r": [Vector3(0.04, -0.11, -0.2), Vector3(36, 0, -9)], "cam": Vector3(3, 0, 0)}, {"t": 1.1, "r": _BI_NEAR, "cam": Vector3(2, 0, 0)}],
+		"end": [{"t": 0.0, "r": _BI_NEAR, "cam": Vector3(2, 0, 0)}, {"t": 0.4, "r": _BI_IDLE, "cam": Vector3.ZERO}],
+		"sfx": {"loop": [[0.28, "bite", -4.0], [0.5, "chew", -7.0]]}},
+	"bandage": {"props": {"r": "roll"}, "verb": "Bandajează", "turns": 3,
+		"idle": [{"t": 0.0, "r": _BA_IDLE}],
+		"start": [{"t": 0.0, "r": _BA_IDLE, "l": _BL}, {"t": 0.65, "r": _BA_READY, "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}],
+		"loop": [{"t": 0.0, "r": _BA_READY, "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}, {"t": 0.95, "r": _BA_READY, "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}],
+		"finish": [{"t": 0.0, "r": _BA_READY, "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}, {"t": 0.22, "r": [Vector3(0.14, -0.09, -0.3), Vector3(0, 0, -55)], "cam": Vector3(-7, 0, 0)},
+			{"t": 0.42, "r": [Vector3(0.18, -0.07, -0.29), Vector3(0, 0, -45)], "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}, {"t": 0.95, "r": _BA_IDLE, "l": _BA_LOOK, "cam": Vector3(-5, 0, 0)}],
+		"end": [{"t": 0.0, "r": _BA_READY, "l": _BA_ARM, "cam": Vector3(-7, 0, 0)}, {"t": 0.7, "r": _BA_IDLE, "l": _BL, "cam": Vector3.ZERO}],
+		"sfx": {"start": [[0.08, "bandage_tear", -4.0]], "loop": [[0.05, "bandage_wrap", -3.0]], "finish": [[0.25, "bandage_tear", -6.0]]}},
+}
+
+## Rig offset while something is held: shoulders down and back (anatomical), per
+## kind (the arms of the FPS rig are short: less back where the hands work far out).
+const HOLD_SHOULDERS := Vector3(0.01, -0.16, 0.03)
+const HOLD_SHOULDERS_BY := {"bandage": Vector3(0.0, -0.13, 0.0), "eat": Vector3(0.0, -0.15, 0.03), "bowl": Vector3(0.0, -0.15, 0.03)}
+
+
+func _shoulders() -> Vector3:
+	return HOLD_SHOULDERS_BY.get(_held_kind, HOLD_SHOULDERS)
+
+var held := ""                  ## item id in the hands ("" = none)
+var _held_kind := ""
+var _hs := ""                   # draw / idle / start / loop / finish / end / holster
+var _hs_t := 0.0
+var _hs_keys: Array = []
+var _hs_len := 0.0
+var _hs_sfx := 0
+var _loops := 0
+var _used_in_loop := false
+var _after_holster := "__none"  # weapon to take out once the item is put away
+var _next_item := ""            # item to take once the current one is put away
+var _pose_r := Transform3D()    # last evaluated grips (view space) and camera
+var _pose_l := Transform3D()
+var _pose_has_l := false
+var _pose_cam := Vector3.ZERO
+var _wrap_w := 0.0
+var _wrap_p := 0.0              # bandage progress 0..1 (turns done)
+var _session := 0.0             # share of a unit used during this press
+var _act_props := {}            # "r"/"l" -> Node3D (children of the holder)
+var _act_sleeve: MeshInstance3D # bandage turns building up on the left forearm
+var _act_strand: MeshInstance3D # gauze from the roll to the arm
+var debug_hold := 0.0           # debug: seconds of "button held"
+
+
+func using() -> bool:
+	return held != ""
+
+
+## Takes an item into the hands (puts the weapon away first). The same item again
+## puts it away.
+func hold_item(id: String) -> bool:
+	if player == null or not HOLD_KINDS.has(id) or not RIGS.has("hands"):
+		return false
+	if State.available(id) <= 0:
+		return false
+	if held == id:
+		put_away()
+		return true
+	if held != "" and _hs not in ["wait", "holster"]:
+		# put the current one away first, then take this one
+		_next_item = id
+		put_away()
+		return true
+	if held != "":
+		_act_clear()
+	held = id
+	_held_kind = HOLD_KINDS[id]
+	_hs = "wait"
+	_hs_t = 0.0
+	_loops = 0
+	_wrap_p = 0.0
+	_after_holster = "__none"
+	reloading = 0.0
+	_swing = -1.0
+	if current != "hands":
+		_switching_to = "hands"
+	return true
+
+
+## Puts the held item back (and then takes out `then`, a weapon id, if given).
+func put_away(then := "__none") -> void:
+	if held == "":
+		return
+	_after_holster = then
+	if _hs in ["wait", "holster"]:
+		if _hs == "wait":
+			_hold_done()
+		return
+	_hs_enter("holster")
+
+
+## Kept for callers that want a one-shot use: hold the item and use it until done.
+func use_animation(kind: String, model_id: String, done: Callable) -> bool:
+	return false
+
+
+func held_info() -> Dictionary:
+	if held == "":
+		return {}
+	var H: Dictionary = HOLD[_held_kind]
+	var frac := _wrap_p if _held_kind == "bandage" else State.remaining(held)
+	return {"name": ItemDB.item_name(held), "count": State.available(held), "frac": frac,
+		"verb": String(H.verb), "busy": _hs in ["start", "loop", "finish"], "kind": _held_kind}
+
+
+func _hold_wanted() -> bool:
+	if debug_hold > 0.0:
+		return true
+	var captured := Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and player.can_move
+	return captured and Input.is_action_pressed("attack") and not _sprinting
+
+
+func _hs_enter(s: String) -> void:
+	var H: Dictionary = HOLD[_held_kind]
+	if Game.args.has("trace"):
+		print("[hold] %s -> %s  item=%s left=%.2f count=%d food=%.1f water=%.1f" % [_hs, s, held, State.remaining(held), State.available(held), State.food, State.hydration])
+	_hs = s
+	_hs_t = 0.0
+	_hs_sfx = 0
+	_used_in_loop = false
+	match s:
+		"draw":
+			var idle: Dictionary = (H.idle as Array)[0]
+			var k0 := {"t": 0.0, "r": _BR}
+			var k1 := {"t": 0.45, "r": idle.r}
+			if idle.has("l"):
+				k0["l"] = _BL
+				k1["l"] = idle.l
+			_hs_keys = [k0, k1]
+		"holster":
+			var k0 := {"t": 0.0, "r": _pose_arr(_pose_r), "cam": _pose_cam * (180.0 / PI)}
+			var k1 := {"t": 0.42, "r": _BR, "cam": Vector3.ZERO}
+			if _pose_has_l:
+				k0["l"] = _pose_arr(_pose_l)
+				k1["l"] = _BL
+			_hs_keys = [k0, k1]
+		_:
+			_hs_keys = H[s]
+	_hs_len = float((_hs_keys.back() as Dictionary).t)
+
+
+## [pos, rot deg] of a grip transform (to start a clip from wherever the hand is).
+static func _pose_arr(xf: Transform3D) -> Array:
+	return [xf.origin, xf.basis.get_euler() * (180.0 / PI)]
+
+
+func _use_tick(delta: float) -> void:
+	if held == "":
+		return
+	if debug_hold > 0.0:
+		debug_hold -= delta
+	if _hs == "wait":
+		# the hands rig comes up first (the weapon goes down)
+		if current == "hands" and _switching_to == "__none" and rigs.has("hands") and _equip <= 0.02:
+			_act_begin(rigs["hands"])
+			_hs_enter("draw")
+		return
+	if current != "hands":
+		_hold_done()
+		return
+	_hs_t += delta
+	# debug: --hsfreeze=state:t holds the motion still there (screenshots)
+	if Game.args.has("hsfreeze"):
+		var fz := String(Game.args.hsfreeze).split(":")
+		if _hs == fz[0] and _hs_t >= float(fz[1]):
+			_hs_t = float(fz[1])
+			if _held_kind == "bandage" and _hs == "loop":
+				_wrap_p = clampf((float(_loops) + _hs_t / _hs_len) / 3.0, 0.0, 1.0)
+			return
+	var H: Dictionary = HOLD[_held_kind]
+	var sfx: Array = (H.get("sfx", {}) as Dictionary).get(_hs, [])
+	while _hs_sfx < sfx.size() and _hs_t >= float(sfx[_hs_sfx][0]):
+		var s: Array = sfx[_hs_sfx]
+		Audio.sfx(String(s[1]), float(s[2]), 0.06)
+		_hs_sfx += 1
+	var want := _hold_wanted()
+	# right button: put it away
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_action_just_pressed("aim") and _hs in ["draw", "idle"]:
+		put_away()
+		return
+	match _hs:
+		"draw":
+			if _hs_t >= _hs_len:
+				_hs_enter("idle")
+		"idle":
+			if want and State.available(held) > 0:
+				_session = 0.0
+				_hs_enter("start")
+		"start":
+			if _hs_t >= _hs_len:
+				_hs_enter("loop")
+		"loop":
+			if _held_kind == "bandage":
+				_wrap_p = clampf((float(_loops) + _hs_t / _hs_len) / float(H.turns), 0.0, 1.0)
+			elif not _used_in_loop and _hs_t >= float(H.use):
+				_used_in_loop = true
+				var before := State.available(held)
+				_session += State.consume_part(held, float(H.per))
+				if State.available(held) < before:
+					_loops = 999   # this unit is finished
+			if _hs_t >= _hs_len:
+				_loops += 1
+				if _held_kind == "bandage" and _loops >= int(H.turns):
+					_hs_enter("finish")
+				elif want and _loops < 999 and State.available(held) > 0:
+					_hs_t -= _hs_len
+					_hs_sfx = 0
+					_used_in_loop = false
+				else:
+					_hs_enter("end")
+		"finish":
+			if not _used_in_loop and _hs_t >= 0.3:
+				_used_in_loop = true
+				State.consume_part(held, 1.0)
+				HUD.toast("Rana e bandajată.", "good")
+			if _hs_t >= _hs_len:
+				_hs_enter("end")
+				_hs_keys = [{"t": 0.0, "r": _BA_IDLE, "l": _BA_LOOK, "cam": Vector3(-5, 0, 0)}, {"t": 0.6, "r": _BA_IDLE, "l": _BL, "cam": Vector3.ZERO}]
+				_hs_len = 0.6
+		"end":
+			if _held_kind == "bandage" and _wrap_p < 1.0:
+				_wrap_p = maxf(_wrap_p - delta * 2.0, 0.0)   # let go: the turns unwind
+			if _hs_t >= _hs_len:
+				_loops = 0
+				_wrap_p = 0.0
+				if _session > 0.0 and _held_kind != "bandage":
+					HUD.toast("%s: %d%%" % [ItemDB.item_name(held), roundi(_session * 100.0)], "info")
+				_session = 0.0
+				if State.available(held) > 0:
+					_hs_enter("idle")
+					_refresh_props()
+				else:
+					_hs_enter("holster")
+		"holster":
+			if _hs_t >= _hs_len:
+				_hold_done()
+
+
+func _hold_done() -> void:
+	var then := _after_holster
+	_act_clear()
+	held = ""
+	_held_kind = ""
+	_hs = ""
+	_wrap_p = 0.0
+	_after_holster = "__none"
+	_equip = 0.0   # the empty hand comes back up from below
+	if then != "__none" and then != current:
+		switch(then)
+	elif _next_item != "":
+		var nx := _next_item
+		_next_item = ""
+		hold_item(nx)
+
+
+func _act_begin(r: ViewRig) -> void:
+	_act_clear()
+	var H: Dictionary = HOLD[_held_kind]
+	var props: Dictionary = H.get("props", {})
+	for side in props:
+		var p := _act_prop(String(props[side]))
+		if p:
+			holder.add_child(p)
+			Assets.set_shadows(p, false)
+			_vm_layers(p)
+			p.visible = false
+			_act_props[side] = p
+	if _held_kind == "bandage":
+		_act_sleeve = MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 1.0
+		cm.bottom_radius = 1.0
+		cm.height = 1.0
+		cm.radial_segments = 20
+		cm.rings = 1
+		_act_sleeve.mesh = cm
+		_act_sleeve.material_override = _gauze_mat()
+		_act_sleeve.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_act_sleeve.layers = 1 | VM_LAYER
+		_act_sleeve.visible = false
+		holder.add_child(_act_sleeve)
+		_act_strand = MeshInstance3D.new()
+		var bm := BoxMesh.new()
+		bm.size = Vector3.ONE
+		_act_strand.mesh = bm
+		_act_strand.material_override = _gauze_mat()
+		_act_strand.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_act_strand.layers = 1 | VM_LAYER
+		_act_strand.visible = false
+		holder.add_child(_act_strand)
+	_refresh_props()
+
+
+## A fresh unit (or what is left of the opened one): bites shrink the food.
+func _refresh_props() -> void:
+	if _held_kind == "bite" and _act_props.has("r"):
+		var p: Node3D = _act_props.r
+		if is_instance_valid(p) and p.get_child_count() > 0:
+			var k := lerpf(0.5, 1.0, State.remaining(held))
+			(p.get_child(0) as Node3D).scale = Vector3.ONE * float(p.get_meta("fit", 1.0)) * k
+
+
+func _act_clear() -> void:
+	for side in _act_props:
+		var p: Node3D = _act_props[side]
+		if is_instance_valid(p):
+			p.queue_free()
+	_act_props.clear()
+	for n in [_act_sleeve, _act_strand]:
+		if n and is_instance_valid(n):
+			n.queue_free()
+	_act_sleeve = null
+	_act_strand = null
+	_wrap_w = 0.0
+
+
+var _gauze: StandardMaterial3D
+
+
+func _gauze_mat() -> StandardMaterial3D:
+	if _gauze == null:
+		_gauze = StandardMaterial3D.new()
+		_gauze.albedo_color = Color(0.8, 0.78, 0.72)
+		# the bandage roll's own gauze texture, if the model has one
+		if Assets.has_model("bandage_roll"):
+			var m := Assets.model("bandage_roll")
+			for mi in m.find_children("*", "MeshInstance3D", true, false):
+				var src := (mi as MeshInstance3D).get_active_material(0) as StandardMaterial3D
+				if src and src.albedo_texture:
+					_gauze.albedo_texture = src.albedo_texture
+					_gauze.albedo_color = Color(0.95, 0.93, 0.88)
+					if src.normal_texture:
+						_gauze.normal_enabled = true
+						_gauze.normal_texture = src.normal_texture
+					break
+			m.free()
+		_gauze.uv1_scale = Vector3(2, 1, 1)
+		_gauze.roughness = 0.95
+		_gauze.cull_mode = BaseMaterial3D.CULL_DISABLED
+	return _gauze
+
+
+## The prop and where it sits in the grip frame (Y along the object, centred on the
+## fist; shifted toward the fingers so thick objects don't swallow the hand).
+func _act_prop(id: String) -> Node3D:
+	var model := ""
+	var grip_h := 0.5      # where along its height the fist holds it (0..1)
+	var fwd := 0.0         # shift toward the fingers (-Z of the grip), m
+	var side := 0.0        # shift along grip X, m
+	var fit := 0.0         # scale the model so its largest side is this (m)
+	match id:
+		"bottle":
+			model = "water_bottle_m"   # 0.5 L
+			grip_h = 0.42
+			fwd = 0.016
+			fit = 0.21
+		"pills":
+			model = "pill_bottle"
+			grip_h = 0.4
+			fwd = 0.006
+		"can":
+			model = "canned_food"
+			grip_h = 0.38
+			fwd = 0.02
+			side = 0.012
+		"bowl":
+			model = "bowl_enamel"
+		"roll":
+			model = "bandage_roll"
+			grip_h = 0.5
+			fwd = 0.02
+			fit = 0.11
+		"spoon":
+			model = "spoon_metal"
+		"bite":
+			# held at the fingertips, most of it above the fist (the part you bite)
+			var bp: Array = BITE_PROPS.get(held, ["food_potato", 0.09])
+			model = String(bp[0])
+			fit = float(bp[1])
+			grip_h = 0.12
+			fwd = 0.03
+	if model == "" or not Assets.has_model(model):
+		return null
+	var m := Assets.model(model)
+	m.set_meta("model_id", model)
+	var wrap := Node3D.new()
+	wrap.name = "UseProp_" + id
+	wrap.set_meta("prop_id", id)
+	wrap.add_child(m)
+	var aabb := Assets.model_aabb(m)
+	var s := 1.0
+	if fit > 0.0:
+		s = fit / maxf(maxf(aabb.size.x, aabb.size.y), maxf(aabb.size.z, 0.001))
+		m.scale = Vector3.ONE * s
+		wrap.set_meta("fit", s)
+	match id:
+		"spoon":
+			# model: long along Z, bowl at -Z -> handle down through the fist, the bowl
+			# up and its hollow facing back (+Z of the grip, toward the face)
+			var rot := Basis(Vector3.RIGHT, deg_to_rad(90.0))
+			m.transform = Transform3D(rot, Vector3.ZERO)
+			# the handle end (model +Z) sticks out 4 cm below the fist centre
+			m.position = -(rot * Vector3(0, aabb.size.y * 0.5, aabb.end.z - 0.045))
+		"bowl":
+			# placed level in view space beside the left palm (see _act_apply)
+			m.position = Vector3(0.0, -aabb.size.y * 0.55, 0.0)
+		_:
+			m.position = Vector3(side, -aabb.size.y * s * grip_h, -fwd)
+	if id == "bottle":
+		_clear_bottle(m)
+	return wrap
+
+
+## The bottle model is black plastic; water reads better through clear PET.
+func _clear_bottle(m: Node3D) -> void:
+	for mi in m.find_children("*", "MeshInstance3D", true, false):
+		var mesh := (mi as MeshInstance3D).mesh
+		for i in mesh.get_surface_count():
+			var src := mesh.surface_get_material(i)
+			if src and src.resource_name.to_lower().contains("bottle"):
+				var pet := StandardMaterial3D.new()
+				pet.resource_name = "pet_water"
+				pet.albedo_color = Color(0.74, 0.86, 0.92, 0.3)
+				pet.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
+				pet.roughness = 0.05
+				pet.metallic_specular = 0.9
+				pet.rim_enabled = true
+				pet.rim = 0.4
+				pet.rim_tint = 0.2
+				if src is StandardMaterial3D and (src as StandardMaterial3D).normal_texture:
+					pet.normal_enabled = true
+					pet.normal_texture = (src as StandardMaterial3D).normal_texture
+				(mi as MeshInstance3D).set_surface_override_material(i, pet)
+
+
+## Smooth curve through the keys that have `side` (Catmull-Rom in time).
+func _act_curve(keys: Array, side: String, idx: int, t: float) -> Vector3:
+	var ts: Array[float] = []
+	var vs: Array[Vector3] = []
+	for k in keys:
+		var kd: Dictionary = k
+		if kd.has(side):
+			ts.append(float(kd.t))
+			var v = kd[side]
+			if v is Array:
+				vs.append((v as Array)[idx] if idx < (v as Array).size() else Vector3.ZERO)
+			else:
+				vs.append(v)
+	var n := ts.size()
+	if n == 0:
+		return Vector3.ZERO
+	if t <= ts[0]:
+		return vs[0]
+	if t >= ts[n - 1]:
+		return vs[n - 1]
+	var i := 0
+	while i < n - 2 and t > ts[i + 1]:
+		i += 1
+	var ta := ts[i]
+	var tb := ts[i + 1]
+	var tpa := ts[i - 1] if i > 0 else ta - (tb - ta)
+	var tpb := ts[i + 2] if i + 2 < n else tb + (tb - ta)
+	var w := (t - ta) / maxf(tb - ta, 0.0001)
+	return vs[i].cubic_interpolate_in_time(vs[i + 1], vs[maxi(i - 1, 0)], vs[mini(i + 2, n - 1)], w, tb - ta, tpa - ta, tpb - ta)
+
+
+## Grip frame target (view space) of one hand at time t.
+func _act_grip(keys: Array, side: String, t: float) -> Transform3D:
+	var p := _act_curve(keys, side, 0, t)
+	var e := _act_curve(keys, side, 1, t) * (PI / 180.0)
+	var spin := _act_curve(keys, side, 2, t).y * (PI / 180.0)
+	# debug: --posedbg=r:x,y,z:rx,ry,rz:spin (and/or l:...) replaces a grip pose
+	if Game.args.has("posedbg") and _hs in ["loop", "idle"]:
+		for part in String(Game.args.posedbg).split("/"):
+			var f := part.split(":")
+			if f.size() >= 3 and f[0] == side:
+				var pv := f[1].split_floats(",")
+				var rv := f[2].split_floats(",")
+				p = Vector3(pv[0], pv[1], pv[2])
+				e = Vector3(rv[0], rv[1], rv[2]) * (PI / 180.0)
+				spin = deg_to_rad(float(f[3])) if f.size() > 3 else 0.0
+	return Transform3D(Basis.from_euler(e) * Basis(Vector3.UP, spin), p)
+
+
+## Camera motion that goes with the hands (head back to drink, down to the arm, chewing).
+func use_cam() -> Vector3:
+	if held == "" or _hs in ["", "wait"]:
+		return Vector3.ZERO
+	return _pose_cam
+
+
+## 0..1..0 over [a, b] with soft edges.
+static func _act_window(t: float, a: float, b: float) -> float:
+	return smoothstep(a, a + 0.12, t) * (1.0 - smoothstep(b - 0.12, b, t))
+
+
+## Poses the arms for what is in the hands (after the rig's animation and _compose).
+func _act_apply(r: ViewRig, delta: float) -> void:
+	if held == "" or _hs in ["", "wait"] or r.skel == null or r.ik.is_empty() or _hs_keys.is_empty():
+		return
+	var H: Dictionary = HOLD[_held_kind]
+	var keys := _hs_keys
+	var t := minf(_hs_t, _hs_len)
+	var to_h := r.anchor.transform * r.root.transform * r.S
+	var from_h := to_h.affine_inverse()
+	var ik_r: Dictionary = r.ik.r
+	var ik_l: Dictionary = r.ik.l
+	var vh := Transform3D(Basis(), -_shoulders())   # view space -> holder space
+	# camera
+	var cam := _act_curve(keys, "cam", 0, t)
+	if H.has("chew") and _hs == "loop":
+		var cw: Array = H.chew
+		var w := _act_window(t, float(cw[0]), float(cw[1]))
+		cam.x += maxf(sin((t - float(cw[0])) * TAU * 2.6), 0.0) * 0.8 * w
+	_pose_cam = cam * (PI / 180.0)
+	# left arm first: the right hand may work on it
+	var arm_l := {}
+	_pose_has_l = (keys[0] as Dictionary).has("l")
+	if _pose_has_l:
+		for cb in r.collapse:
+			r.skel.set_bone_pose_scale(cb, Vector3.ONE)
+		_pose_l = _act_grip(keys, "l", t)
+		_pose_l.origin += Vector3(sin(_breath * 1.3) * 0.002, sin(_breath * 2.1) * 0.002, 0.0)
+		var hand_l := vh * _pose_l * (ik_l.gh as Transform3D).affine_inverse()
+		arm_l = _ik_arm(r, ik_l, hand_l, to_h, from_h, ik_l.pole_h)
+		var gl_fit := _grip_for(r, "l")
+		if not gl_fit.is_empty() and _held_kind != "bowl":
+			_apply_grip(r, gl_fit, hand_l, from_h)
+			_place_fitted("l", hand_l * (gl_fit.prop as Transform3D))
+		arm_l.elbow = vh.affine_inverse() * (arm_l.elbow as Vector3)
+		arm_l.wrist = vh.affine_inverse() * (arm_l.wrist as Vector3)
+	var gr := _act_grip(keys, "r", t)
+	if _hs == "idle":
+		gr.origin += Vector3(sin(_breath * 1.1) * 0.0025, sin(_breath * 2.2) * 0.003, 0.0)
+	# bandage: the right fist goes round the forearm while the turns build up
+	_wrap_w = move_toward(_wrap_w, 1.0 if _hs == "loop" and _held_kind == "bandage" else 0.0, delta * 5.0)
+	if _wrap_w > 0.0 and not arm_l.is_empty():
+		gr = gr.interpolate_with(_act_wrap(arm_l, t), _wrap_w)
+	_pose_r = gr
+	var hand_r := vh * gr * (ik_r.gh as Transform3D).affine_inverse()
+	_ik_arm(r, ik_r, hand_r, to_h, from_h, ik_r.pole_h)
+	var gr_fit := _grip_for(r, "r")
+	if not gr_fit.is_empty():
+		_apply_grip(r, gr_fit, hand_r, from_h)
+		_place_fitted("r", hand_r * (gr_fit.prop as Transform3D))
+	# props follow the grips
+	for side in _act_props:
+		var p: Node3D = _act_props[side]
+		if not is_instance_valid(p):
+			continue
+		if side == "l" and not _pose_has_l:
+			p.visible = false
+			continue
+		if p.has_meta("fitted_xf"):
+			p.transform = p.get_meta("fitted_xf")
+			p.remove_meta("fitted_xf")
+		elif side == "l" and _held_kind == "bowl":
+			# a bowl stays level (soup!), tipped a little toward the eyes, resting in the
+			# left hand on the side toward the centre of the view
+			p.transform = vh * Transform3D(Basis(Vector3.RIGHT, deg_to_rad(16.0)), _pose_l.origin + Vector3(0.055, 0.012, -0.012))
+		else:
+			p.transform = vh * (gr if side == "r" else _pose_l)
+		p.visible = true
+	if _act_sleeve:
+		_act_bandage_fx(gr, arm_l)
+		_act_sleeve.transform = vh * _act_sleeve.transform
+		_act_strand.transform = vh * _act_strand.transform
+
+
+## A prop placed by its Blender grip: the model itself takes the whole transform.
+func _place_fitted(side: String, xf: Transform3D) -> void:
+	var p: Node3D = _act_props.get(side)
+	if p == null or not is_instance_valid(p) or p.get_child_count() == 0:
+		return
+	var m := p.get_child(0) as Node3D
+	# bites take the food down to half its size
+	var k := lerpf(0.5, 1.0, State.remaining(held)) if _held_kind == "bite" else 1.0
+	m.transform = Transform3D(Basis().scaled(Vector3.ONE * k), Vector3.ZERO)
+	p.set_meta("fitted_xf", xf)
+
+
+## The right fist circling the left forearm (the roll's axis along the arm), passing
+## over it and behind it; the turns move toward the wrist.
+func _act_wrap(arm_l: Dictionary, t: float) -> Transform3D:
+	var elbow: Vector3 = arm_l.elbow
+	var wrist: Vector3 = arm_l.wrist
+	var ax := (wrist - elbow).normalized()
+	var u := Vector3.UP - ax * Vector3.UP.dot(ax)
+	u = u.normalized() if u.length() > 0.01 else Vector3.BACK
+	var v := ax.cross(u)
+	var turns := float(_loops) + t / maxf(_hs_len, 0.01)
+	var c := elbow.lerp(wrist, lerpf(0.7, 0.92, clampf(_wrap_p, 0.0, 1.0)))
+	var phi := turns * TAU + PI * 0.35
+	var radial := u * cos(phi) + v * sin(phi)
+	var pos := c + radial * 0.085
+	var gy := ax
+	var gz := radial
+	var gx := gy.cross(gz).normalized()
+	gz = gx.cross(gy).normalized()
+	return Transform3D(Basis(gx, gy, gz), pos)
+
+
+func _act_bandage_fx(gr: Transform3D, arm_l: Dictionary) -> void:
+	if arm_l.is_empty():
+		_act_sleeve.visible = false
+		_act_strand.visible = false
+		return
+	var elbow: Vector3 = arm_l.elbow
+	var wrist: Vector3 = arm_l.wrist
+	var ax := (wrist - elbow).normalized()
+	var flen := elbow.distance_to(wrist)
+	var a := elbow.lerp(wrist, 0.68)
+	var b := elbow.lerp(wrist, lerpf(0.68, 0.94, _wrap_p))
+	var length := a.distance_to(b)
+	_act_sleeve.visible = length > 0.004
+	if _act_sleeve.visible:
+		# over the jacket cuff (the gauze would vanish inside the sleeve)
+		var rad := lerpf(0.056, 0.05, a.distance_to(elbow) / maxf(flen, 0.01))
+		var bz := ax.cross(Vector3.UP)
+		bz = bz.normalized() if bz.length() > 0.1 else Vector3.BACK
+		var bx := ax.cross(bz).normalized()
+		_act_sleeve.transform = Transform3D(Basis(bx * rad, ax * length, bz * rad), (a + b) * 0.5)
+	_act_strand.visible = _wrap_w > 0.3
+	if _act_strand.visible:
+		var d := b - gr.origin
+		var len := d.length()
+		if len < 0.005:
+			_act_strand.visible = false
+			return
+		var y := d / len
+		var x := y.cross(Vector3.FORWARD)
+		x = x.normalized() if x.length() > 0.1 else Vector3.RIGHT
+		var z := x.cross(y).normalized()
+		_act_strand.transform = Transform3D(Basis(x * 0.045, y * len, z * 0.0015), (gr.origin + b) * 0.5)
+
+
+## Two-bone IK for one arm in holder space: puts the hand at `hand_t` (by moving its IK
+## control bone), bends the elbow toward the rig's pole target and spreads the forearm
+## twist over the twist bones. Returns {elbow, wrist} (holder space).
+func _ik_arm(r: ViewRig, ik: Dictionary, hand_t: Transform3D, to_h: Transform3D, from_h: Transform3D, pole_h: Vector3) -> Dictionary:
+	var sk := r.skel
+	var U := to_h * sk.get_bone_global_pose(ik.up)
+	var F := to_h * sk.get_bone_global_pose(ik.fore)
+	var C := to_h * sk.get_bone_global_pose(ik.ctrl)
+	var Hb := to_h * sk.get_bone_global_pose(ik.hand)
+	var P := pole_h
+	# the twist bones as animated, before anything moves (their parent is the forearm)
+	var tws: Array = ik.tw
+	var T_old: Array[Transform3D] = []
+	for bi in tws:
+		T_old.append(to_h * sk.get_bone_global_pose(int(bi)))
+	# hand: move the IK control so the hand lands on the target
+	var c_new := hand_t * (C.affine_inverse() * Hb).affine_inverse()
+	sk.set_bone_global_pose(ik.ctrl, from_h * c_new)
+	var s := U.origin
+	var a: float = ik.a
+	var b: float = ik.b
+	var tgt := hand_t.origin
+	var to_t := tgt - s
+	var dist := to_t.length()
+	var dir := to_t / maxf(dist, 0.0001)
+	var d := clampf(dist, absf(a - b) + 0.002, (a + b) * 0.9995)
+	var pv := P - s
+	var n := pv - dir * pv.dot(dir)
+	n = n.normalized() if n.length() > 0.0001 else Vector3.DOWN
+	var ca := clampf((a * a + d * d - b * b) / (2.0 * a * d), -1.0, 1.0)
+	var elbow := s + dir * (a * ca) + n * (a * sqrt(1.0 - ca * ca))
+	var wrist := s + dir * d
+	# upper arm: carry the old (direction, bend plane) frame onto the new one
+	var u0 := (F.origin - s).normalized()
+	var f0 := (Hb.origin - F.origin).normalized()
+	var u1 := (elbow - s).normalized()
+	var f1 := (wrist - elbow).normalized()
+	var rot_up := Basis(Quaternion(u0, u1))
+	var n0 := u0.cross(f0)
+	var n1 := u1.cross(f1)
+	if n0.length() > 0.001 and n1.length() > 0.001:
+		rot_up = _ik_frame(u1, n1.normalized()) * _ik_frame(u0, n0.normalized()).inverse()
+	var U1 := Transform3D(rot_up * U.basis, s)
+	sk.set_bone_global_pose(ik.up, from_h * U1)
+	# forearm: rides on the upper arm, then bends at the elbow onto the wrist
+	var F1 := U1 * (U.affine_inverse() * F)
+	var fdir := (rot_up * f0).normalized()
+	var bend := Basis(Quaternion(fdir, f1)) if fdir.cross(f1).length() > 0.00001 else Basis()
+	F1 = Transform3D(bend * F1.basis, elbow)
+	sk.set_bone_global_pose(ik.fore, from_h * F1)
+	# forearm twist: the roll the hand asks for (vs. the authored hand-to-forearm
+	# relation) goes 1/3, 2/3, 3/3 onto the twist bones
+	var rel: Basis = ik.rel
+	var want := hand_t.basis.orthonormalized() * rel.inverse()
+	var q := (want * F1.basis.orthonormalized().inverse()).get_rotation_quaternion()
+	var tw := wrapf(2.0 * atan2(Vector3(q.x, q.y, q.z).dot(f1), q.w), -PI, PI)
+	# the forearm only rolls so far (pronation / supination); beyond that the skin
+	# would wring into a flat ribbon — the rest is taken at the wrist, under the cuff
+	tw = clampf(tw, -0.7, 0.7)
+	var prev := F
+	var prev_new := F1
+	for i in tws.size():
+		var bi: int = tws[i]
+		var T: Transform3D = T_old[i]
+		var T1 := prev_new * (prev.affine_inverse() * T)
+		prev = T
+		T1.basis = Basis(f1, tw * float(i + 1) / float(tws.size())) * T1.basis
+		sk.set_bone_global_pose(bi, from_h * T1)
+		prev_new = T1
+	return {"elbow": elbow, "wrist": wrist}
+
+
+## Orthonormal frame from a direction and a normal (columns: dir, normal, dir x normal).
+static func _ik_frame(d: Vector3, nrm: Vector3) -> Basis:
+	return Basis(d, nrm, d.cross(nrm).normalized())
+
+
+## IK data for the empty-hand rig: bone indices, arm lengths, the authored
+## hand-to-forearm relation and the grip frame in each hand's space (the pistol grip:
+## Y up the grip, -Z where the barrel points).
+func _setup_ik(r: ViewRig, grip: Dictionary, to_h: Transform3D) -> void:
+	if grip.is_empty():
+		return
+	var gy: Vector3 = (grip.axis as Vector3).normalized()
+	var fwd: Vector3 = grip.fwd
+	var gz := -(fwd - gy * fwd.dot(gy)).normalized()
+	var gx := gy.cross(gz).normalized()
+	var G := Transform3D(Basis(gx, gy, gz), grip.center)
+	var out := {}
+	for side in ["R", "L"]:
+		var ik := {}
+		ik.up = _find_bone(r.skel, "UpArm_" + side)
+		ik.fore = _find_bone(r.skel, "Forearm_" + side)
+		ik.ctrl = _find_bone(r.skel, "IK_Hand_Cntrl_" + side)
+		ik.hand = _find_bone(r.skel, "Hand_" + side)
+		ik.pole = _find_bone(r.skel, "IK_PoleTrgt_" + side)
+		var tw: Array[int] = []
+		for k in ["BoneTwist_03." + side, "BoneTwist_02." + side, "BoneTwist_01." + side]:
+			var bi := _find_bone(r.skel, k)
+			if bi >= 0:
+				tw.append(bi)
+		ik.tw = tw
+		if int(ik.up) < 0 or int(ik.fore) < 0 or int(ik.ctrl) < 0 or int(ik.hand) < 0 or int(ik.pole) < 0:
+			return
+		var U := to_h * r.skel.get_bone_global_pose(ik.up)
+		var F := to_h * r.skel.get_bone_global_pose(ik.fore)
+		var Hb := to_h * r.skel.get_bone_global_pose(ik.hand)
+		ik.a = U.origin.distance_to(F.origin)
+		ik.b = F.origin.distance_to(Hb.origin)
+		ik.rel = F.basis.orthonormalized().inverse() * Hb.basis.orthonormalized()
+		# grip frame: the pistol grip for the right fist; for the left hand (which wraps
+		# round the right one on the pistol) the same frame moved into its own palm
+		var Gs := G
+		if side == "L":
+			Gs = Transform3D(G.basis, Hb.origin + Hb.basis.y.normalized() * 0.075 + Hb.basis.x.normalized() * 0.01)
+		ik.gh = Hb.affine_inverse() * Gs
+		# elbow hint (holder space): out to the side, down and well behind the eye
+		ik.pole_h = Vector3(0.45 if side == "R" else -0.45, -1.4, 0.35)
+		out[side.to_lower()] = ik
+	r.ik = out
+	_load_grips(r)
+	if Game.args.has("dumpgrips"):
+		_dump_grips(r, to_h)
+
+
+## Finger poses and prop placements solved in Blender for each held object
+## (tools/blender/grip_fit.py): transforms relative to the hand bone, skeleton space.
+const GRIPS_FILE := "res://assets/data/hand_grips.json"
+
+
+func _load_grips(r: ViewRig) -> void:
+	if not FileAccess.file_exists(GRIPS_FILE):
+		return
+	var data = JSON.parse_string(FileAccess.get_file_as_string(GRIPS_FILE))
+	if not (data is Dictionary):
+		return
+	for key in data:
+		var g: Dictionary = data[key]
+		var fingers: Array = []
+		for bn in g.get("fingers", {}):
+			var bi := r.skel.find_bone(String(bn))
+			if bi >= 0:
+				fingers.append([bi, _arr_xf(g.fingers[bn])])
+		fingers.sort_custom(func(a, b) -> bool: return int(a[0]) < int(b[0]))   # parents first
+		r.grips[key] = {"fingers": fingers, "prop": _arr_xf(g.prop)}
+
+
+static func _arr_xf(a: Array) -> Transform3D:
+	return Transform3D(Basis(Vector3(a[0], a[1], a[2]), Vector3(a[3], a[4], a[5]), Vector3(a[6], a[7], a[8])), Vector3(a[9], a[10], a[11]))
+
+
+## The grip (Blender-solved) for what a hand holds, or {}.
+func _grip_for(r: ViewRig, side: String) -> Dictionary:
+	if not _act_props.has(side):
+		return {}
+	var id := String((_act_props[side] as Node3D).get_meta("prop_id", ""))
+	var key := ("bite_" + held) if id == "bite" else id
+	return r.grips.get(key, {})
+
+
+## Fingers round the object, from the hand's current (IK) pose.
+func _apply_grip(r: ViewRig, grip: Dictionary, hand_h: Transform3D, from_h: Transform3D) -> void:
+	var hand_s := from_h * hand_h
+	for f in grip.fingers:
+		r.skel.set_bone_global_pose(int(f[0]), hand_s * (f[1] as Transform3D))
+
+
+## Dev: writes where each held prop sits relative to the hands, in skeleton space at the
+## rig's authored frame (for the Blender grip solver, tools/blender/grip_fit.py).
+func _dump_grips(r: ViewRig, to_h: Transform3D) -> void:
+	var from_h := to_h.affine_inverse()
+	var out := {"bones": {}, "props": {}}
+	for bi in r.skel.get_bone_count():
+		out.bones[r.skel.get_bone_name(bi)] = {"pose": _xf_arr(r.skel.get_bone_global_pose(bi)), "rest": _xf_arr(r.skel.get_bone_global_rest(bi)), "parent": r.skel.get_bone_parent(bi)}
+	var saved := held
+	for spec in [["bottle", "r", "water_bottle"], ["pills", "r", "antirad"], ["roll", "r", "bandage"], ["spoon", "r", "canned_meat"],
+			["bite", "r", "tomato"], ["bite", "r", "potato"], ["bite", "r", "crackers"], ["can", "l", "canned_meat"]]:
+		held = String(spec[2])
+		var w := _act_prop(String(spec[0]))
+		if w == null:
+			continue
+		var m := w.get_child(0) as Node3D
+		var ik: Dictionary = r.ik[spec[1]]
+		var hand_h := to_h * r.skel.get_bone_global_pose(ik.hand)
+		var grip_h := hand_h * (ik.gh as Transform3D)
+		var prop_skel := from_h * grip_h * m.transform
+		var key := String(spec[0]) if spec[0] != "bite" else "bite_" + held
+		out.props[key] = {"side": spec[1], "xf": _xf_arr(prop_skel), "grip": _xf_arr(from_h * grip_h), "model_scale": m.scale.x, "model": String(m.get_meta("model_id", "")), "aabb": [Assets.model_aabb(m).size.x, Assets.model_aabb(m).size.y, Assets.model_aabb(m).size.z]}
+		w.free()
+	held = saved
+	var f := FileAccess.open(String(Game.args.dumpgrips), FileAccess.WRITE)
+	f.store_string(JSON.stringify(out, "  "))
+	f.close()
+	print("[grips] wrote ", Game.args.dumpgrips)
+
+
+static func _xf_arr(x: Transform3D) -> Array:
+	return [x.basis.x.x, x.basis.x.y, x.basis.x.z, x.basis.y.x, x.basis.y.y, x.basis.y.z, x.basis.z.x, x.basis.z.y, x.basis.z.z, x.origin.x, x.origin.y, x.origin.z]
 
 
 func fov_mult() -> float:

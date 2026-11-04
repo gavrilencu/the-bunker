@@ -80,7 +80,7 @@ func _materials() -> void:
 	m_grass = Assets.pbr("grass", {"tile": 3.0, "fallback": Color(0.28, 0.36, 0.2)})
 	m_asphalt = Assets.pbr("asphalt", {"tile": 5.0, "fallback": Color(0.16, 0.16, 0.17)})
 	m_concrete = Assets.pbr("concrete_floor", {"tile": 3.0, "fallback": Color(0.5, 0.5, 0.48)})
-	m_wall = Assets.pbr("concrete_wall", {"tile": 2.5, "fallback": Color(0.55, 0.55, 0.52)})
+	m_wall = Assets.pbr("bunker_wall" if Assets.has_texture_set("bunker_wall") else "concrete_wall", {"tile": 2.5, "fallback": Color(0.55, 0.55, 0.52)})
 	m_brick = Assets.pbr("brick_wall", {"tile": 2.5, "fallback": Color(0.45, 0.25, 0.2)})
 	m_metal = Assets.pbr("rusty_metal", {"tile": 2.0, "fallback": Color(0.35, 0.28, 0.22)})
 	m_pave = Assets.pbr("pavement", {"tile": 2.0, "fallback": Color(0.55, 0.54, 0.5)})
@@ -149,7 +149,7 @@ func _build_street() -> void:
 	# parked cars
 	var car_spots := [Vector3(-22, 0, 3.4), Vector3(-34, 0, 3.4), Vector3(16, 0, -3.4), Vector3(48, 0, 3.4), Vector3(-70, 0, -3.4), Vector3(88, 0, 3.4)]
 	for i in car_spots.size():
-		CityLife.paint_car(Geo.prop(self, "car_sedan", car_spots[i], PI * 0.5 + (PI if i % 2 == 0 else 0.0)), CityLife.CAR_COLORS[(i * 4 + 1) % CityLife.CAR_COLORS.size()])
+		CityLife.parked_car(self, car_spots[i], PI * 0.5 + (PI if i % 2 == 0 else 0.0), CityLife.CAR_COLORS[(i * 4 + 1) % CityLife.CAR_COLORS.size()])
 	# utility poles + street lamps
 	for i in range(-8, 9):
 		var x := i * 34.0 + 12.0

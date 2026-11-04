@@ -340,5 +340,252 @@
   },
   "sink_old": {
     "ref": "a278d63585494921906ab3500c421ff7"
+  },
+  "bed_frame": {
+    "ref": "ph:old_bed_frame"
+  },
+  "day_bed": {
+    "ref": "ph:vintage_day_bed"
+  },
+  "nightstand": {
+    "ref": "ph:ClassicNightstand_01"
+  },
+  "nightstand_b": {
+    "ref": "ph:painted_wooden_nightstand"
+  },
+  "drawer_cabinet": {
+    "ref": "ph:drawer_cabinet"
+  },
+  "dresser_old": {
+    "ref": "ph:vintage_wooden_drawer_01"
+  },
+  "cabinet_tall": {
+    "ref": "ph:painted_wooden_cabinet"
+  },
+  "cabinet_tall_b": {
+    "ref": "ph:painted_wooden_cabinet_02"
+  },
+  "vintage_cabinet": {
+    "ref": "ph:vintage_cabinet_01"
+  },
+  "bookshelf_worn": {
+    "ref": "ph:wooden_bookshelf_worn"
+  },
+  "books_set": {
+    "ref": "ph:book_encyclopedia_set_01"
+  },
+  "tv_old": {
+    "ref": "ph:Television_01"
+  },
+  "masonry_heater": {
+    "ref": "ph:scandinavian_masonry_heater"
+  },
+  "office_desk": {
+    "ref": "ph:metal_office_desk"
+  },
+  "school_desk": {
+    "ref": "ph:SchoolDesk_01"
+  },
+  "stove_electric": {
+    "ref": "ph:electric_stove"
+  },
+  "chair_dining": {
+    "ref": "ph:dining_chair_02"
+  },
+  "chair_wood": {
+    "ref": "ph:WoodenChair_01"
+  },
+  "chair_painted": {
+    "ref": "ph:painted_wooden_chair_01"
+  },
+  "table_dining": {
+    "ref": "ph:dining_table"
+  },
+  "coffee_table": {
+    "ref": "ph:CoffeeTable_01"
+  },
+  "sofa_c": {
+    "ref": "ph:sofa_03"
+  },
+  "armchair": {
+    "ref": "ph:ArmChair_01"
+  },
+  "suitcase": {
+    "ref": "ph:vintage_suitcase"
+  },
+  "wall_clock": {
+    "ref": "ph:wall_clock"
+  },
+  "picture_frame": {
+    "ref": "ph:hanging_picture_frame_02"
+  },
+  "picture_frame_b": {
+    "ref": "ph:hanging_picture_frame_01"
+  },
+  "mirror": {
+    "ref": "ph:ornate_mirror_01"
+  },
+  "kettle": {
+    "ref": "ph:vintage_electric_kettle"
+  },
+  "pot_enamel": {
+    "ref": "ph:pot_enamel_01"
+  },
+  "food_cans": {
+    "ref": "ph:russian_food_cans_01"
+  },
+  "jug": {
+    "ref": "ph:jug_01"
+  },
+  "cardboard_box": {
+    "ref": "ph:cardboard_box_01"
+  },
+  "plastic_crate": {
+    "ref": "ph:plastic_crate_01"
+  },
+  "trashbag": {
+    "ref": "ph:trashbag"
+  },
+  "potted_plant": {
+    "ref": "ph:potted_plant_04"
+  },
+  "steel_shelves": {
+    "ref": "ph:steel_frame_shelves_02"
+  },
+  "tool_chest": {
+    "ref": "ph:metal_tool_chest"
+  },
+  "drill_press": {
+    "ref": "ph:old_drill_press"
+  },
+  "cash_register": {
+    "ref": "ph:CashRegister_01"
+  },
+  "airduct": {
+    "ref": "ph:modular_airduct_circular_01"
+  },
+  "pipes_industrial": {
+    "ref": "ph:modular_industrial_pipes_01"
+  },
+  "cables": {
+    "ref": "ph:modular_electric_cables"
+  },
+  "fluoro_lights": {
+    "ref": "ph:mounted_fluorescent_lights"
+  },
+  "fire_alarm": {
+    "ref": "ph:fire_alarm"
+  },
+  "security_cam": {
+    "ref": "ph:security_camera_02"
+  },
+  "utility_box": {
+    "ref": "ph:utility_box_01"
+  },
+  "wall_lamp": {
+    "ref": "ph:industrial_wall_lamp"
+  },
+  "fire_hydrant": {
+    "ref": "ph:fire_hydrant"
+  },
+  "manhole": {
+    "ref": "ph:water_manhole_cover"
+  },
+  "trash_can": {
+    "ref": "ph:metal_trash_can"
+  },
+  "street_lamp_b": {
+    "ref": "ph:street_lamp_01"
+  },
+  "ceiling_fan": {
+    "ref": "ph:ceiling_fan"
+  },
+  "lamp_pendant": {
+    "ref": "ph:modern_ceiling_lamp_01"
+  },
+  "chandelier": {
+    "ref": "ph:Chandelier_02"
+  },
+  "toilet": {
+    "ref": "389d5427a1f344c4aa4883ec5a6aaf05"
+  },
+  "backpack_old": {
+    "ref": "bb89dfa7ec13478e85645497dfeafdcd"
+  },
+  "display_fridge": {
+    "ref": "9079bf17aacf4570a0c2b2587104c5ab"
+  },
+  "hospital_bed": {
+    "ref": "f8c13a19e84343e7b644c19f7b9488d3"
+  },
+  "car_volga": {
+    "ref": "19074d0e6287462ea5e2be3e0a115665"
+  },
+  "car_lada": {
+    "ref": "a90b22435e65452b8e01f77b21f5f59c"
+  },
+  "civ_nathan": {
+    "ref": "143a2b1ea5eb4385ae90a73657aca3bc"
+  },
+  "civ_fuse": {
+    "ref": "6fc4bddf4d364e6b9fa2f050011e03ce"
+  },
+  "civ_coat": {
+    "ref": "cd71038373d5427099a7970f1a1af2df"
+  },
+  "civ_woman": {
+    "ref": "c6436897da494b4e8e1f8188aea620c6"
+  },
+  "grass_dry": {
+    "ref": "d1484537470441b999d37077aeb9b47a"
+  },
+  "grass_green": {
+    "ref": "34fbd9829fef4babbdd52547f776b014"
+  },
+  "grass_green_b": {
+    "ref": "9b958d613e9a44dbba580748e7a1789c"
+  },
+  "grass_scan": {
+    "ref": "b5956b7d4d1f4ff6ae1dd1320dab0d12"
+  },
+  "duct_straight": {
+    "ref": "ph:modular_airduct_circular_01",
+    "keep": "circular_triple$"
+  },
+  "duct_bend": {
+    "ref": "ph:modular_airduct_circular_01",
+    "keep": "circular_smooth_bend_quater$"
+  },
+  "cable_run": {
+    "ref": "ph:modular_electric_cables",
+    "keep": "cable_straight_long$"
+  },
+  "pipe_fitting": {
+    "ref": "ph:modular_industrial_pipes_01",
+    "keep": "pipe08$"
+  },
+  "water_bottle_m": {
+    "ref": "ca39d6f0333348e59e66cbe4258a028a"
+  },
+  "bandage_roll": {
+    "ref": "86276f80e946430d9fff7d905bf056b1"
+  },
+  "spoon_metal": {
+    "ref": "e55af322cf8f43fa9b4fb2b368bafd0f"
+  },
+  "pill_bottle": {
+    "ref": "21f392ee64fb4297a578a1ae210dcb33"
+  },
+  "food_tomato": {
+    "ref": "fda1fbe840c344968523a1cbc7395839"
+  },
+  "food_potato": {
+    "ref": "de02148574c5434e80187d35378d1b8a"
+  },
+  "food_cracker": {
+    "ref": "3e0ce2a765b24ccaad8d780d84db9170"
+  },
+  "bowl_enamel": {
+    "ref": "de4ecf2c5040488ab98d214a0d9362cc"
   }
 }

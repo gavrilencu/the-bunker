@@ -74,6 +74,7 @@ func _ready() -> void:
 	csg.add_child(outer)
 	for room in ["airlock", "hall", "storage", "tech", "green"]:
 		_open_room(room)
+	_exit_gallery()
 	for d in DOORS:
 		_carve_door(d)
 	for k in DIGS:
@@ -131,7 +132,7 @@ func _open_room(room: String) -> void:
 		"infirmary":
 			fm = Assets.pbr("tiles_wall", {"tile": 1.2, "fallback": Color(0.75, 0.75, 0.72)})
 		_:
-			fm = Assets.pbr("concrete_floor", {"tile": 2.5, "fallback": Color(0.4, 0.4, 0.38)})
+			fm = Assets.pbr("bunker_floor" if Assets.has_texture_set("bunker_floor") else "concrete_floor", {"tile": 3.0, "tint": Color(0.8, 0.8, 0.78), "fallback": Color(0.4, 0.4, 0.38)})
 	var fl := Geo.plane(self, r.size, Vector3(r.get_center().x, 0.0, r.get_center().y), fm, true)
 	fl.set_meta("surface", "concrete")
 	Geo.dust(self, Vector3(r.get_center().x, 1.6, r.get_center().y), Vector3(r.size.x * 0.45, 1.4, r.size.y * 0.45), int(r.get_area() * 2.5))
@@ -145,7 +146,7 @@ func _carve_door(d: Rect2) -> void:
 	b.position = Vector3(d.get_center().x, (2.5 - SINK) * 0.5, d.get_center().y)
 	b.material = BunkerBuilder.wall_material(Color(0.36, 0.33, 0.2))
 	csg.add_child(b)
-	var fl := Geo.plane(self, d.size, Vector3(d.get_center().x, 0.0, d.get_center().y), Assets.pbr("concrete_floor", {"tile": 2.5}), true)
+	var fl := Geo.plane(self, d.size, Vector3(d.get_center().x, 0.0, d.get_center().y), Assets.pbr("bunker_floor" if Assets.has_texture_set("bunker_floor") else "concrete_floor", {"tile": 3.0, "tint": Color(0.8, 0.8, 0.78)}), true)
 	fl.set_meta("surface", "concrete")
 
 
@@ -186,6 +187,86 @@ func _ceiling_details(room: String, r: Rect2, h: float) -> void:
 	# emergency red light by the doorway
 	var em := Geo.omni(self, Vector3(r.get_center().x, h - 0.2, r.get_center().y), Color(1.0, 0.16, 0.08), 0.0, 9.0, false)
 	lights.append({"light": em, "base": 1.5, "kind": "emergency"})
+	_room_services(room, r, h)
+
+
+## Real services along the walls and ceiling (Poly Haven CC0 models): a cable run,
+## a ventilation duct, a fire detector, junction boxes, a camera over the airlock.
+func _room_services(room: String, r: Rect2, h: float) -> void:
+	var along_x := r.size.x >= r.size.y
+	var length := r.size.x if along_x else r.size.y
+	var lite := func(n: Node3D) -> Node3D:
+		Assets.set_shadows(n, false)
+		return n
+	# cable run: three cables clipped high along the far long wall (1 m pieces end to end)
+	if Assets.has_model("cable_run"):
+		for k in 3:
+			var y := h - 0.55 - k * 0.11
+			var n := int(length - 0.3)
+			for i in n:
+				var t := -length * 0.5 + 0.65 + i * 1.0
+				var c: Node3D
+				if along_x:
+					c = Geo.prop(self, "cable_run", Vector3(r.get_center().x + t, y, r.position.y + 0.03), 0.0, "none")
+					c.rotation = Vector3(0, 0, PI * 0.5)
+				else:
+					c = Geo.prop(self, "cable_run", Vector3(r.position.x + 0.03, y, r.get_center().y + t), 0.0, "none")
+					c.rotation = Vector3(PI * 0.5, PI * 0.5, 0)
+				lite.call(c)
+	# ventilation duct under the ceiling (not in the low airlock), 1.5 m segments
+	if Assets.has_model("duct_straight") and room != "airlock":
+		var n2 := int((length - 0.6) / 1.5)
+		for i in n2:
+			var t := -length * 0.5 + 1.05 + i * 1.5
+			if along_x:
+				lite.call(Geo.prop(self, "duct_straight", Vector3(r.get_center().x + t, h - 0.45, r.end.y - 0.55), PI * 0.5, "none"))
+			else:
+				lite.call(Geo.prop(self, "duct_straight", Vector3(r.end.x - 0.55, h - 0.45, r.get_center().y + t), 0.0, "none"))
+	if Assets.has_model("fire_alarm"):
+		lite.call(Geo.prop(self, "fire_alarm", Vector3(r.get_center().x + 0.6, h - 0.15, r.get_center().y + 0.4), 0.0, "none")).rotation.x = PI
+	if Assets.has_model("utility_box"):
+		var wall_pos := Vector3(r.end.x - 0.14, 1.1, r.position.y + 1.0) if not along_x else Vector3(r.position.x + 1.0, 1.1, r.end.y - 0.14)
+		lite.call(Geo.prop(self, "utility_box", wall_pos, -PI * 0.5 if not along_x else PI, "none"))
+	if room == "airlock" and Assets.has_model("security_cam"):
+		lite.call(Geo.prop(self, "security_cam", Vector3(r.end.x - 0.25, h - 0.35, r.position.y + 0.4), PI * 0.75, "none"))
+
+
+## The gallery behind the blast door: a lit concrete passage of the shelter network
+## (seen when the door swings open on the way out).
+func _exit_gallery() -> void:
+	var z0 := -14.6
+	var length := 11.0
+	var g := CSGBox3D.new()
+	g.operation = CSGShape3D.OPERATION_SUBTRACTION
+	g.size = Vector3(2.8, 2.7 + SINK, length)
+	g.position = Vector3(0, (2.7 - SINK) * 0.5, z0 - length * 0.5 + 0.05)
+	g.material = BunkerBuilder.wall_material(Color(0.36, 0.33, 0.2), true, 0.7)
+	csg.add_child(g)
+	var fm := Assets.pbr("bunker_floor" if Assets.has_texture_set("bunker_floor") else "concrete_floor", {"tile": 3.0, "tint": Color(0.7, 0.7, 0.68)})
+	Geo.plane(self, Vector2(2.8, length), Vector3(0, 0.0, z0 - length * 0.5), fm, true)
+	# end wall turn + sign
+	var sign := Geo.label3d(self, "GALERIA  →  IEȘIRILE 1–6", Vector3(0, 1.9, z0 - length + 0.2), 0.0, 0.2, Color(0.95, 0.8, 0.3))
+	sign.shaded = false
+	# fluorescent fittings along the ceiling, every other one dead
+	for i in 4:
+		var z := z0 - 1.5 - i * 2.8
+		if Assets.has_model("fluoro_lights"):
+			Assets.set_shadows(Geo.prop(self, "fluoro_lights", Vector3(0, 2.68, z), PI * 0.5, "none"), false)
+		if i % 2 == 0 or i == 3:
+			var l := Geo.omni(self, Vector3(0, 2.4, z), Color(0.85, 0.92, 1.0), 1.4, 6.5, i == 0)
+			l.light_volumetric_fog_energy = 0.6
+	if Assets.has_model("cable_run"):
+		for k in 3:
+			for i in int(length - 1.0):
+				var c := Geo.prop(self, "cable_run", Vector3(-1.37, 2.2 - k * 0.1, z0 - 0.8 - i * 1.0), 0.0, "none")
+				c.rotation = Vector3(PI * 0.5, 0, 0)
+				Assets.set_shadows(c, false)
+	if Assets.has_model("duct_straight"):
+		for i in int(length / 1.5):
+			Assets.set_shadows(Geo.prop(self, "duct_straight", Vector3(0.75, 2.25, z0 - 0.9 - i * 1.5), 0.0, "none"), false)
+	if Assets.has_model("pipe_fitting"):
+		Assets.set_shadows(Geo.prop(self, "pipe_fitting", Vector3(1.05, 0.0, z0 - length + 1.2), -PI * 0.5, "none"), false)
+	Geo.dust(self, Vector3(0, 1.4, z0 - length * 0.5), Vector3(1.2, 1.2, length * 0.45), 160)
 
 
 func _dig_site(k: String) -> void:

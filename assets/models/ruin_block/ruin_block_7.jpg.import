@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duauuw23ofsf2"
-path.s3tc="res://.godot/imported/ruin_block_7.jpg-98a8717d2ed15897dbb320f3cff4791c.s3tc.ctex"
+path.bptc="res://.godot/imported/ruin_block_7.jpg-98a8717d2ed15897dbb320f3cff4791c.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/ruin_block/ruin_block_7.jpg"
-dest_files=["res://.godot/imported/ruin_block_7.jpg-98a8717d2ed15897dbb320f3cff4791c.s3tc.ctex"]
+dest_files=["res://.godot/imported/ruin_block_7.jpg-98a8717d2ed15897dbb320f3cff4791c.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

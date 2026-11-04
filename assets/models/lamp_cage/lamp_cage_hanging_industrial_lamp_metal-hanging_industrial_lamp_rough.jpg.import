@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5pkc6ua7hqg4"
-path.s3tc="res://.godot/imported/lamp_cage_hanging_industrial_lamp_metal-hanging_industrial_lamp_rough.jpg-324f589b89954537723ce57bed1c38f4.s3tc.ctex"
+path.bptc="res://.godot/imported/lamp_cage_hanging_industrial_lamp_metal-hanging_industrial_lamp_rough.jpg-324f589b89954537723ce57bed1c38f4.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/lamp_cage/lamp_cage_hanging_industrial_lamp_metal-hanging_industrial_lamp_rough.jpg"
-dest_files=["res://.godot/imported/lamp_cage_hanging_industrial_lamp_metal-hanging_industrial_lamp_rough.jpg-324f589b89954537723ce57bed1c38f4.s3tc.ctex"]
+dest_files=["res://.godot/imported/lamp_cage_hanging_industrial_lamp_metal-hanging_industrial_lamp_rough.jpg-324f589b89954537723ce57bed1c38f4.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

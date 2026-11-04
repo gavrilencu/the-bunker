@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2wxbdt06rh1g"
-path.bptc="res://.godot/imported/normal.jpg-13d73204eded6c5dd0a07410c7daf23d.bptc.ctex"
+path.s3tc="res://.godot/imported/normal.jpg-13d73204eded6c5dd0a07410c7daf23d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,12 +12,12 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/ground_dirt/normal.jpg"
-dest_files=["res://.godot/imported/normal.jpg-13d73204eded6c5dd0a07410c7daf23d.bptc.ctex"]
+dest_files=["res://.godot/imported/normal.jpg-13d73204eded6c5dd0a07410c7daf23d.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

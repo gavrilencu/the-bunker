@@ -23,6 +23,7 @@ var _dir := 1
 var _model: Node3D
 var _ap: AnimationPlayer
 var _anims := {}
+const CIVILIANS := ["civ_coat", "civ_fuse", "civ_woman"]
 var _t := 0.0
 var _pause := 0.0
 var _run_speed := 4.4
@@ -46,14 +47,29 @@ func _ready() -> void:
 	cs.shape = cap
 	cs.position.y = 0.86
 	add_child(cs)
-	_model = Assets.model("survivor_npc")
+	# realistic townspeople (Mixamo-rigged scans/characters); their idle, walk and run
+	# clips are retargeted from the bandit's Mixamo set. Falls back to the old low-poly man.
+	var pool: Array = []
+	for id in CIVILIANS:
+		if Assets.has_model(id):
+			pool.append(id)
+	var real := not pool.is_empty()
+	_model = Assets.model(pool.pick_random() if real else "survivor_npc")
 	add_child(_model)
-	_model.scale = Vector3.ONE * randf_range(0.93, 1.05)
-	CityLife.dress(_model)
+	_model.scale = Vector3.ONE * randf_range(0.95, 1.04)
+	if not real:
+		CityLife.dress(_model)
 	Assets.for_each_geometry(_model, func(g: GeometryInstance3D) -> void:
 		g.visibility_range_end = 90.0)
 	_ap = Assets.find_animation_player(_model)
-	if _ap:
+	if _ap and real:
+		var got := AnimRetarget.import_anims(_model, _ap, "enemy_bandit", {"idle": "Idle (3)", "walk": "Walking (5)", "run": "Running (1)"})
+		for k in got:
+			var a := _ap.get_animation(got[k])
+			a.loop_mode = Animation.LOOP_LINEAR
+			_strip_root_motion(a)
+			_anims[k] = got[k]
+	elif _ap:
 		for k in ["idle", "walk", "run", "death"]:
 			if _ap.has_animation(k):
 				var a := _ap.get_animation(k)
@@ -102,8 +118,9 @@ static func _strip_root_motion(a: Animation) -> void:
 func _play(k: String, spd := 1.0, blend := 0.3) -> void:
 	if _ap == null or not _anims.has(k):
 		return
-	if _ap.current_animation != k:
-		_ap.play(k, blend, spd)
+	var n: String = _anims[k]
+	if _ap.current_animation != n:
+		_ap.play(n, blend, spd)
 	else:
 		_ap.speed_scale = spd
 

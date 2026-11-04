@@ -22,6 +22,24 @@
     "tex": 1024,
     "notes": "long axis X; alpha: material:MASK, material_1:MASK"
   },
+  "airduct": {
+    "file": "res://assets/models/airduct/airduct.glb",
+    "title": "Modular Airduct Circular 01",
+    "author": "Riley Queen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_airduct_circular_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_airduct_circular_01",
+    "faces": 14280,
+    "size_m": [
+      3,
+      0.952,
+      1.053
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "apartment_block": {
     "file": "res://assets/models/apartment_block/apartment_block.glb",
     "title": "Russian panel house (asset)",
@@ -39,6 +57,114 @@
     ],
     "tex": 1024,
     "notes": "long axis Z; alpha: Balkon_01:BLEND, Balkon_03:BLEND"
+  },
+  "armchair": {
+    "file": "res://assets/models/armchair/armchair.glb",
+    "title": "Arm Chair 01",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/ArmChair_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:ArmChair_01",
+    "faces": 5626,
+    "size_m": [
+      0.757,
+      0.95,
+      0.683
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "backpack_old": {
+    "file": "res://assets/models/backpack_old/backpack_old.glb",
+    "title": "Old Soviet Backpack",
+    "author": "TwilightFox",
+    "author_url": "https://sketchfab.com/twilightfox",
+    "source_url": "https://sketchfab.com/3d-models/old-soviet-backpack-bb89dfa7ec13478e85645497dfeafdcd",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "bb89dfa7ec13478e85645497dfeafdcd",
+    "faces": 15938,
+    "size_m": [
+      0.392,
+      0.5,
+      0.413
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "bandage_roll": {
+    "file": "res://assets/models/bandage_roll/bandage_roll.glb",
+    "title": "Bandage",
+    "author": "Birbman",
+    "author_url": "https://sketchfab.com/gtvorets",
+    "source_url": "https://sketchfab.com/3d-models/bandage-86276f80e946430d9fff7d905bf056b1",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "86276f80e946430d9fff7d905bf056b1",
+    "faces": 836,
+    "size_m": [
+      0.098,
+      0.137,
+      0.1
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "bathtub_old": {
+    "file": "res://assets/models/bathtub_old/bathtub_old.glb",
+    "title": "Old Bathtube",
+    "author": "wolkoed",
+    "author_url": "https://sketchfab.com/wolkoed",
+    "source_url": "https://sketchfab.com/3d-models/old-bathtube-2f1706233a3248cf9a74586fc2e7120c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "2f1706233a3248cf9a74586fc2e7120c",
+    "faces": 4748,
+    "size_m": [
+      0.756,
+      0.563,
+      1.6
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "bed_frame": {
+    "file": "res://assets/models/bed_frame/bed_frame.glb",
+    "title": "Old Bed Frame",
+    "author": "Luca B",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/old_bed_frame",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:old_bed_frame",
+    "faces": 19610,
+    "size_m": [
+      0.904,
+      1.2,
+      2
+    ],
+    "tex": 2048,
+    "notes": "long axis Z"
+  },
+  "bed_old": {
+    "file": "res://assets/models/bed_old/bed_old.glb",
+    "title": "Old Bed",
+    "author": "Viktor Kiseliov",
+    "author_url": "https://sketchfab.com/asin10009",
+    "source_url": "https://sketchfab.com/3d-models/old-bed-6251708b41514ee6b4fec0e3955c4b69",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "6251708b41514ee6b4fec0e3955c4b69",
+    "faces": 692,
+    "size_m": [
+      1.013,
+      1.114,
+      2
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
   },
   "bench": {
     "file": "res://assets/models/bench/bench.glb",
@@ -58,6 +184,42 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "books_set": {
+    "file": "res://assets/models/books_set/books_set.glb",
+    "title": "Book Encyclopedia Set 01",
+    "author": "John Malcolm",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/book_encyclopedia_set_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:book_encyclopedia_set_01",
+    "faces": 27806,
+    "size_m": [
+      0.55,
+      0.237,
+      0.163
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "bookshelf_worn": {
+    "file": "res://assets/models/bookshelf_worn/bookshelf_worn.glb",
+    "title": "Wooden Bookshelf Worn",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/wooden_bookshelf_worn",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:wooden_bookshelf_worn",
+    "faces": 10106,
+    "size_m": [
+      1.265,
+      1.9,
+      0.535
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "boulder": {
     "file": "res://assets/models/boulder/boulder.glb",
     "title": "Namaqualand Boulder 02",
@@ -75,6 +237,24 @@
     ],
     "tex": 2048,
     "notes": "long axis X"
+  },
+  "bowl_enamel": {
+    "file": "res://assets/models/bowl_enamel/bowl_enamel.glb",
+    "title": "Bowl with Soup",
+    "author": "mornaista",
+    "author_url": "https://sketchfab.com/mornaista",
+    "source_url": "https://sketchfab.com/3d-models/bowl-with-soup-de4ecf2c5040488ab98d214a0d9362cc",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "de4ecf2c5040488ab98d214a0d9362cc",
+    "faces": 4894,
+    "size_m": [
+      0.16,
+      0.075,
+      0.16
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
   },
   "branches_dry": {
     "file": "res://assets/models/branches_dry/branches_dry.glb",
@@ -228,6 +408,79 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "cabinet_tall": {
+    "file": "res://assets/models/cabinet_tall/cabinet_tall.glb",
+    "title": "Painted Wooden Cabinet",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/painted_wooden_cabinet",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:painted_wooden_cabinet",
+    "faces": 2227,
+    "size_m": [
+      1.921,
+      1.9,
+      0.991
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "cabinet_tall_b": {
+    "file": "res://assets/models/cabinet_tall_b/cabinet_tall_b.glb",
+    "title": "Painted Wooden Cabinet 02",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/painted_wooden_cabinet_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:painted_wooden_cabinet_02",
+    "faces": 966,
+    "size_m": [
+      0.737,
+      1.9,
+      0.534
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "cable_run": {
+    "file": "res://assets/models/cable_run/cable_run.glb",
+    "title": "Modular Electric Cables",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_electric_cables",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_electric_cables",
+    "keep": "cable_straight_long$",
+    "faces": 1044,
+    "size_m": [
+      0.069,
+      1,
+      0.043
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "cables": {
+    "file": "res://assets/models/cables/cables.glb",
+    "title": "Modular Electric Cables",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_electric_cables",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_electric_cables",
+    "faces": 16922,
+    "size_m": [
+      3,
+      1.094,
+      0.31
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "camping_stove": {
     "file": "res://assets/models/camping_stove/camping_stove.glb",
     "title": "Portable Kitchen Stove",
@@ -282,6 +535,24 @@
     "tex": 512,
     "notes": "long axis X"
   },
+  "car_lada": {
+    "file": "res://assets/models/car_lada/car_lada.glb",
+    "title": "Lada 2107 tun",
+    "author": "Aslan",
+    "author_url": "https://sketchfab.com/Aslan_",
+    "source_url": "https://sketchfab.com/3d-models/lada-2107-tun-a90b22435e65452b8e01f77b21f5f59c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "a90b22435e65452b8e01f77b21f5f59c",
+    "faces": 68347,
+    "size_m": [
+      4.13,
+      1.354,
+      1.783
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: Glass:BLEND, F_Glass_2:BLEND, F_Lights:BLEND, F_Turn_S:BLEND, Rear_Glass:BLEND, Rep_Signal_2:BLEND"
+  },
   "car_sedan": {
     "file": "res://assets/models/car_sedan/car_sedan.glb",
     "title": "Old Car - VAZ 2107",
@@ -299,6 +570,24 @@
     ],
     "tex": 1024,
     "notes": "long axis Z; alpha: Windows:BLEND, Details_Transparent:BLEND"
+  },
+  "car_volga": {
+    "file": "res://assets/models/car_volga/car_volga.glb",
+    "title": "GAZ 24 Volga",
+    "author": "maxdragonn",
+    "author_url": "https://sketchfab.com/maxdragon",
+    "source_url": "https://sketchfab.com/3d-models/gaz-24-volga-19074d0e6287462ea5e2be3e0a115665",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "19074d0e6287462ea5e2be3e0a115665",
+    "faces": 35715,
+    "size_m": [
+      2.075,
+      1.487,
+      4.73
+    ],
+    "tex": 1024,
+    "notes": "long axis Z; alpha: glass1:BLEND"
   },
   "car_wreck": {
     "file": "res://assets/models/car_wreck/car_wreck.glb",
@@ -318,6 +607,60 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "cardboard_box": {
+    "file": "res://assets/models/cardboard_box/cardboard_box.glb",
+    "title": "Cardboard Box 01",
+    "author": "Rahul Chaudhary",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/cardboard_box_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:cardboard_box_01",
+    "faces": 6000,
+    "size_m": [
+      0.412,
+      0.364,
+      0.55
+    ],
+    "tex": 2048,
+    "notes": "long axis Z"
+  },
+  "cash_register": {
+    "file": "res://assets/models/cash_register/cash_register.glb",
+    "title": "Cash Register 01",
+    "author": "Joe Seabuhr",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/CashRegister_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:CashRegister_01",
+    "faces": 7999,
+    "size_m": [
+      0.433,
+      0.448,
+      0.45
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint; alpha: CashRegister_01_glass:BLEND"
+  },
+  "ceiling_fan": {
+    "file": "res://assets/models/ceiling_fan/ceiling_fan.glb",
+    "title": "Ceiling Fan",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/ceiling_fan",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:ceiling_fan",
+    "faces": 7998,
+    "size_m": [
+      1.2,
+      0.424,
+      1.2
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
   "chair": {
     "file": "res://assets/models/chair/chair.glb",
     "title": "Old Metal Folding Chair",
@@ -335,6 +678,180 @@
     ],
     "tex": 512,
     "notes": "roughly square footprint"
+  },
+  "chair_dining": {
+    "file": "res://assets/models/chair_dining/chair_dining.glb",
+    "title": "Dining Chair 02",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/dining_chair_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:dining_chair_02",
+    "faces": 11999,
+    "size_m": [
+      0.41,
+      0.92,
+      0.545
+    ],
+    "tex": 2048,
+    "notes": "long axis Z"
+  },
+  "chair_painted": {
+    "file": "res://assets/models/chair_painted/chair_painted.glb",
+    "title": "Painted Wooden Chair 01",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/painted_wooden_chair_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:painted_wooden_chair_01",
+    "faces": 724,
+    "size_m": [
+      0.406,
+      0.9,
+      0.508
+    ],
+    "tex": 2048,
+    "notes": "long axis Z"
+  },
+  "chair_wood": {
+    "file": "res://assets/models/chair_wood/chair_wood.glb",
+    "title": "Wooden Chair 01",
+    "author": "Jake Mobley",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/WoodenChair_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:WoodenChair_01",
+    "faces": 12000,
+    "size_m": [
+      0.278,
+      0.92,
+      0.266
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "chandelier": {
+    "file": "res://assets/models/chandelier/chandelier.glb",
+    "title": "Chandelier 02",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/Chandelier_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:Chandelier_02",
+    "faces": 11998,
+    "size_m": [
+      0.48,
+      0.6,
+      0.438
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "civ_coat": {
+    "file": "res://assets/models/civ_coat/civ_coat.glb",
+    "title": "Man In Coat - Human Rigged Model",
+    "author": "Saitam",
+    "author_url": "https://sketchfab.com/saitam_ha",
+    "source_url": "https://sketchfab.com/3d-models/man-in-coat-human-rigged-model-cd71038373d5427099a7970f1a1af2df",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "cd71038373d5427099a7970f1a1af2df",
+    "faces": 31323,
+    "size_m": [
+      1.743,
+      1.82,
+      0.355
+    ],
+    "tex": 1024,
+    "animations": [
+      "mixamo.com"
+    ],
+    "notes": "long axis X; skinned; alpha: Bodymat:BLEND, Shoesmat:MASK"
+  },
+  "civ_fuse": {
+    "file": "res://assets/models/civ_fuse/civ_fuse.glb",
+    "title": ".Fuse Civilian 1",
+    "author": "Leonardo Carvalho",
+    "author_url": "https://sketchfab.com/livrosparacriancas",
+    "source_url": "https://sketchfab.com/3d-models/fuse-civilian-1-6fc4bddf4d364e6b9fa2f050011e03ce",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "6fc4bddf4d364e6b9fa2f050011e03ce",
+    "faces": 22025,
+    "size_m": [
+      2.09,
+      1.78,
+      0.431
+    ],
+    "tex": 1024,
+    "animations": [
+      "mixamo.com"
+    ],
+    "notes": "long axis X; skinned; alpha: Body:BLEND, Moustache:BLEND, Beard:BLEND, Hair:BLEND"
+  },
+  "civ_nathan": {
+    "file": "res://assets/models/civ_nathan/civ_nathan.glb",
+    "title": "Nathan Animated 003 - Walking 3D Man",
+    "author": "Renderpeople",
+    "author_url": "https://sketchfab.com/renderpeople",
+    "source_url": "https://sketchfab.com/3d-models/nathan-animated-003-walking-3d-man-143a2b1ea5eb4385ae90a73657aca3bc",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "143a2b1ea5eb4385ae90a73657aca3bc",
+    "faces": 21506,
+    "size_m": [
+      0.539,
+      1.8,
+      0.412
+    ],
+    "tex": 1024,
+    "animations": [
+      "Take 001"
+    ],
+    "notes": "long axis X; skinned"
+  },
+  "civ_woman": {
+    "file": "res://assets/models/civ_woman/civ_woman.glb",
+    "title": ".Fuse Woman 1",
+    "author": "Leonardo Carvalho",
+    "author_url": "https://sketchfab.com/livrosparacriancas",
+    "source_url": "https://sketchfab.com/3d-models/fuse-woman-1-c6436897da494b4e8e1f8188aea620c6",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "c6436897da494b4e8e1f8188aea620c6",
+    "faces": 25434,
+    "size_m": [
+      1.671,
+      1.68,
+      0.369
+    ],
+    "tex": 1024,
+    "animations": [
+      "mixamo.com"
+    ],
+    "notes": "long axis X; skinned; alpha: Body:BLEND, material:MASK, Hair:BLEND, Shoes:MASK"
+  },
+  "coffee_table": {
+    "file": "res://assets/models/coffee_table/coffee_table.glb",
+    "title": "Coffee Table 01",
+    "author": "Fernando Quinn",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/CoffeeTable_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:CoffeeTable_01",
+    "faces": 10404,
+    "size_m": [
+      0.95,
+      0.323,
+      0.6
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
   },
   "concrete_barrier": {
     "file": "res://assets/models/concrete_barrier/concrete_barrier.glb",
@@ -390,6 +907,24 @@
     "tex": 1024,
     "notes": "long axis Z"
   },
+  "day_bed": {
+    "file": "res://assets/models/day_bed/day_bed.glb",
+    "title": "Vintage Day Bed",
+    "author": "Aron Łyczek",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/vintage_day_bed",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:vintage_day_bed",
+    "faces": 2715,
+    "size_m": [
+      1.95,
+      1.114,
+      0.845
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "debris_slab": {
     "file": "res://assets/models/debris_slab/debris_slab.glb",
     "title": "Destroyed concrete slab with reinforcement",
@@ -425,6 +960,116 @@
     ],
     "tex": 1024,
     "notes": "long axis X"
+  },
+  "display_fridge": {
+    "file": "res://assets/models/display_fridge/display_fridge.glb",
+    "title": "Food shop showcase",
+    "author": "bretzel44",
+    "author_url": "https://sketchfab.com/bretzel44",
+    "source_url": "https://sketchfab.com/3d-models/food-shop-showcase-9079bf17aacf4570a0c2b2587104c5ab",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "9079bf17aacf4570a0c2b2587104c5ab",
+    "faces": 5731,
+    "size_m": [
+      2.805,
+      1.95,
+      0.801
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: glass_vitre:BLEND, glass:BLEND"
+  },
+  "drawer_cabinet": {
+    "file": "res://assets/models/drawer_cabinet/drawer_cabinet.glb",
+    "title": "Drawer Cabinet",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/drawer_cabinet",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:drawer_cabinet",
+    "faces": 14992,
+    "size_m": [
+      0.576,
+      0.95,
+      0.246
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "dresser_old": {
+    "file": "res://assets/models/dresser_old/dresser_old.glb",
+    "title": "Vintage Wooden Drawer 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/vintage_wooden_drawer_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:vintage_wooden_drawer_01",
+    "faces": 5184,
+    "size_m": [
+      1,
+      0.636,
+      0.587
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "drill_press": {
+    "file": "res://assets/models/drill_press/drill_press.glb",
+    "title": "Old Drill Press",
+    "author": "Harsh Vardhan Singh",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/old_drill_press",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:old_drill_press",
+    "faces": 14998,
+    "size_m": [
+      0.803,
+      1.6,
+      0.929
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "duct_bend": {
+    "file": "res://assets/models/duct_bend/duct_bend.glb",
+    "title": "Modular Airduct Circular 01",
+    "author": "Riley Queen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_airduct_circular_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_airduct_circular_01",
+    "keep": "circular_smooth_bend_quater$",
+    "faces": 512,
+    "size_m": [
+      0.62,
+      0.63,
+      0.297
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "duct_straight": {
+    "file": "res://assets/models/duct_straight/duct_straight.glb",
+    "title": "Modular Airduct Circular 01",
+    "author": "Riley Queen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_airduct_circular_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_airduct_circular_01",
+    "keep": "circular_triple$",
+    "faces": 512,
+    "size_m": [
+      0.391,
+      0.391,
+      1.5
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
   },
   "electrical_panel": {
     "file": "res://assets/models/electrical_panel/electrical_panel.glb",
@@ -624,6 +1269,24 @@
     "tex": 1024,
     "notes": "long axis Z"
   },
+  "fire_alarm": {
+    "file": "res://assets/models/fire_alarm/fire_alarm.glb",
+    "title": "Fire Alarm",
+    "author": "Slinc",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/fire_alarm",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:fire_alarm",
+    "faces": 2705,
+    "size_m": [
+      0.104,
+      0.15,
+      0.028
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "fire_extinguisher": {
     "file": "res://assets/models/fire_extinguisher/fire_extinguisher.glb",
     "title": "Fire Extinguisher",
@@ -640,6 +1303,24 @@
       0.165
     ],
     "tex": 512,
+    "notes": "long axis X"
+  },
+  "fire_hydrant": {
+    "file": "res://assets/models/fire_hydrant/fire_hydrant.glb",
+    "title": "Fire Hydrant",
+    "author": "Gonçalo Felício",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/fire_hydrant",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:fire_hydrant",
+    "faces": 12670,
+    "size_m": [
+      0.875,
+      0.8,
+      0.318
+    ],
+    "tex": 2048,
     "notes": "long axis X"
   },
   "first_aid_kit": {
@@ -695,6 +1376,96 @@
     ],
     "tex": 512,
     "notes": "long axis Z"
+  },
+  "fluoro_lights": {
+    "file": "res://assets/models/fluoro_lights/fluoro_lights.glb",
+    "title": "Mounted Fluorescent Lights",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/mounted_fluorescent_lights",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:mounted_fluorescent_lights",
+    "faces": 9989,
+    "size_m": [
+      1.25,
+      0.048,
+      0.884
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "food_cans": {
+    "file": "res://assets/models/food_cans/food_cans.glb",
+    "title": "Russian Food Cans 01",
+    "author": "Kosan Aziz",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/russian_food_cans_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:russian_food_cans_01",
+    "faces": 1348,
+    "size_m": [
+      0.25,
+      0.149,
+      0.081
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "food_cracker": {
+    "file": "res://assets/models/food_cracker/food_cracker.glb",
+    "title": "Sliced Bread Loaf (Game Ready / PBR)",
+    "author": "Meerschaum Digital",
+    "author_url": "https://sketchfab.com/meerschaumdigital",
+    "source_url": "https://sketchfab.com/3d-models/sliced-bread-loaf-game-ready-pbr-3e0ce2a765b24ccaad8d780d84db9170",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "3e0ce2a765b24ccaad8d780d84db9170",
+    "faces": 1344,
+    "size_m": [
+      0.09,
+      0.044,
+      0.08
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "food_potato": {
+    "file": "res://assets/models/food_potato/food_potato.glb",
+    "title": "Russet Potato",
+    "author": "Meerschaum Digital",
+    "author_url": "https://sketchfab.com/meerschaumdigital",
+    "source_url": "https://sketchfab.com/3d-models/russet-potato-de02148574c5434e80187d35378d1b8a",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "de02148574c5434e80187d35378d1b8a",
+    "faces": 1280,
+    "size_m": [
+      0.051,
+      0.04,
+      0.09
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "food_tomato": {
+    "file": "res://assets/models/food_tomato/food_tomato.glb",
+    "title": "Tomato (game ready asset)",
+    "author": "Aparicio Silva 3D",
+    "author_url": "https://sketchfab.com/apariciosilva3D",
+    "source_url": "https://sketchfab.com/3d-models/tomato-game-ready-asset-fda1fbe840c344968523a1cbc7395839",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "fda1fbe840c344968523a1cbc7395839",
+    "faces": 1190,
+    "size_m": [
+      0.105,
+      0.065,
+      0.115
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
   },
   "fps_pistol": {
     "file": "res://assets/models/fps_pistol/fps_pistol.glb",
@@ -933,6 +1704,96 @@
     "tex": 512,
     "notes": "long axis X; alpha: 02_-_Default:BLEND"
   },
+  "grass_dry": {
+    "file": "res://assets/models/grass_dry/grass_dry.glb",
+    "title": "Dry grass",
+    "author": "Pixel-bit",
+    "author_url": "https://sketchfab.com/Pixel-bit",
+    "source_url": "https://sketchfab.com/3d-models/dry-grass-d1484537470441b999d37077aeb9b47a",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "d1484537470441b999d37077aeb9b47a",
+    "faces": 112,
+    "size_m": [
+      0.795,
+      0.55,
+      0.628
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: M_dry_grass:BLEND"
+  },
+  "grass_green": {
+    "file": "res://assets/models/grass_green/grass_green.glb",
+    "title": "grass 05",
+    "author": "POLYSCAN",
+    "author_url": "https://sketchfab.com/POLYSCAN3D",
+    "source_url": "https://sketchfab.com/3d-models/grass-05-34fbd9829fef4babbdd52547f776b014",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "34fbd9829fef4babbdd52547f776b014",
+    "faces": 1092,
+    "size_m": [
+      1.149,
+      0.45,
+      1.148
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: Material:MASK"
+  },
+  "grass_green_b": {
+    "file": "res://assets/models/grass_green_b/grass_green_b.glb",
+    "title": "Realistic Grass Pack For Games Free!",
+    "author": "Nicholas-3D",
+    "author_url": "https://sketchfab.com/Nicholas01",
+    "source_url": "https://sketchfab.com/3d-models/realistic-grass-pack-for-games-free-9b958d613e9a44dbba580748e7a1789c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "9b958d613e9a44dbba580748e7a1789c",
+    "faces": 794,
+    "size_m": [
+      3.598,
+      0.5,
+      2.701
+    ],
+    "tex": 1024,
+    "notes": "long axis X; alpha: WheatGrass_Low:BLEND, Wheatgrass_Mat:BLEND, Grass_C:BLEND, Grass_A:BLEND, Grass_B:BLEND"
+  },
+  "grass_scan": {
+    "file": "res://assets/models/grass_scan/grass_scan.glb",
+    "title": "Realistics grass 06",
+    "author": "POLYSCAN",
+    "author_url": "https://sketchfab.com/POLYSCAN3D",
+    "source_url": "https://sketchfab.com/3d-models/realistics-grass-06-b5956b7d4d1f4ff6ae1dd1320dab0d12",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "b5956b7d4d1f4ff6ae1dd1320dab0d12",
+    "faces": 6552,
+    "size_m": [
+      1.407,
+      0.5,
+      1.407
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: Material:MASK"
+  },
+  "hospital_bed": {
+    "file": "res://assets/models/hospital_bed/hospital_bed.glb",
+    "title": "Hospital Bed",
+    "author": "loxfear",
+    "author_url": "https://sketchfab.com/loxfear",
+    "source_url": "https://sketchfab.com/3d-models/hospital-bed-f8c13a19e84343e7b644c19f7b9488d3",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f8c13a19e84343e7b644c19f7b9488d3",
+    "faces": 3988,
+    "size_m": [
+      2.05,
+      1.53,
+      1.348
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
   "house_small": {
     "file": "res://assets/models/house_small/house_small.glb",
     "title": "Old vilage house_LOD_0",
@@ -987,6 +1848,42 @@
     "tex": 512,
     "notes": "long axis X"
   },
+  "jug": {
+    "file": "res://assets/models/jug/jug.glb",
+    "title": "Jug 01",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/jug_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:jug_01",
+    "faces": 5000,
+    "size_m": [
+      0.326,
+      0.25,
+      0.198
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "kettle": {
+    "file": "res://assets/models/kettle/kettle.glb",
+    "title": "Vintage Electric Kettle",
+    "author": "SV Garip",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/vintage_electric_kettle",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:vintage_electric_kettle",
+    "faces": 6025,
+    "size_m": [
+      0.253,
+      0.24,
+      0.195
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: vintage_electric_kettle_glass:BLEND"
+  },
   "lamp_cage": {
     "file": "res://assets/models/lamp_cage/lamp_cage.glb",
     "title": "Hanging Industrial Lamp",
@@ -1003,6 +1900,24 @@
       0.142
     ],
     "tex": 512,
+    "notes": "roughly square footprint"
+  },
+  "lamp_pendant": {
+    "file": "res://assets/models/lamp_pendant/lamp_pendant.glb",
+    "title": "Modern Ceiling Lamp 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modern_ceiling_lamp_01",
+    "faces": 5602,
+    "size_m": [
+      0.227,
+      0.5,
+      0.227
+    ],
+    "tex": 2048,
     "notes": "roughly square footprint"
   },
   "locker": {
@@ -1040,6 +1955,42 @@
     ],
     "tex": 2048,
     "notes": "long axis X"
+  },
+  "manhole": {
+    "file": "res://assets/models/manhole/manhole.glb",
+    "title": "Water Manhole Cover",
+    "author": "Raunox",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/water_manhole_cover",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:water_manhole_cover",
+    "faces": 3999,
+    "size_m": [
+      0.8,
+      0.078,
+      0.8
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "masonry_heater": {
+    "file": "res://assets/models/masonry_heater/masonry_heater.glb",
+    "title": "Scandinavian Masonry Heater",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/scandinavian_masonry_heater",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:scandinavian_masonry_heater",
+    "faces": 9350,
+    "size_m": [
+      0.915,
+      1.85,
+      1.047
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
   },
   "metal_door": {
     "file": "res://assets/models/metal_door/metal_door.glb",
@@ -1096,6 +2047,24 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "mirror": {
+    "file": "res://assets/models/mirror/mirror.glb",
+    "title": "Ornate Mirror 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/ornate_mirror_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:ornate_mirror_01",
+    "faces": 7999,
+    "size_m": [
+      0.523,
+      0.8,
+      0.028
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "mushrooms": {
     "file": "res://assets/models/mushrooms/mushrooms.glb",
     "title": "Mushrooms",
@@ -1113,6 +2082,60 @@
     ],
     "tex": 512,
     "notes": "roughly square footprint"
+  },
+  "nightstand": {
+    "file": "res://assets/models/nightstand/nightstand.glb",
+    "title": "Classic Nightstand 01",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/ClassicNightstand_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:ClassicNightstand_01",
+    "faces": 2002,
+    "size_m": [
+      0.503,
+      0.62,
+      0.376
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "nightstand_b": {
+    "file": "res://assets/models/nightstand_b/nightstand_b.glb",
+    "title": "Painted Wooden Nightstand",
+    "author": "Kirill Sannikov",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/painted_wooden_nightstand",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:painted_wooden_nightstand",
+    "faces": 470,
+    "size_m": [
+      0.492,
+      0.6,
+      0.496
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
+  },
+  "office_desk": {
+    "file": "res://assets/models/office_desk/office_desk.glb",
+    "title": "Metal Office Desk",
+    "author": "Ulan Cabanilla",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/metal_office_desk",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:metal_office_desk",
+    "faces": 6898,
+    "size_m": [
+      1.3,
+      0.512,
+      0.616
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
   },
   "oil_barrel": {
     "file": "res://assets/models/oil_barrel/oil_barrel.glb",
@@ -1132,6 +2155,100 @@
     ],
     "tex": 1024,
     "notes": "roughly square footprint"
+  },
+  "picture_frame": {
+    "file": "res://assets/models/picture_frame/picture_frame.glb",
+    "title": "Hanging Picture Frame 02",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:hanging_picture_frame_02",
+    "faces": 3678,
+    "size_m": [
+      0.55,
+      0.366,
+      0.024
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: hanging_picture_frame_02_glass:BLEND"
+  },
+  "picture_frame_b": {
+    "file": "res://assets/models/picture_frame_b/picture_frame_b.glb",
+    "title": "Hanging Picture Frame 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:hanging_picture_frame_01",
+    "faces": 2586,
+    "size_m": [
+      0.45,
+      0.637,
+      0.012
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: hanging_picture_frame_01_glass:BLEND"
+  },
+  "pill_bottle": {
+    "file": "res://assets/models/pill_bottle/pill_bottle.glb",
+    "title": "Simple Pill Bottle",
+    "author": "Blender3D",
+    "author_url": "https://sketchfab.com/Blender3D",
+    "source_url": "https://sketchfab.com/3d-models/simple-pill-bottle-21f392ee64fb4297a578a1ae210dcb33",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "21f392ee64fb4297a578a1ae210dcb33",
+    "faces": 4168,
+    "size_m": [
+      0.051,
+      0.09,
+      0.051
+    ],
+    "tex": 1024,
+    "animations": [
+      "Armature|ArmatureAction"
+    ],
+    "notes": "roughly square footprint; skinned"
+  },
+  "pipe_fitting": {
+    "file": "res://assets/models/pipe_fitting/pipe_fitting.glb",
+    "title": "Modular Industrial Pipes 01",
+    "author": "Jorge Camacho",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_industrial_pipes_01",
+    "keep": "pipe08$",
+    "faces": 5788,
+    "size_m": [
+      0.562,
+      0.8,
+      0.65
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "pipes_industrial": {
+    "file": "res://assets/models/pipes_industrial/pipes_industrial.glb",
+    "title": "Modular Industrial Pipes 01",
+    "author": "Jorge Camacho",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:modular_industrial_pipes_01",
+    "faces": 12340,
+    "size_m": [
+      3,
+      4.18,
+      0.658
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
   },
   "plant_lettuce": {
     "file": "res://assets/models/plant_lettuce/plant_lettuce.glb",
@@ -1204,6 +2321,60 @@
     ],
     "tex": 1024,
     "notes": "long axis X"
+  },
+  "plastic_crate": {
+    "file": "res://assets/models/plastic_crate/plastic_crate.glb",
+    "title": "Plastic Crate 01",
+    "author": "PierreB3D",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/plastic_crate_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:plastic_crate_01",
+    "faces": 10350,
+    "size_m": [
+      0.438,
+      0.388,
+      0.6
+    ],
+    "tex": 2048,
+    "notes": "long axis Z"
+  },
+  "pot_enamel": {
+    "file": "res://assets/models/pot_enamel/pot_enamel.glb",
+    "title": "Pot Enamel 01",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/pot_enamel_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:pot_enamel_01",
+    "faces": 5998,
+    "size_m": [
+      0.3,
+      0.204,
+      0.206
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "potted_plant": {
+    "file": "res://assets/models/potted_plant/potted_plant.glb",
+    "title": "Potted Plant 04",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/potted_plant_04",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:potted_plant_04",
+    "faces": 6045,
+    "size_m": [
+      0.377,
+      0.6,
+      0.414
+    ],
+    "tex": 2048,
+    "notes": "roughly square footprint"
   },
   "radiation_sign": {
     "file": "res://assets/models/radiation_sign/radiation_sign.glb",
@@ -1459,6 +2630,24 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "school_desk": {
+    "file": "res://assets/models/school_desk/school_desk.glb",
+    "title": "School Desk 01",
+    "author": "Ethan Place",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/SchoolDesk_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:SchoolDesk_01",
+    "faces": 4162,
+    "size_m": [
+      1.1,
+      1.364,
+      0.844
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "scrap_pile": {
     "file": "res://assets/models/scrap_pile/scrap_pile.glb",
     "title": "Pile of construction waste [3D SCAN; 8K; PBR]",
@@ -1476,6 +2665,24 @@
     ],
     "tex": 1024,
     "notes": "roughly square footprint"
+  },
+  "security_cam": {
+    "file": "res://assets/models/security_cam/security_cam.glb",
+    "title": "Security Camera 02",
+    "author": "Garrison Gager, Yann Kervran",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/security_camera_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:security_camera_02",
+    "faces": 7997,
+    "size_m": [
+      0.125,
+      0.185,
+      0.35
+    ],
+    "tex": 2048,
+    "notes": "long axis Z; alpha: security_camera_02_glass:BLEND"
   },
   "shop_ruin": {
     "file": "res://assets/models/shop_ruin/shop_ruin.glb",
@@ -1513,6 +2720,42 @@
     "tex": 512,
     "notes": "long axis Z"
   },
+  "sink_old": {
+    "file": "res://assets/models/sink_old/sink_old.glb",
+    "title": "Sink",
+    "author": "lagesnpiet",
+    "author_url": "https://sketchfab.com/lagesnpiet",
+    "source_url": "https://sketchfab.com/3d-models/sink-a278d63585494921906ab3500c421ff7",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "a278d63585494921906ab3500c421ff7",
+    "faces": 4160,
+    "size_m": [
+      0.337,
+      0.85,
+      0.444
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "sofa_c": {
+    "file": "res://assets/models/sofa_c/sofa_c.glb",
+    "title": "Sofa 03",
+    "author": "Fran Calvente",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/sofa_03",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:sofa_03",
+    "faces": 8004,
+    "size_m": [
+      2,
+      0.819,
+      0.677
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "sofa_old": {
     "file": "res://assets/models/sofa_old/sofa_old.glb",
     "title": "Old Couch",
@@ -1549,6 +2792,42 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "spoon_metal": {
+    "file": "res://assets/models/spoon_metal/spoon_metal.glb",
+    "title": "Old spoon",
+    "author": "SusanKing",
+    "author_url": "https://sketchfab.com/krolzuzannapl",
+    "source_url": "https://sketchfab.com/3d-models/old-spoon-e55af322cf8f43fa9b4fb2b368bafd0f",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "e55af322cf8f43fa9b4fb2b368bafd0f",
+    "faces": 2579,
+    "size_m": [
+      0.041,
+      0.019,
+      0.19
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
+  "steel_shelves": {
+    "file": "res://assets/models/steel_shelves/steel_shelves.glb",
+    "title": "Steel Frame Shelves 02",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/steel_frame_shelves_02",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:steel_frame_shelves_02",
+    "faces": 4348,
+    "size_m": [
+      0.526,
+      1.9,
+      0.446
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "stone_small": {
     "file": "res://assets/models/stone_small/stone_small.glb",
     "title": "Stone 01",
@@ -1567,6 +2846,24 @@
     "tex": 1024,
     "notes": "long axis X"
   },
+  "stove_electric": {
+    "file": "res://assets/models/stove_electric/stove_electric.glb",
+    "title": "Electric Stove",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/electric_stove",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:electric_stove",
+    "faces": 13914,
+    "size_m": [
+      0.515,
+      0.88,
+      0.664
+    ],
+    "tex": 2048,
+    "notes": "long axis Z; alpha: electric_stove_glass:BLEND"
+  },
   "street_lamp": {
     "file": "res://assets/models/street_lamp/street_lamp.glb",
     "title": "Street Lamp",
@@ -1584,6 +2881,42 @@
     ],
     "tex": 1024,
     "notes": "long axis X; alpha: light:BLEND"
+  },
+  "street_lamp_b": {
+    "file": "res://assets/models/street_lamp_b/street_lamp_b.glb",
+    "title": "Street Lamp 01",
+    "author": "Josh Dean",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/street_lamp_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:street_lamp_01",
+    "faces": 15113,
+    "size_m": [
+      1.273,
+      7,
+      0.699
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: street_lamp_01_glass:BLEND"
+  },
+  "suitcase": {
+    "file": "res://assets/models/suitcase/suitcase.glb",
+    "title": "Vintage Suitcase",
+    "author": "Maximilian Schuster",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/vintage_suitcase",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:vintage_suitcase",
+    "faces": 9992,
+    "size_m": [
+      0.65,
+      0.23,
+      0.097
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
   },
   "supermarket_shelf": {
     "file": "res://assets/models/supermarket_shelf/supermarket_shelf.glb",
@@ -1634,6 +2967,24 @@
     ],
     "notes": "long axis X; skinned"
   },
+  "table_dining": {
+    "file": "res://assets/models/table_dining/table_dining.glb",
+    "title": "Dining Table",
+    "author": "Aron Łyczek",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/dining_table",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:dining_table",
+    "faces": 1048,
+    "size_m": [
+      1.4,
+      0.544,
+      0.863
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "table_metal": {
     "file": "res://assets/models/table_metal/table_metal.glb",
     "title": "Metal Office Desk",
@@ -1651,6 +3002,24 @@
     ],
     "tex": 1024,
     "notes": "long axis X"
+  },
+  "table_wood": {
+    "file": "res://assets/models/table_wood/table_wood.glb",
+    "title": "Wooden Table",
+    "author": "Blender3D",
+    "author_url": "https://sketchfab.com/Blender3D",
+    "source_url": "https://sketchfab.com/3d-models/wooden-table-0de098dda8d343aaa1e71544ed0c181c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "0de098dda8d343aaa1e71544ed0c181c",
+    "faces": 2632,
+    "size_m": [
+      0.728,
+      0.547,
+      1.3
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
   },
   "tank_wreck": {
     "file": "res://assets/models/tank_wreck/tank_wreck.glb",
@@ -1688,6 +3057,42 @@
     "tex": 1024,
     "notes": "roughly square footprint"
   },
+  "toilet": {
+    "file": "res://assets/models/toilet/toilet.glb",
+    "title": "Dirty Toilet",
+    "author": "Shedmon",
+    "author_url": "https://sketchfab.com/shedmon",
+    "source_url": "https://sketchfab.com/3d-models/dirty-toilet-389d5427a1f344c4aa4883ec5a6aaf05",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "389d5427a1f344c4aa4883ec5a6aaf05",
+    "faces": 3038,
+    "size_m": [
+      0.712,
+      0.8,
+      0.456
+    ],
+    "tex": 1024,
+    "notes": "long axis X"
+  },
+  "tool_chest": {
+    "file": "res://assets/models/tool_chest/tool_chest.glb",
+    "title": "Metal Tool Chest",
+    "author": "Yann Kervran, John Hutcheson",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/metal_tool_chest",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:metal_tool_chest",
+    "faces": 13360,
+    "size_m": [
+      1.051,
+      1,
+      0.625
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "toolbox": {
     "file": "res://assets/models/toolbox/toolbox.glb",
     "title": "Old Tool Box",
@@ -1723,6 +3128,42 @@
       1.208
     ],
     "tex": 1024,
+    "notes": "roughly square footprint"
+  },
+  "trash_can": {
+    "file": "res://assets/models/trash_can/trash_can.glb",
+    "title": "Metal Trash Can",
+    "author": "GurJas Studios",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/metal_trash_can",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:metal_trash_can",
+    "faces": 9989,
+    "size_m": [
+      1.766,
+      0.9,
+      0.553
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "trashbag": {
+    "file": "res://assets/models/trashbag/trashbag.glb",
+    "title": "Trashbag",
+    "author": "Benny Weimer",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/trashbag",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:trashbag",
+    "faces": 4482,
+    "size_m": [
+      0.551,
+      0.6,
+      0.483
+    ],
+    "tex": 2048,
     "notes": "roughly square footprint"
   },
   "tree_dead": {
@@ -1797,6 +3238,42 @@
     "tex": 1024,
     "notes": "roughly square footprint"
   },
+  "tv_old": {
+    "file": "res://assets/models/tv_old/tv_old.glb",
+    "title": "Television 01",
+    "author": "Gabriel Radić",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/Television_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:Television_01",
+    "faces": 1918,
+    "size_m": [
+      0.62,
+      0.472,
+      0.487
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
+  "utility_box": {
+    "file": "res://assets/models/utility_box/utility_box.glb",
+    "title": "Utility Box 01",
+    "author": "James Ray Cock",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/utility_box_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:utility_box_01",
+    "faces": 4404,
+    "size_m": [
+      0.278,
+      0.6,
+      0.231
+    ],
+    "tex": 2048,
+    "notes": "long axis X"
+  },
   "utility_pole": {
     "file": "res://assets/models/utility_pole/utility_pole.glb",
     "title": "Electric pole",
@@ -1850,6 +3327,78 @@
     },
     "notes_extra": "full model has the door OPEN; slab front face at z~0.9, slab spans x -1.98..1.98; alpha: lambert2SG:BLEND (small glass part)"
   },
+  "vintage_cabinet": {
+    "file": "res://assets/models/vintage_cabinet/vintage_cabinet.glb",
+    "title": "Vintage Cabinet 01",
+    "author": "Rico Cilliers",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/vintage_cabinet_01",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:vintage_cabinet_01",
+    "faces": 19997,
+    "size_m": [
+      1.764,
+      1.95,
+      0.584
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: vintage_cabinet_01_glass:BLEND"
+  },
+  "wall_clock": {
+    "file": "res://assets/models/wall_clock/wall_clock.glb",
+    "title": "Wall Clock",
+    "author": "PierreB3D",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/wall_clock",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:wall_clock",
+    "faces": 3658,
+    "size_m": [
+      0.32,
+      0.32,
+      0.047
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: wall_clock_glass:BLEND"
+  },
+  "wall_lamp": {
+    "file": "res://assets/models/wall_lamp/wall_lamp.glb",
+    "title": "Industrial Wall Lamp",
+    "author": "Kuutti Siitonen",
+    "author_url": "",
+    "source_url": "https://polyhaven.com/a/industrial_wall_lamp",
+    "source": "polyhaven",
+    "license": "CC0",
+    "ref": "ph:industrial_wall_lamp",
+    "faces": 4446,
+    "size_m": [
+      0.223,
+      0.35,
+      0.114
+    ],
+    "tex": 2048,
+    "notes": "long axis X; alpha: industrial_wall_lamp_glass:BLEND"
+  },
+  "wardrobe_old": {
+    "file": "res://assets/models/wardrobe_old/wardrobe_old.glb",
+    "title": "Soviet Old Wardrobe",
+    "author": "Skilletik",
+    "author_url": "https://sketchfab.com/Skilletik",
+    "source_url": "https://sketchfab.com/3d-models/soviet-old-wardrobe-f9dd8aa0dd684049911352fa5864ce0c",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "f9dd8aa0dd684049911352fa5864ce0c",
+    "faces": 1476,
+    "size_m": [
+      0.623,
+      2,
+      1.086
+    ],
+    "tex": 1024,
+    "notes": "long axis Z"
+  },
   "warehouse": {
     "file": "res://assets/models/warehouse/warehouse.glb",
     "title": "Warehouse Building",
@@ -1867,6 +3416,24 @@
     ],
     "tex": 1024,
     "notes": "long axis Z"
+  },
+  "water_bottle_m": {
+    "file": "res://assets/models/water_bottle_m/water_bottle_m.glb",
+    "title": "Water Bottle",
+    "author": "oscarherry3d",
+    "author_url": "https://sketchfab.com/oscarherry3d",
+    "source_url": "https://sketchfab.com/3d-models/water-bottle-ca39d6f0333348e59e66cbe4258a028a",
+    "source": "sketchfab",
+    "license": "CC BY 4.0",
+    "ref": "ca39d6f0333348e59e66cbe4258a028a",
+    "faces": 5280,
+    "size_m": [
+      0.088,
+      0.3,
+      0.088
+    ],
+    "tex": 1024,
+    "notes": "roughly square footprint; alpha: Bottle1:BLEND"
   },
   "water_jug": {
     "file": "res://assets/models/water_jug/water_jug.glb",

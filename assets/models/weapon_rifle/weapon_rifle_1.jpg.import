@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://57xmotjl3jj6"
-path.s3tc="res://.godot/imported/weapon_rifle_1.jpg-ad6da6f8bc8e0e390bbf42d699330d09.s3tc.ctex"
+path.bptc="res://.godot/imported/weapon_rifle_1.jpg-ad6da6f8bc8e0e390bbf42d699330d09.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/weapon_rifle/weapon_rifle_1.jpg"
-dest_files=["res://.godot/imported/weapon_rifle_1.jpg-ad6da6f8bc8e0e390bbf42d699330d09.s3tc.ctex"]
+dest_files=["res://.godot/imported/weapon_rifle_1.jpg-ad6da6f8bc8e0e390bbf42d699330d09.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

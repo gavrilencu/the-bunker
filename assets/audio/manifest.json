@@ -837,5 +837,126 @@
     "duration_s": 0.31,
     "channels": 1,
     "peak_dbfs": -1
+  },
+  "gulp": {
+    "file": "res://assets/audio/gulp.ogg",
+    "title": "Single swallow / gulp of water",
+    "author": "ezwa",
+    "source_url": "https://commons.wikimedia.org/wiki/File%3ADrinking_a_glass_of_wat.ogg",
+    "license": "Public domain",
+    "notes": "Sources: Drinking a glass of wat.ogg (ezwa, Public domain)",
+    "duration_s": 0.46,
+    "channels": 1,
+    "peak_dbfs": -2
+  },
+  "bite": {
+    "file": "res://assets/audio/bite.ogg",
+    "title": "Single crunchy bite into a dry biscuit",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=0407",
+    "license": "CC0 1.0",
+    "notes": "Sources: Eat a Rusk (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 0.47,
+    "channels": 1,
+    "peak_dbfs": -1
+  },
+  "chew": {
+    "file": "res://assets/audio/chew.ogg",
+    "title": "Chewing with the mouth closed (three chews, no crunch)",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=0407",
+    "license": "CC0 1.0",
+    "notes": "Sources: Eat a Rusk (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 1.32,
+    "channels": 1,
+    "peak_dbfs": -3.5
+  },
+  "spoon_can": {
+    "file": "res://assets/audio/spoon_can.ogg",
+    "title": "Spoon scraping and clinking inside a container",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=0411",
+    "license": "CC0 1.0",
+    "notes": "Sources: Spoon in a mug empty (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 0.62,
+    "channels": 1,
+    "peak_dbfs": -4
+  },
+  "bandage_tear": {
+    "file": "res://assets/audio/bandage_tear.ogg",
+    "title": "Short cloth tear (tearing a bandage strip)",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=0013",
+    "license": "CC0 1.0",
+    "notes": "Sources: Cloth (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 0.83,
+    "channels": 1,
+    "peak_dbfs": -2
+  },
+  "bandage_wrap": {
+    "file": "res://assets/audio/bandage_wrap.ogg",
+    "title": "Soft gauze rustle: wrapping one turn of a bandage",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=1104",
+    "license": "CC0 1.0",
+    "notes": "Sources: Synthetic Coat Rubbed (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 0.75,
+    "channels": 1,
+    "peak_dbfs": -9
+  },
+  "pills": {
+    "file": "res://assets/audio/pills.ogg",
+    "title": "Pills rattling in a small plastic bottle (one shake)",
+    "author": "Gravity Sound",
+    "source_url": "https://commons.wikimedia.org/wiki/File%3APill_bottle_shake_once_(Gravity_Sound).wav",
+    "license": "CC BY 4.0",
+    "notes": "Sources: Pill bottle shake once (Gravity Sound).wav (Gravity Sound, CC BY 4.0)",
+    "duration_s": 0.34,
+    "channels": 1,
+    "peak_dbfs": -8
+  },
+  "breath_out": {
+    "file": "res://assets/audio/breath_out.ogg",
+    "title": "Relieved exhale through the mouth (after drinking)",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=1405",
+    "license": "CC0 1.0",
+    "notes": "Sources: Sigh by the Mouth (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 1.15,
+    "channels": 1,
+    "peak_dbfs": -8
+  },
+  "bed_lie": {
+    "file": "res://assets/audio/bed_lie.ogg",
+    "title": "Lying down on an old metal bunk: spring creaks + blanket rustle",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=1104 ; https://bigsoundbank.com/search?q=0206",
+    "license": "CC0 1.0",
+    "notes": "Sources: Synthetic Coat Rubbed (Joseph Sardin (BigSoundBank.com), CC0 1.0); Large spring (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 1.35,
+    "channels": 1,
+    "peak_dbfs": -3.5
+  },
+  "bed_rise": {
+    "file": "res://assets/audio/bed_rise.ogg",
+    "title": "Getting up from an old metal bunk: blanket pushed off, springs release",
+    "author": "Joseph Sardin (BigSoundBank.com)",
+    "source_url": "https://bigsoundbank.com/search?q=1104 ; https://bigsoundbank.com/search?q=0206",
+    "license": "CC0 1.0",
+    "notes": "Sources: Synthetic Coat Rubbed (Joseph Sardin (BigSoundBank.com), CC0 1.0); Large spring (Joseph Sardin (BigSoundBank.com), CC0 1.0)",
+    "duration_s": 1.06,
+    "channels": 1,
+    "peak_dbfs": -2
+  },
+  "yawn": {
+    "file": "res://assets/audio/yawn.ogg",
+    "title": "Man yawning on waking (airy inhale, falling \"aah\")",
+    "author": "ezwa",
+    "source_url": "https://commons.wikimedia.org/wiki/File%3AYawning_2.ogg",
+    "license": "Public domain",
+    "notes": "Sources: Yawning 2.ogg (ezwa, Public domain)",
+    "duration_s": 2.01,
+    "channels": 1,
+    "peak_dbfs": -11
   }
 }

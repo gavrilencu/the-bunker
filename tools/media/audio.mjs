@@ -171,6 +171,44 @@ Object.assign(R, {
 });
 R.footstep_metal = { ...R.footstep_metal_1, desc: 'Footstep on metal (= variant 1; see footstep_metal_1.._4)' };
 
+// ---------------------------------------------------------------------------
+// Round 4: first-person consume / bandage / sleep actions (slices picked with analyze.mjs)
+const GAUZE = 'highpass=f=150,lowpass=f=3200:p=1,lowpass=f=7500'; // soften the synthetic-coat rustle
+const SPRING = (r) => `${pitch(r)},highpass=f=250`;              // large tension spring -> bed springs
+Object.assign(R, {
+  gulp: { desc: 'Single swallow / gulp of water', norm: ['peak', -2],
+    in: [I('wm_drinking', { ss: 3.36, t: 0.46, chain: 'highpass=f=90,afade=t=in:d=0.04,afade=t=out:st=0.32:d=0.14' })] },
+  bite: { desc: 'Single crunchy bite into a dry biscuit', norm: ['peak', -1],
+    in: [I('bsb_eat_rusk', { ss: 9.6, t: 0.46, chain: 'highpass=f=60,afade=t=in:d=0.005,afade=t=out:st=0.34:d=0.12' })] },
+  chew: { desc: 'Chewing with the mouth closed (three chews, no crunch)', norm: ['peak', -3.5],
+    in: [I('bsb_eat_rusk', { ss: 11.42, t: 1.32, chain: 'highpass=f=60,afade=t=in:d=0.01,afade=t=out:st=1.24:d=0.08' })] },
+  spoon_can: { desc: 'Spoon scraping and clinking inside a container', norm: ['peak', -4],
+    in: [I('bsb_spoon_mug', { ss: 0.11, t: 0.62, chain: 'highpass=f=200,afade=t=in:d=0.003,afade=t=out:st=0.47:d=0.15' })] },
+  bandage_tear: { desc: 'Short cloth tear (tearing a bandage strip)', norm: ['peak', -2],
+    in: [I('bsb_cloth_tear', { ss: 1.84, t: 0.82, chain: 'highpass=f=100,afade=t=in:d=0.005,afade=t=out:st=0.7:d=0.12' })] },
+  bandage_wrap: { desc: 'Soft gauze rustle: wrapping one turn of a bandage', norm: ['peak', -9],
+    in: [I('bsb_coat_rub', { ss: 7.82, t: 0.6, chain: `${pitch(0.8)},${GAUZE},afade=t=in:d=0.06,afade=t=out:st=0.58:d=0.17` })] },
+  pills: { desc: 'Pills rattling in a small plastic bottle (one shake)', norm: ['peak', -8],
+    in: [I('wm_pill_shake', { ss: 0.28, t: 0.34, chain: 'highpass=f=120,afade=t=in:d=0.01,afade=t=out:st=0.24:d=0.1' })] },
+  breath_out: { desc: 'Relieved exhale through the mouth (after drinking)', norm: ['peak', -8],
+    in: [I('bsb_sigh_mouth', { ss: 1.98, t: 1.15, chain: 'highpass=f=100,afade=t=in:d=0.03,afade=t=out:st=0.6:d=0.55' })] },
+  bed_lie: { desc: 'Lying down on an old metal bunk: spring creaks + blanket rustle', norm: ['peak', -3.5],
+    in: [ // sit down (rustle + creak), legs under the blanket (rustle), lie back (creak with settling accents)
+      I('bsb_coat_rub', { ss: 0.32, t: 0.55, chain: `${pitch(0.85)},${GAUZE},afade=t=in:d=0.04,afade=t=out:st=0.45:d=0.2`, gain: 0.5 }),
+      I('bsb_spring_large', { ss: 14.99, t: 0.7, chain: `${SPRING(1.7)},afade=t=in:d=0.01,afade=t=out:st=0.28:d=0.13`, gain: 0.75, delay: 80 }),
+      I('bsb_coat_rub', { ss: 1.36, t: 0.55, chain: `${pitch(0.85)},${GAUZE},afade=t=in:d=0.05,afade=t=out:st=0.45:d=0.2`, gain: 0.4, delay: 520 }),
+      I('bsb_spring_large', { ss: 7.55, t: 1.2, chain: `${SPRING(1.7)},afade=t=in:d=0.02,afade=t=out:st=0.42:d=0.28`, gain: 0.8, delay: 640 }),
+    ], post: 'afade=t=out:st=1.2:d=0.15', maxlen: 1.36 },
+  bed_rise: { desc: 'Getting up from an old metal bunk: blanket pushed off, springs release', norm: ['peak', -2],
+    in: [
+      I('bsb_coat_rub', { ss: 2.57, t: 0.55, chain: `${pitch(0.85)},${GAUZE},afade=t=in:d=0.05,afade=t=out:st=0.5:d=0.2`, gain: 0.55 }),
+      I('bsb_spring_large', { ss: 39.93, t: 0.7, chain: `${SPRING(1.7)},afade=t=in:d=0.01,afade=t=out:st=0.3:d=0.11`, gain: 0.8, delay: 100 }),
+      I('bsb_spring_large', { ss: 45.62, t: 0.75, chain: `${SPRING(1.85)},afade=t=in:d=0.01,afade=t=out:st=0.25:d=0.15`, gain: 0.7, delay: 650 }),
+    ], post: 'afade=t=out:st=1.1:d=0.2', maxlen: 1.3 },
+  yawn: { desc: 'Man yawning on waking (airy inhale, falling "aah")', norm: ['peak', -11],
+    in: [I('wm_yawn_2', { ss: 1.1, t: 2.0, chain: 'highpass=f=100,afftdn=nr=12:nf=-52,acompressor=threshold=0.05:ratio=4:attack=10:release=150,afade=t=in:d=0.08,afade=t=out:st=1.75:d=0.25' })] },
+});
+
 // Base ids (= variant 1) so a loader asking for plain 'footstep_concrete' also works
 R.footstep_concrete = { ...R.footstep_concrete_1, desc: 'Footstep on concrete (= variant 1; see footstep_concrete_1.._4)' };
 R.footstep_grass = { ...R.footstep_grass_1, desc: 'Footstep on grass (= variant 1; see footstep_grass_1.._4)' };

@@ -1617,7 +1617,7 @@
       "prio": 3,
       "fit": [
         "l",
-        2.0
+        2
       ],
       "tex": 1024,
       "faces": 30000,
@@ -1632,7 +1632,7 @@
       "prio": 3,
       "fit": [
         "h",
-        2.0
+        2
       ],
       "tex": 1024,
       "faces": 25000,
@@ -1686,6 +1686,1178 @@
         "bathroom sink dirty",
         "pedestal sink"
       ]
+    },
+    {
+      "id": "bed_frame",
+      "prio": 1,
+      "fit": [
+        "l",
+        2
+      ],
+      "tex": 2048,
+      "faces": 20000,
+      "q": [
+        "old_bed_frame"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "day_bed",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.95
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "vintage_day_bed"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "nightstand",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.62
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "ClassicNightstand_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "nightstand_b",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "painted_wooden_nightstand"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "drawer_cabinet",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.95
+      ],
+      "tex": 2048,
+      "faces": 15000,
+      "q": [
+        "drawer_cabinet"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "dresser_old",
+      "prio": 1,
+      "fit": [
+        "l",
+        1
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "vintage_wooden_drawer_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "cabinet_tall",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "painted_wooden_cabinet"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "cabinet_tall_b",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "painted_wooden_cabinet_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "vintage_cabinet",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.95
+      ],
+      "tex": 2048,
+      "faces": 20000,
+      "q": [
+        "vintage_cabinet_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "bookshelf_worn",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "wooden_bookshelf_worn"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "books_set",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.55
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "book_encyclopedia_set_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "tv_old",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.62
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "Television_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "masonry_heater",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.85
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "scandinavian_masonry_heater"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "office_desk",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.3
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "metal_office_desk"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "school_desk",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.1
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "SchoolDesk_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "stove_electric",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.88
+      ],
+      "tex": 2048,
+      "faces": 14000,
+      "q": [
+        "electric_stove"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "chair_dining",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.92
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "dining_chair_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "chair_wood",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.92
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "WoodenChair_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "chair_painted",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "painted_wooden_chair_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "table_dining",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.4
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "dining_table"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "coffee_table",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.95
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "CoffeeTable_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "sofa_c",
+      "prio": 1,
+      "fit": [
+        "l",
+        2
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "sofa_03"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "armchair",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.95
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "ArmChair_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "suitcase",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.65
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "vintage_suitcase"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "wall_clock",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.32
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "wall_clock"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "picture_frame",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.55
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "hanging_picture_frame_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "picture_frame_b",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.45
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "hanging_picture_frame_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "mirror",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "ornate_mirror_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "kettle",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.24
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "vintage_electric_kettle"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "pot_enamel",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.3
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "pot_enamel_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "food_cans",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.25
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "russian_food_cans_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "jug",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.25
+      ],
+      "tex": 2048,
+      "faces": 5000,
+      "q": [
+        "jug_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "cardboard_box",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.55
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "cardboard_box_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "plastic_crate",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "plastic_crate_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "trashbag",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "trashbag"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "potted_plant",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "potted_plant_04"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "steel_shelves",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "steel_frame_shelves_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "tool_chest",
+      "prio": 1,
+      "fit": [
+        "h",
+        1
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "metal_tool_chest"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "drill_press",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.6
+      ],
+      "tex": 2048,
+      "faces": 15000,
+      "q": [
+        "old_drill_press"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "cash_register",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.45
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "CashRegister_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "airduct",
+      "prio": 1,
+      "fit": [
+        "l",
+        3
+      ],
+      "tex": 2048,
+      "faces": 14000,
+      "q": [
+        "modular_airduct_circular_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "pipes_industrial",
+      "prio": 1,
+      "fit": [
+        "l",
+        3
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "modular_industrial_pipes_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "cables",
+      "prio": 1,
+      "fit": [
+        "l",
+        3
+      ],
+      "tex": 2048,
+      "faces": 15000,
+      "q": [
+        "modular_electric_cables"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "fluoro_lights",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.25
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "mounted_fluorescent_lights"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "fire_alarm",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.15
+      ],
+      "tex": 2048,
+      "faces": 3000,
+      "q": [
+        "fire_alarm"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "security_cam",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.35
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "security_camera_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "utility_box",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 5000,
+      "q": [
+        "utility_box_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "wall_lamp",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.35
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "industrial_wall_lamp"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "fire_hydrant",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "fire_hydrant"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "manhole",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 4000,
+      "q": [
+        "water_manhole_cover"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "trash_can",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 2048,
+      "faces": 10000,
+      "q": [
+        "metal_trash_can"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "street_lamp_b",
+      "prio": 1,
+      "fit": [
+        "h",
+        7
+      ],
+      "tex": 2048,
+      "faces": 15000,
+      "q": [
+        "street_lamp_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "ceiling_fan",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.2
+      ],
+      "tex": 2048,
+      "faces": 8000,
+      "q": [
+        "ceiling_fan"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "lamp_pendant",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 2048,
+      "faces": 6000,
+      "q": [
+        "modern_ceiling_lamp_01"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "chandelier",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 2048,
+      "faces": 12000,
+      "q": [
+        "Chandelier_02"
+      ],
+      "note": "v0.7 realism pass (Poly Haven CC0)"
+    },
+    {
+      "id": "toilet",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.8
+      ],
+      "tex": 1024,
+      "faces": 15000,
+      "q": [
+        "toilet",
+        "old toilet"
+      ]
+    },
+    {
+      "id": "backpack_old",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "backpack",
+        "old backpack"
+      ]
+    },
+    {
+      "id": "display_fridge",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.95
+      ],
+      "tex": 2048,
+      "faces": 30000,
+      "q": [
+        "drink cooler",
+        "display fridge"
+      ]
+    },
+    {
+      "id": "hospital_bed",
+      "prio": 1,
+      "fit": [
+        "l",
+        2.05
+      ],
+      "tex": 2048,
+      "faces": 30000,
+      "q": [
+        "hospital bed"
+      ]
+    },
+    {
+      "id": "car_clean",
+      "prio": 1,
+      "fit": [
+        "l",
+        4.15
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "lada 2107",
+        "vaz 2106",
+        "soviet car"
+      ]
+    },
+    {
+      "id": "civilian_a",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.76
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "rigged": true,
+      "q": [
+        "man walking animated",
+        "civilian animated",
+        "people rigged"
+      ]
+    },
+    {
+      "id": "grass_cards",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 2048,
+      "faces": 20000,
+      "q": [
+        "grass pack",
+        "realistic grass",
+        "grass clump"
+      ]
+    },
+    {
+      "id": "car_volga",
+      "prio": 1,
+      "fit": [
+        "l",
+        4.73
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "gaz 24"
+      ]
+    },
+    {
+      "id": "car_lada",
+      "prio": 1,
+      "fit": [
+        "l",
+        4.13
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "lada 2107"
+      ]
+    },
+    {
+      "id": "civ_nathan",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.8
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "rigged": true,
+      "q": [
+        "civilian"
+      ]
+    },
+    {
+      "id": "civ_fuse",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.78
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "rigged": true,
+      "q": [
+        "civilian"
+      ]
+    },
+    {
+      "id": "civ_coat",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.82
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "rigged": true,
+      "q": [
+        "civilian"
+      ]
+    },
+    {
+      "id": "civ_woman",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.68
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "rigged": true,
+      "q": [
+        "civilian"
+      ]
+    },
+    {
+      "id": "grass_dry",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.55
+      ],
+      "tex": 1024,
+      "faces": 2000,
+      "q": [
+        "grass"
+      ]
+    },
+    {
+      "id": "grass_green",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.45
+      ],
+      "tex": 1024,
+      "faces": 3000,
+      "q": [
+        "grass"
+      ]
+    },
+    {
+      "id": "grass_green_b",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 1024,
+      "faces": 3000,
+      "q": [
+        "grass"
+      ]
+    },
+    {
+      "id": "grass_scan",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 1024,
+      "faces": 8000,
+      "q": [
+        "grass"
+      ]
+    },
+    {
+      "id": "duct_straight",
+      "fit": [
+        "l",
+        1.5
+      ],
+      "faces": 4000,
+      "prio": 1,
+      "tex": 1024,
+      "q": [
+        "kit piece"
+      ]
+    },
+    {
+      "id": "duct_bend",
+      "fit": [
+        "l",
+        0.62
+      ],
+      "faces": 4000,
+      "prio": 1,
+      "tex": 1024,
+      "q": [
+        "kit piece"
+      ]
+    },
+    {
+      "id": "cable_run",
+      "fit": [
+        "h",
+        1
+      ],
+      "faces": 2000,
+      "prio": 1,
+      "tex": 1024,
+      "q": [
+        "kit piece"
+      ]
+    },
+    {
+      "id": "pipe_fitting",
+      "fit": [
+        "h",
+        0.8
+      ],
+      "faces": 6000,
+      "prio": 1,
+      "tex": 1024,
+      "q": [
+        "kit piece"
+      ]
+    },
+    {
+      "id": "water_bottle_m",
+      "fit": [
+        "h",
+        0.3
+      ],
+      "faces": 8000,
+      "q": [
+        "water bottle"
+      ],
+      "prio": 1,
+      "tex": 1024
+    },
+    {
+      "id": "bandage_roll",
+      "fit": [
+        "l",
+        0.1
+      ],
+      "faces": 6000,
+      "q": [
+        "bandage"
+      ],
+      "prio": 1,
+      "tex": 1024
+    },
+    {
+      "id": "spoon_metal",
+      "fit": [
+        "l",
+        0.19
+      ],
+      "faces": 6000,
+      "q": [
+        "spoon",
+        "metal spoon",
+        "tablespoon"
+      ],
+      "prio": 1,
+      "tex": 1024
+    },
+    {
+      "id": "pill_bottle",
+      "fit": [
+        "h",
+        0.09
+      ],
+      "faces": 8000,
+      "q": [
+        "pill bottle",
+        "medicine bottle",
+        "pills"
+      ],
+      "prio": 1,
+      "tex": 1024
+    },
+    {
+      "id": "food_tomato",
+      "fit": [
+        "h",
+        0.065
+      ],
+      "faces": 8000,
+      "q": [
+        "tomato",
+        "tomato scan"
+      ],
+      "prio": 2,
+      "tex": 1024
+    },
+    {
+      "id": "food_potato",
+      "fit": [
+        "l",
+        0.09
+      ],
+      "faces": 8000,
+      "q": [
+        "potato",
+        "potato scan"
+      ],
+      "prio": 2,
+      "tex": 1024
+    },
+    {
+      "id": "food_cracker",
+      "fit": [
+        "l",
+        0.09
+      ],
+      "faces": 8000,
+      "q": [
+        "rusk",
+        "cracker",
+        "biscuit",
+        "toast bread slice"
+      ],
+      "prio": 2,
+      "tex": 1024
+    },
+    {
+      "id": "bowl_enamel",
+      "fit": [
+        "l",
+        0.16
+      ],
+      "faces": 8000,
+      "q": [
+        "enamel bowl",
+        "metal bowl",
+        "soup bowl"
+      ],
+      "prio": 2,
+      "tex": 1024
     }
   ]
 }

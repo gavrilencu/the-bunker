@@ -146,9 +146,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("move_object") and _move_target != "" and not Game.build_mode_active and Game.level and Game.level.has_method("start_move"):
 		Game.level.start_move(_move_target)
 	elif event.is_action_pressed("heal") and ctx in ["bunker", "surface"]:
-		if not State.use_item("bandage"):
-			if not State.use_item("medkit"):
-				HUD.toast("Nu ai bandaje.", "warn")
+		var hid := "bandage" if State.available("bandage") > 0 else ("medkit" if State.available("medkit") > 0 else "")
+		if weapons.held in ["bandage", "medkit"]:
+			weapons.put_away()
+		elif hid == "":
+			HUD.toast("Nu ai bandaje.", "warn")
+		else:
+			use_item_animated(hid)
 	elif combat_enabled:
 		if event.is_action_pressed("slot_1"):
 			equip("axe")
@@ -186,6 +190,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _move(delta: float) -> void:
+	if _lying:
+		# in bed: the lie-down tween owns the body and the head
+		velocity = Vector3.ZERO
+		return
 	var on_floor := is_on_floor()
 	if not on_floor:
 		velocity.y -= _gravity * gravity_scale * delta
@@ -349,7 +357,7 @@ func _interact(delta: float) -> void:
 		if ht <= 0.0:
 			if Input.is_action_just_pressed("interact"):
 				weapons.reach_pulse()
-				_target.use(self)
+				_use_target()
 		else:
 			if Input.is_action_pressed("interact"):
 				reaching = 1.0
@@ -358,7 +366,7 @@ func _interact(delta: float) -> void:
 				if _hold >= ht:
 					_hold = 0.0
 					progress = 0.0
-					_target.use(self)
+					_use_target()
 			else:
 				_hold = 0.0
 		var title := ""
@@ -391,7 +399,7 @@ func _camera_fx(delta: float) -> void:
 	var t := Time.get_ticks_msec() * 0.001
 	var sh := Vector3(sin(t * 37.0) + sin(t * 23.0) * 0.5, cos(t * 31.0) + sin(t * 41.0) * 0.5, 0.0) * shake * 0.06
 	cam.position = bob + sh
-	var ca := weapons.cam_anim
+	var ca := weapons.cam_anim + weapons.use_cam()
 	cam.rotation = Vector3(ca.x, ca.y, sin(t * 29.0) * shake * 0.03 + ca.z)
 	var target := Settings.fov * weapons.fov_mult() + (6.0 if sprinting else 0.0)
 	cam.fov = lerpf(cam.fov, target, minf(10.0 * delta, 1.0))
@@ -401,12 +409,79 @@ func add_shake(amount: float) -> void:
 	shake = clampf(maxf(shake, amount), 0.0, 3.0)
 
 
-## Sleep: the head sinks to the pillow and rolls onto its side (and back up on waking).
-func lie_down(on: bool, dur := 0.9) -> void:
+## Sleep: on a bed the player lies down on it, head on the pillow, looking up at the bunk
+## above; without a bed the head just sinks and rolls. Waking reverses it.
+var _sleep_from := Transform3D()
+var _sleep_bed: Node3D = null
+var _lying := false
+
+
+func interaction_target() -> Node3D:
+	return _last_used if is_instance_valid(_last_used) else _target
+
+
+var _last_used: Node3D = null
+
+
+func _use_target() -> void:
+	_last_used = _target
+	_target.use(self)
+
+
+func lie_down(on: bool, dur := 0.9, bed: Node3D = null) -> void:
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	# arms down while lying (no fist floating over the blanket)
+	if on:
+		get_tree().create_timer(dur * 0.35).timeout.connect(func() -> void:
+			if is_instance_valid(weapons):
+				weapons.stowed = true)
+	else:
+		get_tree().create_timer(dur * 0.8).timeout.connect(func() -> void:
+			if is_instance_valid(weapons):
+				weapons.stowed = false)
+	if on:
+		_lying = true
+	if on and bed and is_instance_valid(bed):
+		Audio.sfx("bed_lie", -4.0, 0.04)
+		_sleep_bed = bed
+		_sleep_from = global_transform
+		col_shape.disabled = true
+		gravity_scale = 0.0
+		velocity = Vector3.ZERO
+		var bx := bed.global_basis.x.normalized()
+		var pillow := bed.global_position - bx * 0.78
+		var yaw := atan2(-bx.x, -bx.z)
+		tw.tween_property(self, "global_position", Vector3(pillow.x, bed.global_position.y, pillow.z), dur * 1.2)
+		tw.tween_property(self, "rotation:y", rotation.y + wrapf(yaw - rotation.y, -PI, PI), dur * 1.2)
+		tw.tween_property(head, "position:y", 0.62, dur * 1.2)
+		tw.tween_property(head, "rotation:x", 1.05, dur * 1.3)
+		tw.tween_property(head, "rotation:z", -0.18, dur * 1.3)
+		return
+	if not on and _sleep_bed:
+		_sleep_bed = null
+		Audio.sfx("yawn", -6.0, 0.03)
+		get_tree().create_timer(dur * 0.35).timeout.connect(func() -> void: Audio.sfx("bed_rise", -4.0, 0.04))
+		tw.tween_property(self, "global_position", _sleep_from.origin, dur)
+		var from_yaw := _sleep_from.basis.get_euler().y
+		tw.tween_property(self, "rotation:y", rotation.y + wrapf(from_yaw - rotation.y, -PI, PI), dur)
+		tw.tween_property(head, "position:y", EYE, dur)
+		tw.tween_property(head, "rotation:x", 0.0, dur)
+		tw.tween_property(head, "rotation:z", 0.0, dur)
+		tw.chain().tween_callback(func() -> void:
+			col_shape.disabled = false
+			gravity_scale = 1.0
+			_lying = false
+			_eye = EYE
+			set_pitch(0.0))
+		return
 	tw.tween_property(head, "position:y", 0.55 if on else EYE, dur)
 	tw.tween_property(head, "rotation:z", -0.55 if on else 0.0, dur)
 	tw.tween_property(head, "rotation:x", -0.25 if on else 0.0, dur)
+	if not on:
+		tw.chain().tween_callback(func() -> void:
+			_lying = false
+			_eye = EYE
+			set_pitch(0.0))
 
 
 # --------------------------------------------------------------------------
@@ -420,6 +495,14 @@ func enable_combat(on: bool) -> void:
 
 func equip(w: String) -> void:
 	weapons.switch(w)
+
+
+## Takes food / water / a bandage / pills into the hands (DayZ-style): hold the attack
+## button to use it for as long as needed, right button puts it away. Anything that
+## can't be held is used at once.
+func use_item_animated(id: String) -> void:
+	if not weapons.hold_item(id):
+		State.use_item(id)
 
 
 func weapon_text() -> String:

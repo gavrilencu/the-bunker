@@ -30,9 +30,8 @@ func setup(p_dir: float, x: float, p_city: Node, model_id := "car_sedan") -> Tra
 	city = p_city
 	position = Vector3(x, 0.0, lane_z)
 	rotation.y = PI * 0.5 if dir > 0.0 else -PI * 0.5
-	var m := Assets.model(model_id)
+	var m := CityLife.clean_car(CityLife.CAR_COLORS.pick_random()) if model_id == "car_sedan" else Assets.model(model_id)
 	add_child(m)
-	CityLife.paint_car(m, CityLife.CAR_COLORS.pick_random())
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
 	bs.size = Vector3(1.8, 1.4, 4.2)

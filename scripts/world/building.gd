@@ -24,26 +24,26 @@ const WIN_TOP := 2.05
 ## yaw = model front correction (models whose front is +X).
 const FURN := {
 	"counter": {"w": 1.8, "d": 0.6, "h": 0.92, "loot": "cupboard", "title": "Dulap de bucătărie"},
-	"stove": {"w": 0.6, "d": 0.6, "h": 0.9},
+	"stove": {"model": "stove_electric", "w": 0.6, "d": 0.6, "h": 0.9},
 	"fridge": {"model": "fridge_old", "tall": true, "loot": "fridge", "title": "Frigider"},
-	"pantry": {"w": 0.8, "d": 0.5, "h": 2.0, "tall": true, "loot": "pantry", "title": "Bufet"},
-	"wardrobe": {"model": "wardrobe_old", "w": 1.2, "d": 0.6, "h": 2.0, "tall": true, "loot": "wardrobe", "title": "Șifonier"},
-	"hall_cabinet": {"w": 0.9, "d": 0.4, "h": 1.9, "tall": true, "loot": "wardrobe", "title": "Cuier cu dulap"},
-	"nightstand": {"w": 0.45, "d": 0.4, "h": 0.55, "loot": "drawer", "title": "Noptieră"},
-	"dresser": {"w": 1.0, "d": 0.48, "h": 0.85, "loot": "drawer", "title": "Comodă"},
+	"pantry": {"model": "cabinet_tall_b", "w": 0.8, "d": 0.5, "h": 2.0, "tall": true, "loot": "pantry", "title": "Bufet"},
+	"wardrobe": {"model": "wardrobe_old", "yaw": -PI * 0.5, "w": 1.2, "d": 0.6, "h": 2.0, "tall": true, "loot": "wardrobe", "title": "Șifonier"},
+	"hall_cabinet": {"model": "drawer_cabinet", "w": 0.9, "d": 0.4, "h": 1.9, "tall": true, "loot": "wardrobe", "title": "Dulăpior de hol"},
+	"nightstand": {"model": "nightstand", "w": 0.45, "d": 0.4, "h": 0.55, "loot": "drawer", "title": "Noptieră"},
+	"dresser": {"model": "dresser_old", "w": 1.0, "d": 0.48, "h": 0.85, "loot": "drawer", "title": "Comodă"},
 	"bed": {"model": "bed_old", "long": "z", "w": 1.5, "d": 2.05, "h": 0.55},
-	"hbed": {"w": 0.95, "d": 2.05, "h": 0.6},
-	"bookshelf": {"w": 0.9, "d": 0.34, "h": 1.9, "tall": true, "loot": "shelf", "title": "Bibliotecă"},
-	"tv": {"w": 0.9, "d": 0.45, "h": 0.5},
+	"hbed": {"model": "hospital_bed", "long": "z", "w": 0.95, "d": 2.05, "h": 0.6},
+	"bookshelf": {"model": "bookshelf_worn", "w": 0.9, "d": 0.34, "h": 1.9, "tall": true, "loot": "shelf", "title": "Bibliotecă"},
+	"tv": {"model": "nightstand_b", "w": 0.9, "d": 0.45, "h": 0.5},
 	"sofa": {"model": "sofa_old"},
-	"soba": {"w": 0.95, "d": 0.7, "h": 1.75, "tall": true},
-	"desk": {"w": 1.2, "d": 0.62, "h": 0.76, "loot": "drawer", "title": "Birou"},
+	"soba": {"model": "masonry_heater", "w": 0.95, "d": 0.7, "h": 1.75, "tall": true},
+	"desk": {"model": "office_desk", "w": 1.2, "d": 0.62, "h": 0.76, "loot": "drawer", "title": "Birou"},
 	"bathtub": {"model": "bathtub_old", "long": "x", "w": 1.6, "d": 0.72, "h": 0.55},
 	"sink": {"model": "sink_old", "w": 0.55, "d": 0.45, "h": 0.85},
-	"toilet": {"w": 0.45, "d": 0.65, "h": 0.8},
+	"toilet": {"model": "toilet", "yaw": PI * 0.5, "w": 0.45, "d": 0.65, "h": 0.8},
 	"medcab": {"w": 0.4, "d": 0.16, "h": 0.5, "mount": 1.35, "loot": "medicine", "title": "Dulăpior cu medicamente"},
-	"bag": {"w": 0.65, "d": 0.4, "h": 0.32, "loot": "bag", "title": "Geantă"},
-	"backpack": {"w": 0.38, "d": 0.3, "h": 0.5, "loot": "bag", "title": "Rucsac"},
+	"bag": {"model": "suitcase", "w": 0.65, "d": 0.4, "h": 0.32, "loot": "bag", "title": "Valiză"},
+	"backpack": {"model": "backpack_old", "w": 0.38, "d": 0.3, "h": 0.5, "loot": "bag", "title": "Rucsac"},
 	"mshelf": {"model": "metal_shelf", "tall": true, "loot": "shelf", "title": "Raft metalic"},
 	"tshelf": {"model": "metal_shelf", "tall": true, "loot": "tools", "title": "Raft cu scule"},
 	"medshelf": {"model": "metal_shelf", "tall": true, "loot": "medicine", "title": "Raft cu medicamente"},
@@ -52,13 +52,13 @@ const FURN := {
 	"crate": {"model": "wooden_crate", "loot": "crate", "title": "Ladă"},
 	"mcrate": {"model": "military_crate", "loot": "crate", "title": "Ladă militară"},
 	"barrel": {"model": "oil_barrel"},
-	"jerry": {"w": 0.62, "d": 0.35, "h": 0.5, "loot": "crate", "title": "Canistre"},
+	"jerry": {"model": "jerrycan", "w": 0.62, "d": 0.35, "h": 0.5, "loot": "crate", "title": "Canistre"},
 	"bunk": {"model": "bunk_bed"},
 	"counter_shop": {"w": 1.8, "d": 0.7, "h": 1.0, "loot": "drawer", "title": "Tejghea"},
-	"display_fridge": {"w": 0.9, "d": 0.7, "h": 1.9, "tall": true, "loot": "fridge", "title": "Vitrină frigorifică"},
+	"display_fridge": {"model": "display_fridge", "w": 0.9, "d": 0.7, "h": 1.9, "tall": true, "loot": "fridge", "title": "Vitrină frigorifică"},
 	"bench_wall": {"model": "bench"},
 	"table": {"model": "table_wood", "long": "x", "w": 1.2, "d": 0.8, "h": 0.76, "center": true},
-	"lathe": {"w": 2.2, "d": 0.9, "h": 1.3},
+	"lathe": {"model": "drill_press", "w": 2.2, "d": 0.9, "h": 1.3},
 }
 
 ## What goes into each room type, in placement order (ids of FURN).
@@ -141,6 +141,48 @@ func build() -> void:
 		_damage()
 	_b.commit(self)
 	_f.commit(self, false, INTERIOR_RANGE)
+	if furnish:
+		_interior_light()
+
+
+## Daylight inside: an interior reflection probe gives the rooms their own soft ambient
+## (window light bouncing off walls) and correct reflections, instead of the black of
+## an unlit box or the outdoor sky.
+func _interior_light() -> void:
+	var probe := ReflectionProbe.new()
+	probe.name = "InteriorProbe"
+	var hh := height * maxi(floors, 1)
+	probe.size = Vector3(maxf(size.x - T * 2.0, 1.0), hh, maxf(size.y - T * 2.0, 1.0))
+	probe.position = Vector3(0, hh * 0.5, 0)
+	probe.interior = true
+	probe.box_projection = true
+	probe.update_mode = ReflectionProbe.UPDATE_ONCE
+	probe.ambient_mode = ReflectionProbe.AMBIENT_COLOR
+	var day := Color(0.62, 0.6, 0.56) if not intact else Color(0.78, 0.76, 0.72)
+	probe.ambient_color = day
+	probe.ambient_color_energy = 0.55 if kind != "ruin" else 0.75
+	probe.intensity = 0.55
+	probe.max_distance = 40.0
+	probe.cull_mask = 1
+	add_child(probe)
+	# GI treats a room behind small windows as almost closed: a soft, shadowless fill per
+	# room stands in for the daylight bouncing off walls and floor (fades out with distance)
+	for rm in rooms:
+		var rr: Rect2 = rm.rect
+		var l := OmniLight3D.new()
+		l.position = Vector3(rr.get_center().x, height * 0.72, rr.get_center().y)
+		l.omni_range = maxf(rr.size.x, rr.size.y) * 0.95 + 0.5
+		l.omni_attenuation = 0.6
+		l.light_color = Color(0.95, 0.9, 0.82) if intact else Color(0.88, 0.85, 0.8)
+		l.light_energy = (0.55 if intact else 0.42) * (1.25 if kind == "ruin" else 1.0)
+		l.light_specular = 0.0
+		l.light_indirect_energy = 0.4
+		l.light_volumetric_fog_energy = 0.0
+		l.shadow_enabled = false
+		l.distance_fade_enabled = true
+		l.distance_fade_begin = 28.0
+		l.distance_fade_length = 10.0
+		add_child(l)
 
 
 # --------------------------------------------------------------------------
@@ -803,10 +845,22 @@ func _spawn(id: String, spec: Dictionary, xf: Transform3D, sz: Vector3) -> void:
 		if spec.has("loot"):
 			_container(xf, sz, spec.loot, spec.title)
 		if id == "table":
+			var chair_id := "chair_wood" if rng.randf() < 0.5 else "chair_dining"
+			if not Assets.has_model(chair_id):
+				chair_id = "chair"
 			for s in [-1.0, 1.0]:
 				if rng.randf() < 0.8:
-					_interior(Geo.prop(self, "chair", (xf * Transform3D(Basis(), Vector3(s * (sz.x * 0.5 + 0.25), 0, rng.randf_range(-0.15, 0.15)))).origin,
+					_interior(Geo.prop(self, chair_id, (xf * Transform3D(Basis(), Vector3(s * (sz.x * 0.5 + 0.25), 0, rng.randf_range(-0.15, 0.15)))).origin,
 						xf.basis.get_euler().y - s * PI * 0.5 + rng.randf_range(-0.4, 0.4)))
+			_tabletop(xf, sz, ["jug", "pot_enamel", "food_cans"])
+		elif id == "tv" and Assets.has_model("tv_old"):
+			_interior(Geo.prop(self, "tv_old", (xf * Transform3D(Basis(), Vector3(0, sz.y, 0))).origin, xf.basis.get_euler().y, "none"))
+		elif id == "bookshelf" and Assets.has_model("books_set"):
+			for shelf_y in [0.42, 0.85, 1.28]:
+				if rng.randf() < 0.75:
+					_interior(Geo.prop(self, "books_set", (xf * Transform3D(Basis(), Vector3(rng.randf_range(-0.25, 0.25), shelf_y, -0.05))).origin, xf.basis.get_euler().y, "none"))
+		elif id == "nightstand" and rng.randf() < 0.5:
+			_tabletop(xf, sz, ["kettle"] if kind == "ward" else ["jug"])
 		return
 	var g := func(mat: Material, c: Vector3, s: Vector3) -> void:
 		_f.box_xf(mat, xf * Transform3D(Basis(), c), s)
@@ -814,12 +868,18 @@ func _spawn(id: String, spec: Dictionary, xf: Transform3D, sz: Vector3) -> void:
 		_f.collider(xf * Transform3D(Basis(), c), s)
 	match id:
 		"counter":
+			_tabletop(xf, Vector3(sz.x, 0.905, sz.z), ["kettle", "pot_enamel", "jug", "food_cans"], 2)
 			g.call(mats.wood, Vector3(0, 0.43, 0), Vector3(sz.x, 0.86, sz.z - 0.04))
 			g.call(mats.dark, Vector3(0, 0.885, 0.01), Vector3(sz.x + 0.02, 0.04, sz.z + 0.02))
 			for k in 3:
 				g.call(mats.wood_dark, Vector3(-sz.x * 0.5 + sz.x * (k + 0.5) / 3.0, 0.45, sz.z * 0.5 - 0.01), Vector3(sz.x / 3.0 - 0.04, 0.7, 0.02))
 			g.call(mats.metal, Vector3(sz.x * 0.25, 0.91, 0.02), Vector3(0.5, 0.03, 0.38))
-			g.call(mats.white, Vector3(0, 1.45, -sz.z * 0.5 + 0.17), Vector3(sz.x, 0.65, 0.34))
+			# wall cupboard: wooden carcass with three framed doors and knobs
+			g.call(mats.wood, Vector3(0, 1.48, -sz.z * 0.5 + 0.17), Vector3(sz.x, 0.66, 0.34))
+			for k in 3:
+				var dx := -sz.x * 0.5 + sz.x * (k + 0.5) / 3.0
+				g.call(mats.wood_dark, Vector3(dx, 1.48, -sz.z * 0.5 + 0.345), Vector3(sz.x / 3.0 - 0.05, 0.58, 0.015))
+				g.call(mats.metal, Vector3(dx + sz.x / 6.0 - 0.09, 1.3, -sz.z * 0.5 + 0.36), Vector3(0.02, 0.06, 0.02))
 		"stove":
 			g.call(mats.white, Vector3(0, 0.44, 0), Vector3(sz.x, 0.88, sz.z))
 			g.call(mats.dark, Vector3(0, 0.4, sz.z * 0.5), Vector3(sz.x - 0.1, 0.4, 0.02))
@@ -998,6 +1058,8 @@ func _spawn(id: String, spec: Dictionary, xf: Transform3D, sz: Vector3) -> void:
 			g.call(mats.fabric_a, Vector3(0, 0.4, 0.05), Vector3(0.35, 0.12, 0.2))
 			g.call(mats.dark, Vector3(0, 0.15, 0.12), Vector3(0.26, 0.18, 0.06))
 		"counter_shop":
+			if Assets.has_model("cash_register") and rng.randf() < 0.7:
+				_interior(Geo.prop(self, "cash_register", (xf * Transform3D(Basis(), Vector3(rng.randf_range(-0.4, 0.4), sz.y, 0.0))).origin, xf.basis.get_euler().y + PI + rng.randf_range(-0.3, 0.3), "none"))
 			g.call(mats.wood, Vector3(0, sz.y * 0.5, 0), sz)
 			g.call(mats.dark, Vector3(0, sz.y + 0.02, 0), Vector3(sz.x + 0.04, 0.04, sz.z + 0.04))
 			if rng.randf() < 0.6:
@@ -1317,8 +1379,15 @@ func _dress_room(i: int) -> void:
 			for k in n:
 				var off := ((k + 0.5) / n - 0.5) * maxf(r.size.x, r.size.y) * 0.8
 				var p := Vector3(cx, h - 0.2, cz) + (Vector3(off, 0, 0) if long_x else Vector3(0, 0, off))
-				_f.box(_xmat("fixture", Color(0.82, 0.82, 0.8), 0.6, 0.3), p, Vector3(1.25, 0.06, 0.18) if long_x else Vector3(0.18, 0.06, 1.25))
-				_f.box(_xmat("tube", Color(0.86, 0.88, 0.9), 0.4), p - up * 0.04, Vector3(1.15, 0.03, 0.04) if long_x else Vector3(0.04, 0.03, 1.15))
+				if Assets.has_model("fluoro_lights"):
+					_interior(Geo.prop(self, "fluoro_lights", p + up * 0.13, 0.0 if long_x else PI * 0.5, "none"))
+				else:
+					_f.box(_xmat("fixture", Color(0.82, 0.82, 0.8), 0.6, 0.3), p, Vector3(1.25, 0.06, 0.18) if long_x else Vector3(0.18, 0.06, 1.25))
+					_f.box(_xmat("tube", Color(0.86, 0.88, 0.9), 0.4), p - up * 0.04, Vector3(1.15, 0.03, 0.04) if long_x else Vector3(0.04, 0.03, 1.15))
+		elif t == "living" and Assets.has_model("chandelier"):
+			_interior(Geo.prop(self, "chandelier", Vector3(cx, h - 0.17 - 0.6, cz), rng.randf() * TAU, "none"))
+		elif Assets.has_model("lamp_pendant") and rng.randf() < 0.6:
+			_interior(Geo.prop(self, "lamp_pendant", Vector3(cx, h - 0.17 - 0.5, cz), rng.randf() * TAU, "none"))
 		else:
 			var p := Vector3(cx, h - 0.17, cz)
 			_f.cylinder(_xmat("cord", Color(0.12, 0.11, 0.1)), p, p - up * 0.42, 0.006, 5)
@@ -1341,7 +1410,13 @@ func _dress_room(i: int) -> void:
 			var along_x: bool = e[3]
 			var p2 := a.lerp(b, rng.randf_range(0.25, 0.75))
 			var wp := Vector3(p2.x, 1.55 + rng.randf_range(-0.1, 0.15), p2.y)
-			if (t in ["kitchen", "office", "reception", "lobby", "ward"]) and k == 0:
+			if (t in ["kitchen", "office", "reception", "lobby", "ward"]) and k == 0 and Assets.has_model("wall_clock"):
+				_on_wall("wall_clock", e, rng.randf_range(0.3, 0.7), 1.85)
+			elif t in ["living", "bedroom", "hall"] and Assets.has_model("picture_frame"):
+				var pf := _on_wall("picture_frame" if rng.randf() < 0.55 else "picture_frame_b", e, rng.randf_range(0.25, 0.75), 1.45)
+				if pf and rng.randf() < 0.35:
+					pf.rotate_object_local(Vector3.FORWARD, rng.randf_range(-0.12, 0.12))
+			elif (t in ["kitchen", "office", "reception", "lobby", "ward"]) and k == 0:
 				# wall clock, stopped
 				_f.cylinder(_xmat("clock", Color(0.92, 0.92, 0.88), 0.5), wp + n3 * 0.005, wp + n3 * 0.035, 0.15, 12)
 				_f.box(_xmat("cord", Color(0.12, 0.11, 0.1)), wp + n3 * 0.04 + up * 0.04, Vector3(0.012, 0.09, 0.006) if along_x else Vector3(0.006, 0.09, 0.012))
@@ -1354,6 +1429,12 @@ func _dress_room(i: int) -> void:
 				_f.box_xf(_xmat("frame", Color(0.25, 0.18, 0.12), 0.6), Transform3D(fb, wp + n3 * 0.012), Vector3(fw, fh, 0.024) if along_x else Vector3(0.024, fh, fw))
 				var art: Material = [_xmat("art_a", Color(0.5, 0.55, 0.45)), _xmat("art_b", Color(0.6, 0.5, 0.35)), _xmat("art_c", Color(0.45, 0.5, 0.6)), mats.white][rng.randi() % 4]
 				_f.box_xf(art, Transform3D(fb, wp + n3 * 0.026), Vector3(fw - 0.06, fh - 0.06, 0.006) if along_x else Vector3(0.006, fh - 0.06, fw - 0.06))
+	# mirror in bathrooms and halls, plants by the window
+	if t in ["bath", "hall"] and Assets.has_model("mirror") and rng.randf() < 0.8:
+		_on_wall("mirror", edges[rng.randi() % 4], rng.randf_range(0.3, 0.7), 1.2)
+	if t in ["living", "bedroom", "kitchen"] and Assets.has_model("potted_plant") and rng.randf() < 0.5:
+		var pp := Vector3(rng.randf_range(r.position.x + 0.35, r.end.x - 0.35), FLOOR_Y, r.position.y + 0.35)
+		_interior(Geo.prop(self, "potted_plant", pp, rng.randf() * TAU, "none"))
 	# fallen plaster
 	if damaged or kind == "ruin":
 		for k in rng.randi_range(2, 4):
@@ -1384,6 +1465,9 @@ func _dress_room(i: int) -> void:
 	if t in ["hall", "storage", "garage", "depot", "shop", "office", "workshop"]:
 		for k in rng.randi_range(1, 3):
 			var p: Vector3 = pos.call()
+			if Assets.has_model("cardboard_box") and rng.randf() < 0.7:
+				_interior(Geo.prop(self, "cardboard_box" if rng.randf() < 0.75 else "plastic_crate", p, rng.randf() * TAU, "box", rng.randf_range(0.8, 1.1)))
+				continue
 			var bs := Vector3(rng.randf_range(0.3, 0.5), rng.randf_range(0.25, 0.4), rng.randf_range(0.3, 0.45))
 			_f.box(_xmat("cardboard", Color(0.6, 0.48, 0.32), 0.95), p + up * bs.y * 0.5, bs, rng.randf() * TAU)
 			if rng.randf() < 0.4:
@@ -1407,9 +1491,34 @@ func _dress_room(i: int) -> void:
 	# a chair knocked over
 	if t in ["living", "kitchen", "office", "reception"] and rng.randf() < 0.45:
 		var p: Vector3 = pos.call()
-		var ch := Geo.prop(self, "chair", p + up * 0.22, rng.randf() * TAU, "none")
+		var ch := Geo.prop(self, "chair_wood" if Assets.has_model("chair_wood") else "chair", p + up * 0.22, rng.randf() * TAU, "none")
 		ch.rotation.z = PI * 0.5 * (1.0 if rng.randf() < 0.5 else -1.0)
 		_interior(ch)
+
+
+## Puts 1..n of the given small models on top of a piece (local frame xf, size sz).
+func _tabletop(xf: Transform3D, sz: Vector3, ids: Array, n := 1) -> void:
+	for k in rng.randi_range(1, n):
+		var mid: String = ids[rng.randi() % ids.size()]
+		if not Assets.has_model(mid):
+			continue
+		var lp := Vector3(rng.randf_range(-sz.x * 0.35, sz.x * 0.35), sz.y, rng.randf_range(-sz.z * 0.2, sz.z * 0.15))
+		_interior(Geo.prop(self, mid, (xf * Transform3D(Basis(), lp)).origin, xf.basis.get_euler().y + rng.randf_range(-0.6, 0.6), "none"))
+
+
+## A model hung on a room edge (picture, clock, mirror...), facing into the room.
+## Skipped when a door or window is in the way.
+func _on_wall(id: String, e: Array, f: float, y: float, off := 0.015) -> Node3D:
+	if not Assets.has_model(id):
+		return null
+	var p2 := (e[0] as Vector2).lerp(e[1], f)
+	for op in _ops:
+		var c: Vector2 = op.c
+		if c.distance_to(p2) < float(op.w) * 0.5 + 0.45 and float(op.y0) < y + 0.4 and float(op.y1) > y - 0.4:
+			return null
+	var n3 := Vector3((e[2] as Vector2).x, 0, (e[2] as Vector2).y)
+	var m := Geo.prop(self, id, Vector3(p2.x, y, p2.y) + n3 * off, atan2(n3.x, n3.z), "none")
+	return _interior(m)
 
 
 ## Interior props: no shadows (they are under a roof) and hidden from afar.

@@ -40,6 +40,9 @@ var battery_max := 100.0
 var inventory := {}
 ## bunker storage (only reachable inside the bunker)
 var stash := {}
+## item id -> what is left (0..1) of the unit that has been started (a bottle drunk
+## half-way, a can with a few spoonfuls left)
+var opened := {}
 var carry_max: float:
 	get: return 30.0 + addv("carry")
 ## purchased bunker upgrades (ids of ItemDB.UPGRADES)
@@ -99,6 +102,7 @@ func reset() -> void:
 	battery_max = 100.0
 	inventory = {"flashlight": 1, "canned_meat": 1, "water_bottle": 1}
 	stash = {}
+	opened = {}
 	bleeding = 0.0
 	upgrades = []
 	flags = {}
@@ -124,7 +128,7 @@ func to_dict() -> Dictionary:
 		"air_quality": air_quality, "battery": battery, "battery_max": battery_max,
 		"inventory": inventory, "stash": stash, "upgrades": upgrades, "flags": flags, "dig": dig, "planters": planters, "built": built, "layout": layout,
 		"radio_heard": radio_heard, "locations": locations, "containers": containers, "stats": stats,
-		"mask_filter_left": mask_filter_left,
+		"mask_filter_left": mask_filter_left, "opened": opened,
 	}
 
 
@@ -163,6 +167,10 @@ func from_dict(d: Dictionary) -> void:
 	containers = d.get("containers", {})
 	stats = d.get("stats", stats)
 	mask_filter_left = float(d.get("mask_filter_left", 0.0))
+	opened = {}
+	var op: Dictionary = d.get("opened", {})
+	for k in op:
+		opened[k] = clampf(float(op[k]), 0.0, 1.0)
 	refresh_caps()
 
 
@@ -415,6 +423,35 @@ func overweight() -> float:
 
 
 ## Use a consumable (backpack first, then the stash in the bunker).
+## What is left of the current unit of `id` (1 = a fresh one).
+func remaining(id: String) -> float:
+	return float(opened.get(id, 1.0))
+
+
+## Uses `frac` of one unit (a gulp, a spoonful, a bite...): applies that share of the
+## item's effects; the unit is used up when nothing is left of it. Returns the share
+## actually used.
+func consume_part(id: String, frac: float) -> float:
+	if available(id) <= 0:
+		return 0.0
+	var it := ItemDB.item(id)
+	var left := remaining(id)
+	var f := minf(frac, left)
+	food = clampf(food + float(it.get("food", 0)) * f, 0, 100)
+	hydration = clampf(hydration + float(it.get("water", 0)) * f, 0, 100)
+	health = clampf(health + float(it.get("heal", 0)) * f, 0, 100)
+	radiation = maxf(radiation - float(it.get("rad", 0)) * f, 0)
+	left -= f
+	if left <= 0.001:
+		opened.erase(id)
+		take(id)
+		if id in ["bandage", "medkit"]:
+			bleeding = 0.0
+	else:
+		opened[id] = left
+	return f
+
+
 func use_item(id: String) -> bool:
 	if available(id) <= 0:
 		return false

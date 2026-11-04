@@ -440,7 +440,15 @@ func _build_detail() -> void:
 	detail_box.add_child(UITheme.spacer(6))
 	var cat: String = it.get("cat", "")
 	if cat in ["food", "drink", "med", "fuel"]:
-		detail_box.add_child(UITheme.button("Folosește", func() -> void:
+		var in_hands := cat in ["food", "drink", "med"] and State.context in ["bunker", "surface"]
+		detail_box.add_child(UITheme.button("Ia în mână" if in_hands else "Folosește", func() -> void:
+			var p = Game.player
+			if cat in ["food", "drink", "med"] and p and is_instance_valid(p) and State.context in ["bunker", "surface"] and p.has_method("use_item_animated"):
+				# close the inventory and do it with the hands (first-person animation)
+				var id: String = selected
+				close()
+				p.use_item_animated(id)
+				return
 			State.use_item(selected)
 			refresh()))
 	if State.context == "bunker":

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://56yi6vo3gyt7"
-path.s3tc="res://.godot/imported/metal_door_1.jpg-0f39e42c3272763ac4c44c1fc6cae9d5.s3tc.ctex"
+path.bptc="res://.godot/imported/metal_door_1.jpg-0f39e42c3272763ac4c44c1fc6cae9d5.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/metal_door/metal_door_1.jpg"
-dest_files=["res://.godot/imported/metal_door_1.jpg-0f39e42c3272763ac4c44c1fc6cae9d5.s3tc.ctex"]
+dest_files=["res://.godot/imported/metal_door_1.jpg-0f39e42c3272763ac4c44c1fc6cae9d5.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnyncjisemxko"
-path.s3tc="res://.godot/imported/enemy_bandit_3.jpg-6c9a36f4765174545238dad3dc3fa8b2.s3tc.ctex"
+path.bptc="res://.godot/imported/enemy_bandit_3.jpg-6c9a36f4765174545238dad3dc3fa8b2.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/enemy_bandit/enemy_bandit_3.jpg"
-dest_files=["res://.godot/imported/enemy_bandit_3.jpg-6c9a36f4765174545238dad3dc3fa8b2.s3tc.ctex"]
+dest_files=["res://.godot/imported/enemy_bandit_3.jpg-6c9a36f4765174545238dad3dc3fa8b2.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

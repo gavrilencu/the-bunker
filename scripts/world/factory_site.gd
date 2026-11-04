@@ -64,9 +64,9 @@ func _materials() -> void:
 		"grass": Assets.pbr("grass", {"tile": 3.0, "fallback": Color(0.28, 0.36, 0.2)}),
 		"gravel": Assets.pbr("gravel", {"tile": 1.5, "fallback": Color(0.4, 0.38, 0.35)}),
 		"conc": Assets.pbr("concrete_floor", {"tile": 2.0, "tint": Color(0.75, 0.74, 0.7)}),
-		"wall": Assets.pbr("concrete_wall", {"tile": 2.5, "tint": Color(0.82, 0.81, 0.78)}),
+		"wall": Assets.pbr("panel_concrete", {"tile": 3.0, "tint": Color(0.88, 0.87, 0.84)}),
 		"brick": Assets.pbr("brick_wall", {"tile": 2.5, "tint": Color(0.8, 0.72, 0.68)}),
-		"plaster": Assets.pbr("concrete_wall", {"tile": 2.0, "tint": Color(0.95, 0.9, 0.74)}),
+		"plaster": Assets.pbr("plaster_yellow", {"tile": 2.6, "tint": Color(1.0, 0.97, 0.9)}),
 		"wood": Assets.pbr("wood_planks", {"tile": 0.8}),
 		"wood_dark": Assets.pbr("wood_planks", {"tile": 0.8, "tint": Color(0.45, 0.33, 0.24)}),
 		"steel": Geo.color_mat(Color(0.32, 0.33, 0.32), 0.45, 0.8),
@@ -93,7 +93,7 @@ func _materials() -> void:
 ## Material set for the Building generator.
 func _bmats(ext: Material, trim: Color) -> Dictionary:
 	return {
-		"ext": ext, "int": Assets.pbr("concrete_wall", {"tile": 1.6, "tint": Color(0.88, 0.86, 0.8)}),
+		"ext": ext, "int": Assets.pbr("plaster_int", {"tile": 2.0, "tint": Color(0.88, 0.86, 0.8)}),
 		"trim": Geo.color_mat(trim, 0.5), "roof": Assets.pbr("asphalt", {"tile": 3.0, "tint": Color(0.55, 0.55, 0.55)}),
 		"plinth": _m.conc, "floor_wood": _m.wood, "floor_tile": _m.conc, "floor_concrete": _m.conc,
 		"wood": _m.wood, "wood_dark": _m.wood_dark, "metal": _m.green, "white": _m.white, "dark": _m.dark,
@@ -237,6 +237,7 @@ func _roads() -> void:
 	# lawns along the avenue between the gate and the first cross road
 	for lx in [29.6, 42.4]:
 		Geo.plane(self, Vector2(4.4, 16.5), Vector3(lx, 0.05, -19.5), _m.grass)
+		_grass(Rect2(lx - 2.1, -27.6, 4.2, 16.2))
 		_curb(Vector3(lx - 2.2, 0, -11.25), Vector3(lx - 2.2, 0, -27.75))
 		_curb(Vector3(lx + 2.2, 0, -11.25), Vector3(lx + 2.2, 0, -27.75))
 	# staff car park west of the administration block
@@ -253,7 +254,7 @@ func _roads() -> void:
 		var i := rng.randi() % spots.size()
 		var sp: Vector3 = spots[i]
 		spots.remove_at(i)
-		CityLife.paint_car(Geo.prop(self, "car_sedan", sp, (0.0 if sp.z < -20.0 else PI) + rng.randf_range(-0.04, 0.04)), CityLife.CAR_COLORS.pick_random())
+		CityLife.parked_car(self, sp, (0.0 if sp.z < -20.0 else PI) + rng.randf_range(-0.04, 0.04), CityLife.CAR_COLORS.pick_random())
 
 
 func _curb(a: Vector3, b: Vector3) -> void:
@@ -533,6 +534,7 @@ func _shelter_square() -> void:
 	Geo.plane(self, Vector2(16.0, 13.0), Vector3(75.0, 0.06, -42.5), _m.pave)
 	for s in [-1.0, 1.0]:
 		Geo.plane(self, Vector2(3.0, 10.0), Vector3(75.0 + s * 9.5, 0.055, -43.5), _m.grass)
+		_grass(Rect2(75.0 + s * 9.5 - 1.4, -48.4, 2.8, 9.8))
 		Geo.prop(self, "bench", Vector3(75.0 + s * 6.2, Y_YARD, -44.0), -s * PI * 0.5)
 	_way_sign(Vector3(68.4, 0, -37.2), "ADĂPOST NR. 17", -PI * 0.5)
 	_way_sign(Vector3(41.2, 0, -27.0), "ADĂPOST  →")
@@ -643,10 +645,14 @@ func _cable_drum(p: Vector3) -> void:
 func _lawns() -> void:
 	for x0 in [-61.0, -33.0]:
 		Geo.plane(self, Vector2(18.0, 28.0), Vector3(x0 + 9.0, 0.05, -62.0), _m.grass)
+		_grass(Rect2(x0 + 0.3, -75.7, 17.4, 27.4))
 	# behind the shelter pavilion (it ends at z -56.5): keep clear of the stairwell
 	Geo.plane(self, Vector2(24.0, 21.0), Vector3(70.0, 0.05, -69.5), _m.grass)
+	_grass(Rect2(58.3, -79.7, 23.4, 20.0))
 	Geo.plane(self, Vector2(40.0, 5.0), Vector3(-80.0, 0.05, -94.0), _m.grass)
+	_grass(Rect2(-99.7, -96.3, 39.4, 4.6))
 	Geo.plane(self, Vector2(52.0, 40.0), Vector3(95.0, 0.05, -125.0), _m.grass)
+	_grass(Rect2(69.3, -144.7, 51.4, 39.4), 0.9)
 	for p in [Vector3(-52.0, 0, -55.0), Vector3(-24.0, 0, -70.0), Vector3(84.0, 0, -122.0), Vector3(96.0, 0, -132.0)]:
 		Geo.prop(self, "tree_leafy", p, rng.randf() * TAU, "box", rng.randf_range(0.75, 0.95))
 
@@ -682,3 +688,9 @@ func spawn_workers(city: CityLife) -> void:
 		city.people.append(p)
 		if w[2]:
 			p.rotation.y = w[3]
+
+
+## Real grass clumps on a lawn (October: green going straw-coloured at the tips).
+func _grass(r: Rect2, per_m2 := 1.5) -> void:
+	var id := "grass_green" if Foliage.available("grass_green") else "grass_dry"
+	Foliage.lawn(self, id, r, 0.05, per_m2 * float(Settings.val("vegetation")), rng, Color(0.95, 0.95, 0.85))

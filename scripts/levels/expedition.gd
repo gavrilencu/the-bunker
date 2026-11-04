@@ -54,6 +54,7 @@ const SHOP_SIGNS := ["MAGAZIN", "ALIMENTARA", "PÂINE", "FARMACIE", "PRODUSE", "
 const LANDMARK_SIGNS := {"supermarket": ["UNIC", Color(0.85, 0.3, 0.25)], "hospital": ["SPITALUL RAIONAL", Color(0.85, 0.85, 0.8)],
 	"police": ["POLIȚIA", Color(0.35, 0.5, 0.9)], "factory": ["ELECTROMAȘ", Color(0.85, 0.75, 0.55)],
 	"metro": ["M · PIAȚA UNIRII", Color(0.9, 0.25, 0.2)], "barracks": ["UNITATEA MILITARĂ 2214", Color(0.75, 0.8, 0.6)]}
+const PLASTER_TEX := ["plaster_white", "plaster_yellow", "plaster_blue", "plaster_worn", "plaster_white"]
 const PLASTER := [Color(0.8, 0.86, 0.94), Color(0.95, 0.88, 0.68), Color(0.78, 0.88, 0.75), Color(0.94, 0.93, 0.88), Color(0.9, 0.78, 0.66)]
 const INTERIOR := [Color(0.88, 0.85, 0.75), Color(0.74, 0.82, 0.88), Color(0.88, 0.8, 0.7), Color(0.8, 0.88, 0.78), Color(0.86, 0.86, 0.84)]
 const TRIM := [Color(0.88, 0.88, 0.85), Color(0.22, 0.4, 0.68), Color(0.28, 0.48, 0.32), Color(0.42, 0.28, 0.18)]
@@ -93,7 +94,7 @@ func _ready() -> void:
 		"profile": {"vfog": true, "ssil": false},
 	})
 	make_sun(Vector2(-28, 140), Color(1.0, 0.78, 0.55), 0.85, 110.0)
-	m_wall = Assets.pbr("concrete_wall", {"tile": 2.5, "tint": Color(0.75, 0.72, 0.68)})
+	m_wall = Assets.pbr("plaster_worn", {"tile": 2.5, "tint": Color(0.85, 0.83, 0.8)})
 	m_brick = Assets.pbr("brick_wall", {"tile": 2.5, "tint": Color(0.55, 0.5, 0.48)})
 	m_metal = Assets.pbr("rusty_metal", {"tile": 2.0})
 	m_concrete = Assets.pbr("concrete_floor", {"tile": 3.0, "tint": Color(0.7, 0.68, 0.64)})
@@ -129,6 +130,31 @@ func _ready() -> void:
 		player.global_position = bd.to_global(Vector3(bd.entrance_x, 0.15, bd.size.y * 0.5 - 1.0))
 		player.rotation.y = bd.rotation.y
 		player.flashlight.visible = Game.args.has("torch")
+	if Game.args.has("room"):
+		# debug: stand in the corner of the Nth room of a type (bedroom, kitchen...), facing in
+		var want := String(Game.args.room)
+		var nth := int(Game.args.get("nth", "0"))
+		for bd in buildings:
+			for rm in bd.rooms:
+				if rm.type == want:
+					if nth > 0:
+						nth -= 1
+						continue
+					var rr: Rect2 = rm.rect
+					var corner := Vector3(rr.position.x + 0.55, 0.15, rr.end.y - 0.55)
+					player.global_position = bd.to_global(corner)
+					var look := bd.to_global(Vector3(rr.get_center().x, 0.15, rr.get_center().y)) - player.global_position
+					player.rotation.y = atan2(-look.x, -look.z)
+					player.set_pitch(-0.2)
+					break
+			if player.global_position.distance_to(exit_pos) > 20.0:
+				break
+	if Game.args.has("outside") and not buildings.is_empty():
+		# debug: stand in the street 9 m in front of building N, looking at its facade
+		var bo := buildings[clampi(int(Game.args.outside), 0, buildings.size() - 1)]
+		player.global_position = bo.to_global(Vector3(bo.entrance_x + 2.5, 0.15, bo.size.y * 0.5 + 9.0))
+		player.rotation.y = bo.rotation.y + 0.25
+		player.set_pitch(0.05)
 	if Game.args.has("spawn"):
 		var e := Enemy.new()
 		e.kind = String(Game.args.spawn)
@@ -382,10 +408,11 @@ func _mats_for(kind: String, r: RandomNumberGenerator) -> Dictionary:
 	if kind in ["factory", "depot", "garage", "police"] or (kind in ["house", "ruin"] and r.randf() < 0.25):
 		ext = _m("brick", func() -> Material: return Assets.pbr("brick_wall", {"tile": 2.2, "tint": Color(0.78, 0.7, 0.66)}))
 	elif kind in ["apartment", "hospital", "hq", "barracks", "metro"]:
-		ext = _m("panel", func() -> Material: return Assets.pbr("concrete_wall", {"tile": 3.0, "tint": Color(0.78, 0.77, 0.74)}))
+		ext = _m("panel", func() -> Material: return Assets.pbr("panel_concrete", {"tile": 3.0, "tint": Color(0.85, 0.84, 0.82)}))
 	else:
-		var ti := r.randi() % PLASTER.size()
-		ext = _m("plaster%d" % ti, func() -> Material: return Assets.pbr("concrete_wall", {"tile": 2.0, "tint": PLASTER[ti]}))
+		# real lime plasters, painted (village houses: white, ochre, sky blue, weathered grey)
+		var ti := r.randi() % PLASTER_TEX.size()
+		ext = _m("plaster%d" % ti, func() -> Material: return Assets.pbr(PLASTER_TEX[ti], {"tile": 2.6, "tint": Color(0.92, 0.92, 0.9)}))
 	var ii := r.randi() % INTERIOR.size()
 	var tr := r.randi() % TRIM.size()
 	var fa := r.randi() % FABRIC.size()
@@ -393,12 +420,12 @@ func _mats_for(kind: String, r: RandomNumberGenerator) -> Dictionary:
 	var tin := kind in ["house", "ruin", "barracks"]
 	return {
 		"ext": ext,
-		"int": _m("int%d" % ii, func() -> Material: return Assets.pbr("concrete_wall", {"tile": 1.6, "tint": INTERIOR[ii]})),
-		"trim": _m("trim%d" % tr, func() -> Material: return Geo.color_mat(TRIM[tr], 0.6)),
-		"roof": _m("tin" if tin else "tar", func() -> Material: return Assets.pbr("rusty_metal", {"tile": 1.6, "tint": Color(0.75, 0.72, 0.7)}) if tin else Assets.pbr("asphalt", {"tile": 3.0, "tint": Color(0.6, 0.6, 0.6)})),
+		"int": _m("int%d" % ii, func() -> Material: return Assets.pbr("plaster_int", {"tile": 2.0, "tint": INTERIOR[ii]})),
+		"trim": _m("trim%d" % tr, func() -> Material: return Assets.pbr("wood_painted", {"tile": 0.8, "tint": TRIM[tr].lerp(Color.WHITE, 0.45), "fallback": TRIM[tr]})),
+		"roof": _m("tin" if tin else "tar", func() -> Material: return Assets.pbr("roof_tin", {"tile": 2.2, "tint": Color(0.85, 0.82, 0.8)}) if tin else Assets.pbr("asphalt", {"tile": 3.0, "tint": Color(0.6, 0.6, 0.6)})),
 		"plinth": _m("plinth", func() -> Material: return Assets.pbr("concrete_floor", {"tile": 2.0, "tint": Color(0.6, 0.6, 0.58)})),
 		# interior finishes (dedicated Poly Haven sets; each falls back to a flat colour if the set is missing)
-		"floor_wood": _m("fwood", func() -> Material: return Assets.pbr("floor_wood_old", {"tile": 2.0, "tint": Color(0.9, 0.84, 0.75), "fallback": Color(0.6, 0.5, 0.4)})),
+		"floor_wood": _m("fwood", func() -> Material: return Assets.pbr("old_floor", {"tile": 2.2, "tint": Color(0.82, 0.76, 0.7), "fallback": Color(0.6, 0.5, 0.4)})),
 		"floor_parquet": _m("fparq", func() -> Material: return Assets.pbr("parquet", {"tile": 1.6, "tint": Color(0.85, 0.78, 0.68), "fallback": Color(0.6, 0.45, 0.3)})),
 		"floor_tile": _m("ftile", func() -> Material: return Assets.pbr("tiles_floor", {"tile": 1.5, "tint": Color(0.85, 0.83, 0.78), "fallback": Color(0.75, 0.73, 0.68)})),
 		"floor_lino": _m("flino", func() -> Material: return Assets.pbr("linoleum", {"tile": 1.8, "tint": Color(0.9, 0.86, 0.8), "fallback": Color(0.5, 0.42, 0.3)})),
@@ -489,7 +516,7 @@ func _build_town() -> void:
 func _rubble_mats() -> Array:
 	return [_m("plinth", func() -> Material: return Assets.pbr("concrete_floor", {"tile": 2.0, "tint": Color(0.6, 0.6, 0.58)})),
 		_m("chimney", func() -> Material: return Assets.pbr("brick_wall", {"tile": 1.0, "tint": Color(0.7, 0.6, 0.55)})),
-		_m("panel", func() -> Material: return Assets.pbr("concrete_wall", {"tile": 3.0, "tint": Color(0.78, 0.77, 0.74)}))]
+		_m("panel", func() -> Material: return Assets.pbr("panel_concrete", {"tile": 3.0, "tint": Color(0.85, 0.84, 0.82)}))]
 
 
 ## Fence, gate and the bits of a lived-in yard (well, wood pile, garden, tree, car).
@@ -608,7 +635,7 @@ func _well(c: Vector2) -> void:
 	if _is_blocked(c):
 		return
 	var y := terrain.height_at(c.x, c.y)
-	var stone: Material = _m("stone", func() -> Material: return Assets.pbr("concrete_wall", {"tile": 1.0, "tint": Color(0.62, 0.6, 0.56)}))
+	var stone: Material = _m("stone", func() -> Material: return Assets.pbr("portal_concrete", {"tile": 1.0, "tint": Color(0.72, 0.7, 0.66)}))
 	var wood: Material = _m("wood_dark", func() -> Material: return Assets.pbr("wood_planks", {"tile": 0.8, "tint": Color(0.48, 0.34, 0.24)}))
 	Geo.cylinder(self, 0.62, 0.85, Vector3(c.x, y + 0.4, c.y), stone, Vector3.ZERO, true, 16)
 	Geo.cylinder(self, 0.5, 0.02, Vector3(c.x, y + 0.83, c.y), _m("dark", func() -> Material: return Geo.color_mat(Color(0.07, 0.07, 0.07), 0.6)), Vector3.ZERO, false, 16)
@@ -893,8 +920,18 @@ func _spawn_enemies() -> void:
 			var e := Enemy.new()
 			e.kind = "bandit"
 			e.level_ref = self
-			var ang := rng.randf() * TAU
-			e.position = _gy(exit_pos + Vector3(cos(ang) * 26.0, 0, sin(ang) * 26.0)) + Vector3(0, 0.15, 0)
+			# in front of the exit only (it sits in the hill at the south edge): a fan
+			# toward the town, inside the playable area, not on a building
+			var spot := exit_pos
+			for tries in 12:
+				var ang := -PI * 0.5 + rng.randf_range(-0.95, 0.95)  # -Z (north) +- 55 deg
+				var dist := rng.randf_range(20.0, 30.0)
+				spot = exit_pos + Vector3(cos(ang) * dist, 0, sin(ang) * dist)
+				spot.x = clampf(spot.x, -SIZE * 0.45, SIZE * 0.45)
+				spot.z = clampf(spot.z, -SIZE * 0.45, SIZE * 0.4)
+				if not _is_blocked(Vector2(spot.x, spot.z)):
+					break
+			e.position = _gy(spot) + Vector3(0, 0.15, 0)
 			e.max_hp = 95.0
 			e.damage = 12.0
 			add_child(e)

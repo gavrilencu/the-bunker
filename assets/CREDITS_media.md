@@ -34,6 +34,24 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | carpet | [Dirty Carpet](https://polyhaven.com/a/dirty_carpet) | Rohit Seervi | CC0 1.0 |
 | upholstery | [Rough Linen](https://polyhaven.com/a/rough_linen) | colormass, Rico Cilliers | CC0 1.0 |
 | kitchen_wood | [Kitchen Wood](https://polyhaven.com/a/kitchen_wood) | Rob Tuytel | CC0 1.0 |
+| plaster_white | [White Plaster Rough 01](https://polyhaven.com/a/white_plaster_rough_01) | Rob Tuytel | CC0 1.0 |
+| plaster_yellow | [Yellow Plaster](https://polyhaven.com/a/yellow_plaster) | Rob Tuytel | CC0 1.0 |
+| plaster_worn | [Worn Plaster Wall](https://polyhaven.com/a/worn_plaster_wall) | Dimitrios Savva | CC0 1.0 |
+| plaster_blue | [Blue Plaster Weathered](https://polyhaven.com/a/blue_plaster_weathered) | Amal Kumar | CC0 1.0 |
+| plaster_cracked | [Worn Cracked Plaster](https://polyhaven.com/a/worn_cracked_plaster) | Amal Kumar | CC0 1.0 |
+| roof_tin | [Rusty Corrugated Iron](https://polyhaven.com/a/rusty_corrugated_iron) | Charlotte Baglioni | CC0 1.0 |
+| roof_tin_grey | [Corrugated Iron 02](https://polyhaven.com/a/corrugated_iron_02) | Jenelle van Heerden, Sergej Majboroda | CC0 1.0 |
+| roof_tiles | [Clay Roof Tiles 02](https://polyhaven.com/a/clay_roof_tiles_02) | Amal Kumar | CC0 1.0 |
+| wood_painted | [Wood Peeling Paint Weathered](https://polyhaven.com/a/wood_peeling_paint_weathered) | Rob Tuytel, Dimitrios Savva | CC0 1.0 |
+| bunker_wall | [Concrete Wall 008](https://polyhaven.com/a/concrete_wall_008) | Dario Barresi, Charlotte Baglioni | CC0 1.0 |
+| bunker_floor | [Concrete Floor Worn 001](https://polyhaven.com/a/concrete_floor_worn_001) | Dimitrios Savva, Rico Cilliers | CC0 1.0 |
+| portal_concrete | [Concrete Wall 004](https://polyhaven.com/a/concrete_wall_004) | Dario Barresi, Charlotte Baglioni | CC0 1.0 |
+| old_floor | [Old Wooden Floor 01](https://polyhaven.com/a/old_wooden_floor_01) | Charlotte Baglioni, Dario Barresi | CC0 1.0 |
+| withered_grass | [Withered Grass](https://polyhaven.com/a/withered_grass) | Charlotte Baglioni | CC0 1.0 |
+| dry_leaves | [Dry Decay Leaves](https://polyhaven.com/a/dry_decay_leaves) | Amal Kumar | CC0 1.0 |
+| lawn | [Leafy Grass](https://polyhaven.com/a/leafy_grass) | Charlotte Baglioni | CC0 1.0 |
+| panel_concrete | [Concrete Panels](https://polyhaven.com/a/concrete_panels) | Amal Kumar | CC0 1.0 |
+| bunker_ceiling | [Rough Concrete](https://polyhaven.com/a/rough_concrete) | Dimitrios Savva | CC0 1.0 |
 
 ## HDRI skies
 
@@ -50,9 +68,16 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | ambient_bunker | Underground room tone: refrigeration motor + ventilation fan + 50 Hz mains hum | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=3597) [2](https://bigsoundbank.com/search?q=0957) |
 | ambient_morning | Morning bird song with distant traffic | ezwa | Public domain | [1](https://commons.wikimedia.org/wiki/File%3ABird_sings_in_the_morning_with_cars_in_the_background.ogg) |
 | ambient_wasteland | Desolate howling wind | Tvabutzku1234 | CC0 1.0 | [1](https://commons.wikimedia.org/wiki/File%3AHowling_wind.ogg) |
+| bandage_tear | Short cloth tear (tearing a bandage strip) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0013) |
+| bandage_wrap | Soft gauze rustle: wrapping one turn of a bandage | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1104) |
+| bed_lie | Lying down on an old metal bunk: spring creaks + blanket rustle | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1104) [2](https://bigsoundbank.com/search?q=0206) |
+| bed_rise | Getting up from an old metal bunk: blanket pushed off, springs release | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1104) [2](https://bigsoundbank.com/search?q=0206) |
+| bite | Single crunchy bite into a dry biscuit | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0407) |
 | breath_heavy | Exhausted heavy breathing (two takes, seamless loop) | mikeask | CC0 1.0 | [1](https://opengameart.org/content/breathing-tired) |
+| breath_out | Relieved exhale through the mouth (after drinking) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1405) |
 | build_place | Heavy object placed and secured: hammer blows + thud | rubberduck; bart | CC0 1.0 | [1](https://opengameart.org/content/100-cc0-metal-and-wood-sfx) [2](https://opengameart.org/content/68-workshop-sounds) |
 | bullet_whizz | Bullet passing close by (derived: fast air swish pitched up, band-passed) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0128) |
+| chew | Chewing with the mouth closed (three chews, no crunch) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0407) |
 | craft | Metal hammering on workbench | bart | CC0 1.0 | [1](https://opengameart.org/content/68-workshop-sounds) |
 | creature_attack | Monster attack scream (zombie + monster pain layered) | artisticdude; Michel Baradari (uploaded by qubodup) | CC0 1.0 + CC BY 3.0 | [1](https://opengameart.org/content/zombies-sound-pack) [2](https://opengameart.org/content/15-monster-gruntpaindeath-sounds) |
 | creature_growl | Low monster growl | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0486) |
@@ -82,6 +107,7 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | gasmask_breath | Breathing processed to sound like a gas mask (band-limited, rubbery resonance) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=2195) |
 | geiger_click | Procedural geiger counter click | procedural (Bunker media pipeline) | CC0 1.0 (procedural, original) | tools/media/synth.mjs |
 | generator_loop | Running diesel engine (idle), loop | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=2147) |
+| gulp | Single swallow / gulp of water | ezwa | Public domain | [1](https://commons.wikimedia.org/wiki/File%3ADrinking_a_glass_of_wat.ogg) |
 | gunshot_pistol | .357 Magnum revolver shot | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0438) |
 | gunshot_rifle | Winchester Magnum XTR shot (heavy long gun) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0397) |
 | heartbeat | Heartbeat loop (7 beats, ~66 bpm) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0218) |
@@ -101,6 +127,7 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | music_menu | Menu music | Kevin MacLeod (incompetech.com) | CC BY 4.0 | [1](https://incompetech.com/music/royalty-free/music.html) |
 | music_tension | Expedition / danger music | Kevin MacLeod (incompetech.com) | CC BY 4.0 | [1](https://incompetech.com/music/royalty-free/music.html) |
 | pickup | Cloth/item rustle | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1104) [2](https://bigsoundbank.com/search?q=0576) |
+| pills | Pills rattling in a small plastic bottle (one shake) | Gravity Sound | CC BY 4.0 | [1](https://commons.wikimedia.org/wiki/File%3APill_bottle_shake_once_(Gravity_Sound).wav) |
 | power_down | Breaker clack + falling electrical hum | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1092) |
 | power_up | Breaker clack + rising electrical hum | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1092) |
 | radio_static | Procedural shortwave radio static loop | procedural (Bunker media pipeline) | CC0 1.0 (procedural, original) | tools/media/synth.mjs |
@@ -114,6 +141,7 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | shockwave_wind | Blast wave: swelling procedural roar + violent wind gusts | Joseph Sardin (BigSoundBank.com); Tvabutzku1234 | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0595) [2](https://commons.wikimedia.org/wiki/File%3AHowling_wind.ogg) |
 | shotgun_shot | Pump shotgun shot (Mossberg, Free Firearm Sound Library) | The Free Firearm Sound Library team (uploaded by bart) | CC0 1.0 | [1](https://opengameart.org/content/the-free-firearm-sound-library) |
 | siren_air_raid | French SAIP national alert siren, first full cycle (rise/fall wails + wind-down) | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=3259) |
+| spoon_can | Spoon scraping and clinking inside a container | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0411) |
 | tinnitus | EXTRA (not in catalog): post-blast ear ringing | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=1388) |
 | ui_click | Old mechanical switch click | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0540) |
 | ui_confirm | UI confirm: firm button press | qubodup | CC0 1.0 | [1](https://opengameart.org/content/16-button-clicks) |
@@ -122,12 +150,14 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | upgrade_done | Upgrade finished: ratchet turns, clank, soft metallic ping | bart; BMacZero | CC0 1.0 | [1](https://opengameart.org/content/68-workshop-sounds) [2](https://opengameart.org/content/mechanical-sounds) |
 | water_pour | Pouring water from a bottle | Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://bigsoundbank.com/search?q=0003) |
 | weapon_equip | Weapon raised / handled: metal clicks + cloth | LFA; Joseph Sardin (BigSoundBank.com) | CC0 1.0 | [1](https://opengameart.org/content/equipment-clicks-iii) [2](https://bigsoundbank.com/search?q=1104) |
+| yawn | Man yawning on waking (airy inhale, falling "aah") | ezwa | Public domain | [1](https://commons.wikimedia.org/wiki/File%3AYawning_2.ogg) |
 
 ## Required attributions (CC BY / CC BY-SA)
 
 - "Thunder Claps.ogg" by Jonathan Hunt — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3AThunder_Claps.ogg
 - "2 High Quality Explosions" by Michel Baradari (uploaded by qubodup) — CC BY 3.0 — https://opengameart.org/content/2-high-quality-explosions
 - "15 monster grunt/pain/death sounds" by Michel Baradari (uploaded by qubodup) — CC BY 3.0 — https://opengameart.org/content/15-monster-gruntpaindeath-sounds
+- "Pill bottle shake once (Gravity Sound).wav" by Gravity Sound — CC BY 4.0 — https://commons.wikimedia.org/wiki/File%3APill_bottle_shake_once_(Gravity_Sound).wav
 - "Thunder Dreams" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/
 - "Heavy Heart" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/
 - "Static Motion" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bimyplqmhn8qu"
-path="res://.godot/imported/apartment_block_9.jpg-97f5238578534c06f9406e4c05467718.ctex"
+path.bptc="res://.godot/imported/apartment_block_9.jpg-97f5238578534c06f9406e4c05467718.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3ce85fc787239ddfeabd7efbd6db226c"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/apartment_block/apartment_block_9.jpg"
-dest_files=["res://.godot/imported/apartment_block_9.jpg-97f5238578534c06f9406e4c05467718.ctex"]
+dest_files=["res://.godot/imported/apartment_block_9.jpg-97f5238578534c06f9406e4c05467718.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=2048
-detect_3d/compress_to=1
+detect_3d/compress_to=0

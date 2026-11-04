@@ -496,6 +496,49 @@ class PlaceBar extends Base:
 
 
 # ==========================================================================
+# What is in the hands (food / water / bandage): how much is left + the keys
+# ==========================================================================
+class HeldBox extends Base:
+	## {name, count, frac, verb, busy, kind}; empty hides it
+	var info := {}
+	var _shown := 0.0
+
+	func _draw() -> void:
+		if info.is_empty():
+			return
+		var w := 420.0
+		var r := Rect2((size.x - w) * 0.5, 0, w, 84)
+		panel(r, 1.0, ACC)
+		var x := r.position.x + 16.0
+		var title := String(info.get("name", "")).to_upper()
+		txt(Vector2(x, 26), title, 17, ACC, "heading")
+		var cnt := int(info.get("count", 1))
+		if cnt > 1:
+			txt(Vector2(x + txt_w(title, 17, "heading") + 10.0, 26), "×%d" % cnt, 15, DIM, "bold")
+		var frac := clampf(float(info.get("frac", 1.0)), 0.0, 1.0)
+		var bandage := String(info.get("kind", "")) == "bandage"
+		var pct := ("%d%%" % roundi(frac * 100.0)) if not bandage else ("%d / 3" % floori(frac * 3.0 + 0.001))
+		txt(Vector2(r.end.x - 16.0 - txt_w(pct, 15, "bold"), 26), pct, 15, WHITE, "bold")
+		var col := GRN if frac > 0.35 or bandage else YEL
+		bar(Rect2(x, 36, w - 32.0, 6), frac, col, 3 if bandage else 0)
+		# keys
+		var y := 52.0
+		var busy: bool = info.get("busy", false)
+		var keys := [["LMB", ("Ține apăsat: " if not busy else "") + String(info.get("verb", "Folosește"))], ["RMB", "Pune deoparte"]]
+		for k in keys:
+			var cw := maxf(txt_w(k[0], 12, "bold") + 14.0, 24.0)
+			var kr := Rect2(x, y, cw, 22)
+			draw_rect(kr, Color(0, 0, 0, 0.55))
+			draw_rect(kr, Color(1, 1, 1, 0.75 if not (busy and k[0] == "LMB") else 1.0), false, 1.2)
+			if busy and k[0] == "LMB":
+				draw_rect(kr, Color(ACC, 0.35))
+			txt(Vector2(kr.position.x, kr.end.y - 6), k[0], 12, WHITE, "bold", HORIZONTAL_ALIGNMENT_CENTER, cw)
+			x += cw + 8.0
+			txt(Vector2(x, y + 16), k[1], 14, WHITE if not busy or k[0] == "LMB" else DIM, "bold")
+			x += txt_w(k[1], 14, "bold") + 20.0
+
+
+# ==========================================================================
 # Objective tracker (top-right)
 # ==========================================================================
 class Objective extends Base:

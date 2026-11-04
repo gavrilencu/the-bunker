@@ -432,5 +432,293 @@
     "license": "CC0 1.0",
     "notes": "Poly Haven texture 'kitchen_wood', 2K. Real-world size ~0.6m.",
     "real_size_m": 0.6
+  },
+  "plaster_white": {
+    "file": "res://assets/textures/plaster_white/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "White Plaster Rough 01",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/white_plaster_rough_01",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'white_plaster_rough_01', 2K. Real-world size ~1.0m.",
+    "real_size_m": 1
+  },
+  "plaster_yellow": {
+    "file": "res://assets/textures/plaster_yellow/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Yellow Plaster",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/yellow_plaster",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'yellow_plaster', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "plaster_worn": {
+    "file": "res://assets/textures/plaster_worn/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Worn Plaster Wall",
+    "author": "Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'worn_plaster_wall', 2K. Real-world size ~1.8m.",
+    "real_size_m": 1.8
+  },
+  "plaster_blue": {
+    "file": "res://assets/textures/plaster_blue/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Blue Plaster Weathered",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/blue_plaster_weathered",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'blue_plaster_weathered', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "plaster_cracked": {
+    "file": "res://assets/textures/plaster_cracked/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Worn Cracked Plaster",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/worn_cracked_plaster",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'worn_cracked_plaster', 2K. Real-world size ~1.8m.",
+    "real_size_m": 1.8
+  },
+  "roof_tin": {
+    "file": "res://assets/textures/roof_tin/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Rusty Corrugated Iron",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/rusty_corrugated_iron",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'rusty_corrugated_iron', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "roof_tin_grey": {
+    "file": "res://assets/textures/roof_tin_grey/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Corrugated Iron 02",
+    "author": "Jenelle van Heerden, Sergej Majboroda",
+    "source_url": "https://polyhaven.com/a/corrugated_iron_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'corrugated_iron_02', 2K. Real-world size ~2.7m.",
+    "real_size_m": 2.7
+  },
+  "roof_tiles": {
+    "file": "res://assets/textures/roof_tiles/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Clay Roof Tiles 02",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/clay_roof_tiles_02",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'clay_roof_tiles_02', 2K. Real-world size ~2.5m.",
+    "real_size_m": 2.5
+  },
+  "wood_painted": {
+    "file": "res://assets/textures/wood_painted/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Wood Peeling Paint Weathered",
+    "author": "Rob Tuytel, Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'wood_peeling_paint_weathered', 2K. Real-world size ~0.8m.",
+    "real_size_m": 0.76
+  },
+  "bunker_wall": {
+    "file": "res://assets/textures/bunker_wall/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Wall 008",
+    "author": "Dario Barresi, Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/concrete_wall_008",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_wall_008', 2K. Real-world size ~2.7m.",
+    "real_size_m": 2.71
+  },
+  "bunker_floor": {
+    "file": "res://assets/textures/bunker_floor/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Floor Worn 001",
+    "author": "Dimitrios Savva, Rico Cilliers",
+    "source_url": "https://polyhaven.com/a/concrete_floor_worn_001",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_floor_worn_001', 2K. Real-world size ~3.0m.",
+    "real_size_m": 3
+  },
+  "portal_concrete": {
+    "file": "res://assets/textures/portal_concrete/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Wall 004",
+    "author": "Dario Barresi, Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/concrete_wall_004",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_wall_004', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "old_floor": {
+    "file": "res://assets/textures/old_floor/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Old Wooden Floor 01",
+    "author": "Charlotte Baglioni, Dario Barresi",
+    "source_url": "https://polyhaven.com/a/old_wooden_floor_01",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'old_wooden_floor_01', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "withered_grass": {
+    "file": "res://assets/textures/withered_grass/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Withered Grass",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/withered_grass",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'withered_grass', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "dry_leaves": {
+    "file": "res://assets/textures/dry_leaves/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Dry Decay Leaves",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/dry_decay_leaves",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'dry_decay_leaves', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "lawn": {
+    "file": "res://assets/textures/lawn/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Leafy Grass",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/leafy_grass",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'leafy_grass', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "panel_concrete": {
+    "file": "res://assets/textures/panel_concrete/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Concrete Panels",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/concrete_panels",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'concrete_panels', 2K. Real-world size ~8.0m.",
+    "real_size_m": 8
+  },
+  "bunker_ceiling": {
+    "file": "res://assets/textures/bunker_ceiling/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Rough Concrete",
+    "author": "Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/rough_concrete",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'rough_concrete', 2K. Real-world size ~1.2m.",
+    "real_size_m": 1.23
   }
 }

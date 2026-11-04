@@ -42,6 +42,7 @@ var alert_title: Label
 var alert_text: Label
 var perf_label: Label
 var place_bar: HudWidgets.PlaceBar
+var held_box: HudWidgets.HeldBox
 
 # loading screen
 var loading: Control
@@ -150,6 +151,7 @@ func _build() -> void:
 	subtitle_panel.visible = false
 
 	place_bar = _anchored(HudWidgets.PlaceBar.new(), Control.PRESET_CENTER_BOTTOM, Vector2(-700, -150), Vector2(1400, 110))
+	held_box = _anchored(HudWidgets.HeldBox.new(), Control.PRESET_CENTER_BOTTOM, Vector2(-300, -132), Vector2(600, 90))
 
 	# location / chapter banner
 	banner_box = Control.new()
@@ -382,6 +384,10 @@ func _process(delta: float) -> void:
 		_update_systems()
 	if weapon_box.visible or mode == "surface":
 		_update_weapon(delta, p, hud_mode)
+	var hi: Dictionary = p.weapons.held_info() if p and is_instance_valid(p) and "weapons" in p and p.weapons else {}
+	if hi != held_box.info:
+		held_box.info = hi
+		held_box.queue_redraw()
 	if dosimeter.visible:
 		dosimeter.has_geiger = State.count("geiger") > 0
 		dosimeter.rate = _surface.rate

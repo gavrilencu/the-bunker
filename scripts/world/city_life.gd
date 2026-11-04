@@ -98,8 +98,8 @@ func _materials() -> void:
 func _shop_mats(i: int) -> Dictionary:
 	var plaster: Color = [Color(0.95, 0.9, 0.78), Color(0.82, 0.88, 0.95), Color(0.9, 0.8, 0.72), Color(0.85, 0.92, 0.82)][i % 4]
 	return {
-		"ext": Assets.pbr("concrete_wall", {"tile": 2.0, "tint": plaster}),
-		"int": Assets.pbr("concrete_wall", {"tile": 1.6, "tint": Color(0.9, 0.88, 0.82)}),
+		"ext": Assets.pbr(["plaster_white", "plaster_yellow", "plaster_blue", "plaster_white"][i % 4], {"tile": 2.6, "tint": plaster.lerp(Color.WHITE, 0.6)}),
+		"int": Assets.pbr("plaster_int", {"tile": 2.0, "tint": Color(0.9, 0.88, 0.82)}),
 		"trim": Geo.color_mat([Color(0.85, 0.85, 0.82), Color(0.22, 0.38, 0.62), Color(0.5, 0.15, 0.12)][i % 3], 0.5),
 		"roof": Assets.pbr("asphalt", {"tile": 3.0, "tint": Color(0.6, 0.6, 0.6)}),
 		"plinth": Assets.pbr("concrete_floor", {"tile": 2.0, "tint": Color(0.62, 0.62, 0.6)}),
@@ -141,6 +141,64 @@ static func dress(model: Node3D) -> void:
 		mi.set_instance_shader_parameter("trousers", TROUSERS.pick_random())
 		mi.set_instance_shader_parameter("hair", HAIR.pick_random())
 		mi.set_instance_shader_parameter("skin", randf_range(0.8, 1.08))
+
+
+## Day Zero cars are clean (the rusty car_sedan is for the wasteland): a GAZ-24 Volga or a
+## VAZ-2107, body repainted in a period colour. yaw turns the model's front to +Z.
+const CLEAN_CARS := {"car_volga": {"yaw": 0.0, "paint": "paint"}, "car_lada": {"yaw": -PI * 0.5, "paint": "Body"}}
+static var _paint_cache := {}
+
+
+static func clean_car(color: Color) -> Node3D:
+	var ids: Array = []
+	for k in CLEAN_CARS:
+		if Assets.has_model(k):
+			ids.append(k)
+	if ids.is_empty():
+		var old := Assets.model("car_sedan")
+		paint_car(old, color)
+		return old
+	var id: String = ids.pick_random()
+	var holder := Node3D.new()
+	holder.name = "Car"
+	var m := Assets.model(id)
+	holder.add_child(m)
+	m.rotation.y = float(CLEAN_CARS[id].yaw)
+	var paint_name: String = CLEAN_CARS[id].paint
+	for n in m.find_children("*", "MeshInstance3D", true, false):
+		var mi := n as MeshInstance3D
+		for si in mi.mesh.get_surface_count():
+			var mat := mi.mesh.surface_get_material(si) as StandardMaterial3D
+			if mat == null or mat.resource_name != paint_name:
+				continue
+			var key := "%s_%s" % [id, color.to_html()]
+			if not _paint_cache.has(key):
+				var d := mat.duplicate() as StandardMaterial3D
+				d.albedo_color = color
+				d.metallic = 0.35
+				d.roughness = 0.32
+				d.clearcoat_enabled = true
+				d.clearcoat = 0.6
+				d.clearcoat_roughness = 0.15
+				_paint_cache[key] = d
+			mi.set_surface_override_material(si, _paint_cache[key])
+	return holder
+
+
+## A parked clean car with a collision box (pos = ground point, yaw = heading).
+static func parked_car(parent: Node, pos: Vector3, yaw: float, color: Color) -> Node3D:
+	var body := StaticBody3D.new()
+	parent.add_child(body)
+	body.position = pos
+	body.rotation.y = yaw
+	body.add_child(clean_car(color))
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = Vector3(1.8, 1.45, 4.5)
+	cs.shape = bs
+	cs.position.y = 0.72
+	body.add_child(cs)
+	return body
 
 
 ## Repaints the body of a car_sedan model.
@@ -224,7 +282,7 @@ func _parking() -> void:
 		var i := rng.randi() % spots.size()
 		var sx: float = spots[i]
 		spots.remove_at(i)
-		paint_car(Geo.prop(self, "car_sedan", Vector3(sx, 0.0, 28.0), (0.0 if rng.randf() < 0.5 else PI) + rng.randf_range(-0.05, 0.05)), CAR_COLORS.pick_random())
+		parked_car(self, Vector3(sx, 0.0, 28.0), (0.0 if rng.randf() < 0.5 else PI) + rng.randf_range(-0.05, 0.05), CAR_COLORS.pick_random())
 	for x2 in [-70.0, -10.0, 66.0]:
 		Geo.prop(self, "trash_bin", Vector3(x2, 0.03, 23.3), 0.0)
 

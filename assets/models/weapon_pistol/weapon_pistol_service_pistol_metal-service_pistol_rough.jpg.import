@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chpgs1474pp7n"
-path.s3tc="res://.godot/imported/weapon_pistol_service_pistol_metal-service_pistol_rough.jpg-98c7d5c2a9123ac485cd979f4f569d18.s3tc.ctex"
+path.bptc="res://.godot/imported/weapon_pistol_service_pistol_metal-service_pistol_rough.jpg-98c7d5c2a9123ac485cd979f4f569d18.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -15,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/weapon_pistol/weapon_pistol_service_pistol_metal-service_pistol_rough.jpg"
-dest_files=["res://.godot/imported/weapon_pistol_service_pistol_metal-service_pistol_rough.jpg-98c7d5c2a9123ac485cd979f4f569d18.s3tc.ctex"]
+dest_files=["res://.godot/imported/weapon_pistol_service_pistol_metal-service_pistol_rough.jpg-98c7d5c2a9123ac485cd979f4f569d18.bptc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
