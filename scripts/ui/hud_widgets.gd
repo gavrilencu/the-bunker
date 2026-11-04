@@ -201,11 +201,23 @@ class Vitals extends Base:
 class WeaponBox extends Base:
 	var name_text := ""
 	var mag := -1
+	var mag_max := 0
 	var reserve := 0
 	var slot := 0
 	var bandages := 0
 	var flashlight := false
 	var reloading := false
+	var reload_p := -1.0   # 0..1 while reloading
+	var icon_item := ""    # item id: the rendered weapon silhouette
+	var _mag_shown := -1
+	var _pop := 0.0
+
+	func tick(delta: float) -> void:
+		if mag != _mag_shown:
+			_mag_shown = mag
+			_pop = 1.0
+		_pop = maxf(_pop - delta * 4.0, 0.0)
+		queue_redraw()
 
 	func _draw() -> void:
 		var w := size.x
@@ -214,14 +226,36 @@ class WeaponBox extends Base:
 			return
 		var r := Rect2(w - 300, h - 84, 300, 84)
 		panel(r, 1.0)
-		txt(Vector2(r.position.x + 16, r.position.y + 22), name_text.to_upper(), 14, DIM, "heading")
+		# weapon silhouette (rendered from the model), name beside it
+		var tex := IconFactory.get_icon(icon_item) if icon_item != "" else null
+		var nx := r.position.x + 16
+		if tex:
+			draw_texture_rect(tex, Rect2(r.position.x + 8, r.position.y + 4, 64, 44), false, Color(1, 1, 1, 0.9))
+			nx = r.position.x + 78
+		txt(Vector2(nx, r.position.y + 22), name_text.to_upper(), 14, DIM, "heading")
 		if mag >= 0:
 			var ms := "%d" % mag
 			var col := RED if mag == 0 else (YEL if mag <= 2 else WHITE)
-			txt(Vector2(r.end.x - 120, r.end.y - 18), ms, 44, col, "mono", HORIZONTAL_ALIGNMENT_RIGHT, 60)
+			var fs := 44 + int(_pop * 6.0)
+			txt(Vector2(r.end.x - 120, r.end.y - 18), ms, fs, col, "mono", HORIZONTAL_ALIGNMENT_RIGHT, 60)
 			txt(Vector2(r.end.x - 56, r.end.y - 20), "/ %d" % reserve, 20, DIM, "mono")
+			# the magazine as cartridges
+			if mag_max > 0:
+				var n := mini(mag_max, 30)
+				var pw := 4.0 if n > 15 else 6.0
+				var px := nx
+				for i in n:
+					var lit := i < mag
+					var pr := Rect2(px, r.position.y + 30, pw, 13)
+					draw_rect(pr, Color(col if lit else FAINT, 0.95 if lit else 0.5))
+					if lit:
+						draw_rect(Rect2(px, r.position.y + 30, pw, 3), Color(1, 0.85, 0.55, 0.9))
+					px += pw + 2
 			if reloading:
-				txt(Vector2(r.position.x + 16, r.end.y - 18), "REÎNCARCĂ...", 14, YEL, "bold")
+				txt(Vector2(r.position.x + 16, r.end.y - 18), "REÎNCARCĂ", 14, YEL, "bold")
+				if reload_p >= 0.0:
+					draw_rect(Rect2(r.position.x + 110, r.end.y - 25, 70, 3), Color(FAINT, 0.6))
+					draw_rect(Rect2(r.position.x + 110, r.end.y - 25, 70 * clampf(reload_p, 0.0, 1.0), 3), YEL)
 		else:
 			txt(Vector2(r.end.x - 200, r.end.y - 20), "CORP LA CORP", 18, WHITE, "heading", HORIZONTAL_ALIGNMENT_RIGHT, 184)
 		# slots
@@ -376,21 +410,27 @@ class Prompt extends Base:
 	var title := ""
 	var action := ""
 	var hold := false
-	var alt := ""
+	## secondary actions: [[key, text], ...] drawn as one row under the main action
+	var alt: Array = []
 
 	func _draw() -> void:
 		var c := size.x * 0.5
-		if alt != "":
-			var aw := txt_w(alt, 15, "bold") + 34.0
-			var ax := c - aw * 0.5
+		if not alt.is_empty():
+			var gap := 22.0
+			var total := -gap
+			for a in alt:
+				total += txt_w(a[1], 15, "bold") + 30.0 + gap
+			var ax := c - total * 0.5
 			var ay := 46.0 if action != "" else 14.0
-			var ar := Rect2(ax, ay, 22, 20)
-			draw_rect(ar, Color(0, 0, 0, 0.55))
-			draw_rect(ar, Color(1, 1, 1, 0.6), false, 1.2)
-			txt(Vector2(ar.position.x, ar.end.y - 5), "X", 13, WHITE, "bold", HORIZONTAL_ALIGNMENT_CENTER, 22)
-			txt(Vector2(ax + 30, ay + 15), alt, 15, DIM, "bold")
+			for a in alt:
+				var ar := Rect2(ax, ay, 22, 20)
+				draw_rect(ar, Color(0, 0, 0, 0.55))
+				draw_rect(ar, Color(1, 1, 1, 0.6), false, 1.2)
+				txt(Vector2(ar.position.x, ar.end.y - 5), a[0], 13, WHITE, "bold", HORIZONTAL_ALIGNMENT_CENTER, 22)
+				txt(Vector2(ax + 30, ay + 15), a[1], 15, DIM, "bold")
+				ax += txt_w(a[1], 15, "bold") + 30.0 + gap
 		if action == "":
-			if title != "" and alt != "":
+			if title != "" and not alt.is_empty():
 				txt(Vector2(c - 300, 2), title.to_upper(), 13, ACC, "heading", HORIZONTAL_ALIGNMENT_CENTER, 600)
 			return
 		var key := "E"
@@ -412,6 +452,47 @@ class Prompt extends Base:
 			txt(Vector2(x, y + 19), hint, 13, DIM)
 			x += txt_w(hint, 13) + 6
 		txt(Vector2(x, y + 20), action, fs, WHITE, "bold")
+
+
+# ==========================================================================
+# Placement bar (bottom centre, while building / moving furniture)
+# ==========================================================================
+class PlaceBar extends Base:
+	## {title, sub, ok, status, keys: [[key, text], ...]}; empty hides the bar
+	var info := {}
+
+	func _draw() -> void:
+		if info.is_empty():
+			return
+		var ok: bool = info.get("ok", false)
+		var col := GRN if ok else RED
+		var keys: Array = info.get("keys", [])
+		var row_w := 0.0
+		for k in keys:
+			row_w += _cap_w(k[0]) + 8.0 + txt_w(k[1], 15, "bold") + 22.0
+		var w := maxf(row_w + 28.0, 640.0)
+		var r := Rect2((size.x - w) * 0.5, 0, w, 104)
+		panel(r, 1.0, col)
+		var x := r.position.x + 16.0
+		txt(Vector2(x, 26), String(info.get("title", "")).to_upper(), 17, ACC, "heading")
+		var st: String = ("✓  " if ok else "✕  ") + String(info.get("status", ""))
+		txt(Vector2(r.end.x - 16.0 - txt_w(st, 15, "bold"), 26), st, 15, col, "bold")
+		var sub: String = info.get("sub", "")
+		if sub != "":
+			txt(Vector2(x, 48), sub, 14, DIM)
+		var y := 66.0
+		for k in keys:
+			var cw := _cap_w(k[0])
+			var kr := Rect2(x, y, cw, 24)
+			draw_rect(kr, Color(0, 0, 0, 0.55))
+			draw_rect(kr, Color(1, 1, 1, 0.7), false, 1.2)
+			txt(Vector2(kr.position.x, kr.end.y - 7), k[0], 12, WHITE, "bold", HORIZONTAL_ALIGNMENT_CENTER, cw)
+			x += cw + 8.0
+			txt(Vector2(x, y + 18), k[1], 15, WHITE, "bold")
+			x += txt_w(k[1], 15, "bold") + 22.0
+
+	func _cap_w(k: String) -> float:
+		return maxf(txt_w(k, 12, "bold") + 14.0, 24.0)
 
 
 # ==========================================================================

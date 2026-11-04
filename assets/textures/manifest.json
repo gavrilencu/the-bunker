@@ -240,5 +240,197 @@
     "license": "CC0 1.0",
     "notes": "Poly Haven texture 'concrete_pavement', 2K. Real-world size ~1.8m.",
     "real_size_m": 1.8
+  },
+  "wallpaper": {
+    "file": "res://assets/textures/wallpaper/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Decrepit Wallpaper",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/decrepit_wallpaper",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'decrepit_wallpaper', 2K. Real-world size ~2.5m.",
+    "real_size_m": 2.5
+  },
+  "paint_peeling": {
+    "file": "res://assets/textures/paint_peeling/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Peeling Painted Wall",
+    "author": "Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/peeling_painted_wall",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'peeling_painted_wall', 2K. Real-world size ~1.8m.",
+    "real_size_m": 1.8
+  },
+  "plaster_int": {
+    "file": "res://assets/textures/plaster_int/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Painted Plaster Wall",
+    "author": "Amal Kumar",
+    "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'painted_plaster_wall', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "floor_wood_old": {
+    "file": "res://assets/textures/floor_wood_old/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Wood Floor Worn",
+    "author": "Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/wood_floor_worn",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'wood_floor_worn', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "parquet": {
+    "file": "res://assets/textures/parquet/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Herringbone Parquet",
+    "author": "Jenelle van Heerden, Sergej Majboroda",
+    "source_url": "https://polyhaven.com/a/herringbone_parquet",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'herringbone_parquet', 2K. Real-world size ~3.4m.",
+    "real_size_m": 3.4
+  },
+  "linoleum": {
+    "file": "res://assets/textures/linoleum/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Old Linoleum Flooring 01",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/old_linoleum_flooring_01",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'old_linoleum_flooring_01', 2K. Real-world size ~2.0m.",
+    "real_size_m": 1.99
+  },
+  "tiles_bath": {
+    "file": "res://assets/textures/tiles_bath/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Dirty Tiles",
+    "author": "Matterfield, Jenelle van Heerden",
+    "source_url": "https://polyhaven.com/a/dirty_tiles",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'dirty_tiles', 2K. Real-world size ~2.3m.",
+    "real_size_m": 2.26
+  },
+  "tiles_floor": {
+    "file": "res://assets/textures/tiles_floor/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Interior Tiles",
+    "author": "Charlotte Baglioni",
+    "source_url": "https://polyhaven.com/a/interior_tiles",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'interior_tiles', 2K. Real-world size ~1.9m.",
+    "real_size_m": 1.9
+  },
+  "ceiling": {
+    "file": "res://assets/textures/ceiling/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Ceiling Interior",
+    "author": "Dimitrios Savva",
+    "source_url": "https://polyhaven.com/a/ceiling_interior",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'ceiling_interior', 2K. Real-world size ~2.0m.",
+    "real_size_m": 2
+  },
+  "carpet": {
+    "file": "res://assets/textures/carpet/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Dirty Carpet",
+    "author": "Rohit Seervi",
+    "source_url": "https://polyhaven.com/a/dirty_carpet",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'dirty_carpet', 2K. Real-world size ~0.6m.",
+    "real_size_m": 0.6
+  },
+  "upholstery": {
+    "file": "res://assets/textures/upholstery/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Rough Linen",
+    "author": "colormass, Rico Cilliers",
+    "source_url": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'rough_linen', 2K. Real-world size ~0.3m.",
+    "real_size_m": 0.27
+  },
+  "kitchen_wood": {
+    "file": "res://assets/textures/kitchen_wood/",
+    "maps": [
+      "albedo",
+      "ao",
+      "height",
+      "normal",
+      "roughness"
+    ],
+    "title": "Kitchen Wood",
+    "author": "Rob Tuytel",
+    "source_url": "https://polyhaven.com/a/kitchen_wood",
+    "license": "CC0 1.0",
+    "notes": "Poly Haven texture 'kitchen_wood', 2K. Real-world size ~0.6m.",
+    "real_size_m": 0.6
   }
 }

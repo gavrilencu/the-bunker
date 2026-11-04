@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://m3gm46rsprav"
-path="res://.godot/imported/tree_dead_b_dead_quiver_trunk_diff.jpg-2b1b0e801e8c7303d20ec16097c3679b.ctex"
+path.s3tc="res://.godot/imported/tree_dead_b_dead_quiver_trunk_diff.jpg-2b1b0e801e8c7303d20ec16097c3679b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8271b3764bc728a6dc3b329b07c21fce"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/tree_dead_b/tree_dead_b_dead_quiver_trunk_diff.jpg"
-dest_files=["res://.godot/imported/tree_dead_b_dead_quiver_trunk_diff.jpg-2b1b0e801e8c7303d20ec16097c3679b.ctex"]
+dest_files=["res://.godot/imported/tree_dead_b_dead_quiver_trunk_diff.jpg-2b1b0e801e8c7303d20ec16097c3679b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

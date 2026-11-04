@@ -42,6 +42,7 @@ var _strafe_t := 0.0
 var _player: Player
 var _bob := 0.0
 var _muzzle: OmniLight3D
+var _weapon: Node3D  # the rifle in the bandit's hand (muzzle position for flash / tracer)
 var _aim_t := 0.0
 var _skel: Skeleton3D
 var _flinch: HitFlinch
@@ -196,6 +197,7 @@ func _attach_weapon(id: String) -> void:
 	skel.add_child(att)
 	var w := Assets.model(id)
 	att.add_child(w)
+	_weapon = w
 	# skeleton scale compensation: keep the rifle ~0.9 m in world space
 	# the skeleton's world scale already includes the model normalisation
 	var sc := maxf(skel.global_transform.basis.get_scale().x if skel.is_inside_tree() else 1.0, 0.0001)
@@ -327,6 +329,8 @@ func _die(hit_pos := Vector3.INF, impulse := Vector3.ZERO) -> void:
 	# humanoids: physical ragdoll pushed by the killing blow
 	if _skel and kind != "dog":
 		_ragdoll = Ragdoll.build(_skel, self)
+	# corpses go away once the player has moved on (they are never freed otherwise)
+	get_tree().create_timer(45.0).timeout.connect(_try_vanish)
 	if _ragdoll:
 		if anim:
 			anim.pause()
@@ -350,6 +354,16 @@ func _die(hit_pos := Vector3.INF, impulse := Vector3.ZERO) -> void:
 		var tw := create_tween()
 		tw.tween_property(model, "rotation:x", -PI * 0.5, 0.6).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 	return
+
+
+func _try_vanish() -> void:
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+	var p := Game.player as Node3D
+	if p and is_instance_valid(p) and p.global_position.distance_to(global_position) < 22.0:
+		get_tree().create_timer(5.0).timeout.connect(_try_vanish)
+		return
+	queue_free()
 
 
 func _physics_process(delta: float) -> void:
@@ -473,9 +487,17 @@ func _ranged(delta: float, to_player: Vector3, dist: float) -> void:
 
 func _shoot(dist: float) -> void:
 	_play("shoot", 1.0)
+	var chest := _player.global_position + Vector3.UP * 1.3
+	var muzzle := _muzzle_pos(chest)
+	var scene := get_tree().current_scene
+	# flash at the real muzzle, a tracer along the shot and the recoil through the spine
 	if _muzzle:
+		_muzzle.global_position = muzzle
 		_muzzle.light_energy = 5.0
-	Audio.sfx_at("gunshot_rifle", global_position + Vector3.UP * 1.4, 2.0, 110.0, 0.08)
+	FX.muzzle_flash(scene, muzzle, 0.22)
+	if _flinch:
+		_flinch.kick((global_position - _player.global_position).normalized(), 0.3)
+	Audio.sfx_at("gunshot_rifle", muzzle, 2.0, 110.0, 0.08)
 	var hit_chance: float = cfg.acc * clampf(1.15 - dist / cfg.range, 0.15, 1.0)
 	var pv := Vector2(_player.velocity.x, _player.velocity.z).length()
 	if pv > 4.0:
@@ -483,10 +505,21 @@ func _shoot(dist: float) -> void:
 	if _player.crouching:
 		hit_chance *= 0.65
 	if randf() < hit_chance:
+		FX.tracer(scene, muzzle, chest + Vector3(randf_range(-0.15, 0.15), randf_range(-0.2, 0.1), randf_range(-0.15, 0.15)))
 		_player.take_hit(damage * randf_range(0.8, 1.25), global_position, cfg.bleed)
 	else:
 		var miss := _player.global_position + Vector3(randf_range(-1.5, 1.5), randf_range(0.2, 2.0), randf_range(-1.5, 1.5))
+		FX.tracer(scene, muzzle, miss + (miss - muzzle).normalized() * 6.0)
 		Audio.sfx_at("metal_impact", miss, -6.0, 20.0, 0.3)
+
+
+## The rifle's muzzle: 0.55 m from the trigger hand toward the target (world space).
+func _muzzle_pos(toward: Vector3) -> Vector3:
+	var hand := global_position + Vector3.UP * 1.3
+	if _weapon and is_instance_valid(_weapon) and _weapon.is_inside_tree():
+		hand = _weapon.global_position
+	var dir := (toward - hand).normalized()
+	return hand + dir * 0.55
 
 
 func _can_see() -> bool:

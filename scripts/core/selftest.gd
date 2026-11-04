@@ -107,11 +107,47 @@ static func run(tree: SceneTree) -> void:
 		lvl._spawn_built_one(State.built.size() - 1)
 		x += 1.1
 	lvl._update_lit()
-	lvl.start_build("planter")
+	for id in ItemDB.ITEMS:
+		State.add(id, 10, true)
+	for t in ["planter", "bed", "lamp", "sconce", "lantern"]:
+		lvl.start_build(t)
+		for i in 3:
+			await tree.process_frame
+		say.call("build preview %s: mount=%s valid=%s reason='%s'" % [t, lvl.placing.mount, lvl.placing.valid, lvl.placing.reason])
+		lvl.cancel_build()
+		await tree.process_frame
+	say.call("built %d objects, deco lights=%d, light power %.3f L/h" % [State.built.size(), lvl.deco_lights.size(), State.light_power()])
+
+	# arranging: pick up the hall table (cans + jug ride along), drop it back in place
+	var table: Node3D = lvl.movables["f:hall_table"]
+	var t0 := table.global_position
+	lvl.start_move("f:hall_table")
 	await tree.process_frame
-	lvl._update_ghost()
-	lvl.cancel_build()
-	say.call("built %d objects" % State.built.size())
+	var riders: int = lvl.placing.riders.size()
+	lvl.placing.move_to(Transform3D(table.global_basis, t0 + Vector3(0.5, 0, 0)))
+	lvl.placing.finish(true)
+	await tree.process_frame
+	say.call("moved table: riders=%d, saved=%s, can follows=%s" % [riders, str(State.layout.get("hall_table", {}).get("p", [])),
+		str(State.layout.has("hall_can_0"))])
+	# cancel restores
+	var sofa: Node3D = lvl.movables["f:hall_sofa"]
+	var s0 := sofa.global_position
+	lvl.start_move("f:hall_sofa")
+	await tree.process_frame
+	lvl.placing.move_to(Transform3D(sofa.global_basis, s0 + Vector3(-2.0, 0, -1.0)))
+	lvl.placing.cancel()
+	await tree.process_frame
+	say.call("cancel move restores sofa: %s" % str(sofa.global_position.is_equal_approx(s0)))
+	# light settings
+	var dl: DecoLight = lvl.deco_lights[0]
+	var lp := LightPanel.new(dl)
+	HUD.open_panel(lp)
+	await tree.process_frame
+	dl.cfg["c"] = 4
+	dl.cfg["l"] = 0.5
+	lp._changed()
+	say.call("light %s color=%s energy=%.2f lit=%s" % [dl.type, str(dl.lights[0].light_color), dl.lights[0].light_energy, dl.is_lit()])
+	HUD.close_panel(lp)
 	var before := State.stash_count("wood")
 	lvl.demolish(0)
 	await tree.process_frame
@@ -178,11 +214,25 @@ static func run(tree: SceneTree) -> void:
 	await tree.create_timer(1.0).timeout
 	var ex = Game.level
 	say.call("expedition level=%s enemies=%d" % [ex.name, ex.enemies.size()])
-	var searched := 0
-	for c in ex.get_children():
-		if c is LootContainer and searched < 5:
-			c._on_used(null)
-			searched += 1
+	var kinds := {}
+	for b in ex.buildings:
+		kinds[b.kind] = int(kinds.get(b.kind, 0)) + 1
+	say.call("town: %d buildings %s, %d searchable places" % [ex.buildings.size(), str(kinds), ex.containers.size()])
+	var inv0 := State.inventory.duplicate()
+	var titles := {}
+	for c in ex.containers.slice(0, 20):
+		titles[c.title] = true
+		c._on_used(null)
+	var gained := 0
+	for k in State.inventory:
+		gained += maxi(int(State.inventory[k]) - int(inv0.get(k, 0)), 0)
+	say.call("searched 20 places (%s) -> %d items in the backpack" % [", ".join(titles.keys()), gained])
+	var lmp := LocalMapPanel.new(ex)
+	HUD.open_panel(lmp)
+	for i in 5:
+		await tree.process_frame
+	HUD.close_panel(lmp)
+	say.call("surface local map ok")
 	var p: Player = Game.player
 	for wid in ["pistol", "rifle", "shotgun", "axe"]:
 		State.add(wid, 1, true)

@@ -13,6 +13,9 @@ class ItemCell extends Control:
 	var hover := false
 	var big := false
 	var dim := false
+	## Drag source / drop target: "pack", "stash" or "equip" (set by the panel).
+	var src := ""
+	var panel: InventoryPanel
 	signal picked(id: String)
 
 	func _init() -> void:
@@ -28,6 +31,31 @@ class ItemCell extends Control:
 		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
 			picked.emit(item)
 			Audio.ui("ui_click")
+
+	# --- drag & drop: the whole stack, or one piece with Shift held
+	func _get_drag_data(_at: Vector2) -> Variant:
+		if item == "" or dim or panel == null or src == "":
+			return null
+		var take := 1 if (Input.is_key_pressed(KEY_SHIFT) or src == "equip") else maxi(n, 1)
+		var pv := ItemCell.new()
+		pv.item = item
+		pv.big = true
+		pv.n = take
+		pv.custom_minimum_size = Vector2(96, 96)
+		pv.size = Vector2(96, 96)
+		pv.modulate = Color(1, 1, 1, 0.85)
+		pv.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		set_drag_preview(pv)
+		return {"id": item, "n": take, "from": src}
+
+	func _can_drop_data(_at: Vector2, data: Variant) -> bool:
+		return panel != null and data is Dictionary and panel.can_drop(data, _drop_target())
+
+	func _drop_data(_at: Vector2, data: Variant) -> void:
+		panel.drop(data, _drop_target())
+
+	func _drop_target() -> String:
+		return "equip:" + item if src == "equip" else src
 
 	func _process(_d: float) -> void:
 		if item != "" and IconFactory.get_icon(item) != null and not has_meta("icon_ok"):
@@ -63,6 +91,32 @@ class ItemCell extends Control:
 			draw_string(fb, Vector2(5, size.y - 6), nm, HORIZONTAL_ALIGNMENT_LEFT, size.x - 10, 12, Color(UITheme.TEXT_DIM, a))
 
 
+## The item grid and its scroll area accept drops for the view they show.
+class DropGrid extends GridContainer:
+	var panel: InventoryPanel
+	func _can_drop_data(_at: Vector2, data: Variant) -> bool:
+		return panel != null and data is Dictionary and panel.can_drop(data, panel.view)
+	func _drop_data(_at: Vector2, data: Variant) -> void:
+		panel.drop(data, panel.view)
+
+
+class DropScroll extends ScrollContainer:
+	var panel: InventoryPanel
+	func _can_drop_data(_at: Vector2, data: Variant) -> bool:
+		return panel != null and data is Dictionary and panel.can_drop(data, panel.view)
+	func _drop_data(_at: Vector2, data: Variant) -> void:
+		panel.drop(data, panel.view)
+
+
+## RUCSAC / DEPOZIT tab: dropping an item on it moves the item there.
+class DropTab extends Button:
+	var panel: InventoryPanel
+	var target := ""
+	func _can_drop_data(_at: Vector2, data: Variant) -> bool:
+		return panel != null and data is Dictionary and panel.can_drop(data, target)
+	func _drop_data(_at: Vector2, data: Variant) -> void:
+		panel.drop(data, target)
+
 var view := "pack"  # pack | stash
 var filter := ""
 var selected := ""
@@ -73,10 +127,68 @@ var char_box: VBoxContainer
 var detail_box: VBoxContainer
 var weight_label: Label
 var weight_bar: ProgressBar
+var equip_cells := {}  # item id -> ItemCell (equipment slots)
 
 
 func _init() -> void:
 	super("Inventar", 1500.0)
+
+
+# --------------------------------------------------------------------------
+# Drag & drop. Equipment is whatever gear sits in the backpack, so "equip" means
+# bring it into the backpack and "unequip" means send it to the stash.
+# --------------------------------------------------------------------------
+
+func can_drop(data: Dictionary, target: String) -> bool:
+	var from: String = data.get("from", "")
+	var id: String = data.get("id", "")
+	if id == "" or from == "":
+		return false
+	if target.begins_with("equip:"):
+		return target.trim_prefix("equip:") == id and from == "stash"
+	if target == "pack":
+		return from == "stash"
+	if target == "stash":
+		return State.context == "bunker" and from in ["pack", "equip"]
+	return false
+
+
+func drop(data: Dictionary, target: String) -> void:
+	if not can_drop(data, target):
+		return
+	var id: String = data.id
+	var n: int = data.n
+	selected = id
+	Audio.ui("ui_click")
+	if target == "stash":
+		State.move_to_stash(id, n)
+	else:
+		State.move_to_backpack(id, n)
+	if target.begins_with("equip:"):
+		HUD.toast("%s — echipat." % ItemDB.item_name(id), "good")
+
+
+## Selection without rebuilding the grid (a rebuild would free the cell being dragged).
+func _select(id: String) -> void:
+	selected = id
+	for c in grid.get_children():
+		if c is ItemCell:
+			c.selected = c.item == id and c.item != ""
+			c.queue_redraw()
+	for c in equip_cells.values():
+		c.selected = c.item == id
+		c.queue_redraw()
+	_build_detail()
+
+
+## Cell showing `id` (the equipment slot, or the grid cell in the current view).
+func find_cell(id: String, equip: bool) -> Control:
+	if equip:
+		return equip_cells.get(id)
+	for c in grid.get_children():
+		if c is ItemCell and c.item == id:
+			return c
+	return null
 
 
 func build() -> void:
@@ -99,15 +211,20 @@ func build() -> void:
 	filter_row = HBoxContainer.new()
 	filter_row.add_theme_constant_override("separation", 4)
 	mid.add_child(filter_row)
-	var sc := ScrollContainer.new()
+	var sc := DropScroll.new()
+	sc.panel = self
 	sc.custom_minimum_size = Vector2(760, 500)
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	mid.add_child(sc)
-	grid = GridContainer.new()
+	var dg := DropGrid.new()
+	dg.panel = self
+	grid = dg
 	grid.columns = 7
+	grid.mouse_filter = Control.MOUSE_FILTER_PASS
 	grid.add_theme_constant_override("h_separation", 6)
 	grid.add_theme_constant_override("v_separation", 6)
 	sc.add_child(grid)
+	mid.add_child(UITheme.label("Trage obiectele cu mausul: rucsac ⇄ depozit ⇄ echipament (pe un slot sau pe o filă)  ·  Shift = câte o bucată", 13, UITheme.TEXT_DIM))
 	var wrow := HBoxContainer.new()
 	wrow.add_theme_constant_override("separation", 10)
 	mid.add_child(wrow)
@@ -155,10 +272,10 @@ func refresh() -> void:
 		cell.item = id
 		cell.n = int(src[id])
 		cell.selected = id == selected
+		cell.src = view
+		cell.panel = self
 		cell.custom_minimum_size = Vector2(102, 108)
-		cell.picked.connect(func(i: String) -> void:
-			selected = i
-			refresh())
+		cell.picked.connect(_select)
 		grid.add_child(cell)
 		shown += 1
 	for i in maxi(0, 28 - shown):
@@ -184,10 +301,16 @@ func _build_tabs() -> void:
 	if State.context == "bunker":
 		specs.append(["stash", "DEPOZIT  (%d)" % State.stash.size()])
 	for s in specs:
-		var b := UITheme.button(s[1], func() -> void:
+		var b := DropTab.new()
+		b.panel = self
+		b.target = s[0]
+		b.text = s[1]
+		b.custom_minimum_size.x = 200
+		b.pressed.connect(func() -> void:
+			Audio.ui("ui_click")
 			view = s[0]
 			selected = ""
-			refresh(), 200)
+			refresh())
 		if view == s[0]:
 			b.add_theme_color_override("font_color", UITheme.ACCENT)
 			b.add_theme_stylebox_override("normal", UITheme.flat(Color(0.2, 0.15, 0.07, 0.98), 1, UITheme.ACCENT, 2))
@@ -260,16 +383,19 @@ func _build_char() -> void:
 	eg.add_theme_constant_override("h_separation", 6)
 	eg.add_theme_constant_override("v_separation", 6)
 	char_box.add_child(eg)
+	equip_cells.clear()
 	for e in EQUIP:
 		var v := VBoxContainer.new()
 		var cell := ItemCell.new()
 		cell.item = e[0]
 		cell.big = true
 		cell.dim = State.count(e[0]) <= 0
+		cell.selected = e[0] == selected
+		cell.src = "equip"
+		cell.panel = self
 		cell.custom_minimum_size = Vector2(92, 80)
-		cell.picked.connect(func(i: String) -> void:
-			selected = i
-			refresh())
+		cell.picked.connect(_select)
+		equip_cells[e[0]] = cell
 		v.add_child(cell)
 		var l := UITheme.label(e[1], 11, UITheme.TEXT_DIM if cell.dim else UITheme.TEXT, "heading")
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

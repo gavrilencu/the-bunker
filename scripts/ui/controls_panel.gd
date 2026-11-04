@@ -4,8 +4,9 @@ extends UIPanel
 const ROWS := [
 	["W A S D", "Mișcare"], ["Shift", "Sprint"], ["Ctrl / C", "Ghemuit"], ["Space", "Săritură"],
 	["E (ține apăsat)", "Interacțiune"], ["Tab / I", "Inventar"], ["B", "Mod construcție"],
-	["R", "Reîncărcare · Rotire construcție"], ["F", "Lanternă"], ["1 / 2 / 3 / 4", "Topor / Pistol / AK-74M / Saiga-12"],
-	["Rotița mouse-ului", "Schimbă arma"], ["Click stânga", "Foc / Atac · Plasare"], ["Click dreapta", "Ochire (ADS)"],
+	["G", "Mută mobila / lumina țintită (în buncăr)"], ["T", "Aliniere la grilă și perete (la plasare)"],
+	["R", "Reîncărcare · Rotire 90° / întoarce la plasare"], ["F", "Lanternă"], ["1 / 2 / 3 / 4", "Topor / Pistol / AK-74M / Saiga-12"],
+	["Rotița mouse-ului", "Schimbă arma · Rotește la plasare"], ["Click stânga", "Foc / Atac · Plasare"], ["Click dreapta", "Ochire (ADS) · Anulează plasarea"],
 	["M", "Harta PDA a zonei"], ["U", "Dezvoltarea buncărului"], ["X", "Demontează o construcție"],
 	["H", "Folosește bandaj"], ["Esc", "Pauză / închide"],
 ]

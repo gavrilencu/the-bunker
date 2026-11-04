@@ -114,7 +114,7 @@ const UPGRADES := {
 	"kitchen": {"name": "Bucătăria buncărului", "branch": "agricultura", "tier": 3, "icon": "food", "req": ["led"], "cost": {"scrap": 4, "pipe": 1, "wood": 2}, "hours": 3,
 		"desc": "Deblochează aragazul de campanie: mâncarea gătită e cu mult mai sățioasă.", "effect": {"unlock_stove": 1.0}},
 	"bench_2": {"name": "Strung și menghină", "branch": "atelier", "tier": 1, "icon": "tool", "cost": {"scrap": 6, "pipe": 2, "electronics": 1}, "hours": 4,
-		"desc": "Fabricarea e cu 30% mai rapidă. Deblochează muniție 7,62 și cal. 12.", "effect": {"mul_craft_time": 0.7}},
+		"desc": "Fabricarea e cu 30% mai rapidă. Deblochează muniție 5,45 și cal. 12.", "effect": {"mul_craft_time": 0.7}},
 	"backpack": {"name": "Rucsac militar", "branch": "atelier", "tier": 2, "icon": "weight", "req": ["bench_2"], "cost": {"cloth": 6, "duct_tape": 2, "scrap": 1}, "hours": 3,
 		"desc": "+15 kg capacitate de transport.", "effect": {"add_carry": 15.0}},
 	"infirmary": {"name": "Infirmerie echipată", "branch": "atelier", "tier": 3, "icon": "med", "req": ["backpack"], "dig": "sec_c", "cost": {"plastic": 3, "cloth": 4, "electronics": 2}, "hours": 4,
@@ -134,25 +134,81 @@ const UPGRADES := {
 }
 const BRANCHES := [["energie", "ENERGIE"], ["aer", "APĂ & AER"], ["agricultura", "AGRICULTURĂ"], ["atelier", "ATELIER"], ["aparare", "APĂRARE"], ["explorare", "EXPLORARE"]]
 
-## Things placed with build mode. size = footprint for collision (x, y, z).
+## Things placed with build mode. cat = build-menu tab; mount = floor (default) | wall | ceiling;
+## wall = floor furniture that backs onto the nearest wall. Footprints come from the real
+## model bounds (size is only the fallback for procedural meshes).
+## Lights: power = litres of diesel per game hour at 100 % brightness; self_powered = own battery.
 const BUILDABLES := {
-	"planter": {"name": "Jardinieră", "model": "planter_box", "cost": {"wood": 4, "scrap": 1, "soil": 1}, "size": Vector3(1.2, 0.5, 0.6), "desc": "Pentru roșii, salată, cartofi. Are nevoie de lumină."},
-	"mushroom_bed": {"name": "Pat de ciuperci", "model": "planter_box", "cost": {"wood": 3, "soil": 1}, "size": Vector3(1.2, 0.5, 0.6), "desc": "Ciuperci în întuneric. Fără lumină."},
-	"grow_lamp": {"name": "Lampă de creștere", "model": "lamp_cage", "cost": {"electronics": 2, "scrap": 2}, "size": Vector3(0.4, 1.8, 0.4), "desc": "Luminează jardinierele pe o rază de 3 m. Consumă energie."},
-	"water_collector": {"name": "Condensator de apă", "model": "water_purifier", "cost": {"scrap": 4, "pipe": 2, "plastic": 2, "electronics": 1}, "size": Vector3(0.9, 1.4, 0.6), "desc": "Extrage ~6 L de apă pe zi din aer. Consumă energie."},
-	"bike_generator": {"name": "Bicicletă-dinam", "model": "", "cost": {"scrap": 6, "electronics": 2, "pipe": 2}, "size": Vector3(0.6, 1.1, 1.6), "desc": "Pedalezi și încarci bateriile de urgență."},
-	"battery_bank": {"name": "Banc de baterii", "model": "car_battery", "cost": {"battery_cell": 2, "electronics": 1, "scrap": 1}, "size": Vector3(0.7, 0.4, 0.4), "desc": "+50% capacitate baterii de urgență."},
-	"bed": {"name": "Pat suplimentar", "model": "bunk_bed", "wall": true, "comfort": 3.0, "cost": {"wood": 4, "scrap": 4, "cloth": 4}, "size": Vector3(0.95, 1.8, 2.0), "desc": "Pentru viitorii locatari."},
-	"storage": {"name": "Ladă de depozitare", "model": "wooden_crate", "cost": {"wood": 4}, "size": Vector3(0.6, 0.6, 0.6), "desc": "Ordinea face buncărul mai uman (confort).", "comfort": 2.0},
-	"sandbags": {"name": "Saci de nisip", "model": "sandbags", "cost": {"cloth": 2, "soil": 2}, "size": Vector3(1.2, 0.5, 0.5), "desc": "Fortificație pentru ecluză."},
-	"lamp": {"name": "Lampă", "model": "lamp_cage", "cost": {"electronics": 1, "scrap": 1}, "size": Vector3(0.3, 0.4, 0.3), "desc": "Lumină suplimentară."},
-	"stove": {"name": "Aragaz de campanie", "model": "camping_stove", "cost": {"scrap": 2, "pipe": 1}, "size": Vector3(0.5, 0.8, 0.5), "desc": "Gătește mâncare caldă (necesită Bucătăria).", "req": "kitchen", "comfort": 4.0},
-	"sofa": {"name": "Canapea", "model": "sofa_old", "cost": {"wood": 4, "cloth": 6}, "size": Vector3(2.0, 0.9, 0.9), "desc": "Confort: somn mai odihnitor.", "comfort": 8.0, "wall": true},
-	"table": {"name": "Masă", "model": "table_metal", "cost": {"scrap": 3, "wood": 2}, "size": Vector3(1.6, 0.7, 0.8), "desc": "Confort.", "comfort": 4.0},
-	"chair": {"name": "Scaun", "model": "chair", "cost": {"scrap": 1, "wood": 1}, "size": Vector3(0.5, 0.9, 0.5), "desc": "Confort.", "comfort": 2.0},
-	"shelf": {"name": "Raft metalic", "model": "metal_shelf", "cost": {"scrap": 4}, "size": Vector3(1.0, 2.0, 0.65), "desc": "Ordine în buncăr (confort).", "comfort": 3.0, "wall": true},
-	"weapon_rack": {"name": "Rastel de arme", "model": "weapon_rack", "cost": {"wood": 3, "scrap": 2}, "size": Vector3(1.2, 1.6, 0.4), "desc": "Arme la îndemână (confort, decor).", "comfort": 3.0, "wall": true},
-	"hydro_rack": {"name": "Raft hidroponic", "model": "hydroponic_rack", "cost": {"plastic": 3, "pipe": 2, "electronics": 1}, "size": Vector3(1.4, 1.8, 0.6), "desc": "Cultură verticală de salată și roșii (necesită Hidroponie).", "req": "hydro_1", "wall": true},
+	"planter": {"name": "Jardinieră", "cat": "agricultura", "model": "planter_box", "cost": {"wood": 4, "scrap": 1, "soil": 1}, "size": Vector3(1.2, 0.5, 0.6), "desc": "Pentru roșii, salată, cartofi. Are nevoie de lumină."},
+	"mushroom_bed": {"name": "Pat de ciuperci", "cat": "agricultura", "model": "planter_box", "cost": {"wood": 3, "soil": 1}, "size": Vector3(1.2, 0.5, 0.6), "desc": "Ciuperci în întuneric. Fără lumină."},
+	"grow_lamp": {"name": "Lampă de creștere", "cat": "agricultura", "model": "lamp_cage", "cost": {"electronics": 2, "scrap": 2}, "size": Vector3(0.4, 1.8, 0.4), "desc": "Luminează jardinierele pe o rază de 3 m. Consumă energie."},
+	"water_collector": {"name": "Condensator de apă", "cat": "utilitati", "model": "water_purifier", "cost": {"scrap": 4, "pipe": 2, "plastic": 2, "electronics": 1}, "size": Vector3(0.9, 1.4, 0.6), "desc": "Extrage ~6 L de apă pe zi din aer. Consumă energie."},
+	"bike_generator": {"name": "Bicicletă-dinam", "cat": "utilitati", "model": "", "cost": {"scrap": 6, "electronics": 2, "pipe": 2}, "size": Vector3(0.6, 1.1, 1.6), "desc": "Pedalezi și încarci bateriile de urgență."},
+	"battery_bank": {"name": "Banc de baterii", "cat": "utilitati", "model": "car_battery", "cost": {"battery_cell": 2, "electronics": 1, "scrap": 1}, "size": Vector3(0.7, 0.4, 0.4), "desc": "+50% capacitate baterii de urgență."},
+	"bed": {"name": "Pat suplimentar", "cat": "mobilier", "model": "bunk_bed", "wall": true, "comfort": 3.0, "cost": {"wood": 4, "scrap": 4, "cloth": 4}, "size": Vector3(0.95, 1.8, 2.0), "desc": "Pentru viitorii locatari."},
+	"storage": {"name": "Ladă de depozitare", "cat": "mobilier", "model": "wooden_crate", "cost": {"wood": 4}, "size": Vector3(0.6, 0.6, 0.6), "desc": "Ordinea face buncărul mai uman (confort).", "comfort": 2.0},
+	"sandbags": {"name": "Saci de nisip", "cat": "utilitati", "model": "sandbags", "cost": {"cloth": 2, "soil": 2}, "size": Vector3(1.2, 0.5, 0.5), "desc": "Fortificație pentru ecluză."},
+	"stove": {"name": "Aragaz de campanie", "cat": "utilitati", "model": "camping_stove", "cost": {"scrap": 2, "pipe": 1}, "size": Vector3(0.5, 0.8, 0.5), "desc": "Gătește mâncare caldă (necesită Bucătăria). Încape și pe masă.", "req": "kitchen", "comfort": 4.0},
+	"sofa": {"name": "Canapea", "cat": "mobilier", "model": "sofa_old", "cost": {"wood": 4, "cloth": 6}, "size": Vector3(2.0, 0.9, 0.9), "desc": "Confort: somn mai odihnitor.", "comfort": 8.0, "wall": true},
+	"table": {"name": "Masă", "cat": "mobilier", "model": "table_metal", "cost": {"scrap": 3, "wood": 2}, "size": Vector3(1.6, 0.7, 0.8), "desc": "Confort. Pe ea poți pune felinare, radiouri, conserve.", "comfort": 4.0},
+	"chair": {"name": "Scaun", "cat": "mobilier", "model": "chair", "cost": {"scrap": 1, "wood": 1}, "size": Vector3(0.5, 0.9, 0.5), "desc": "Confort.", "comfort": 2.0},
+	"shelf": {"name": "Raft metalic", "cat": "mobilier", "model": "metal_shelf", "cost": {"scrap": 4}, "size": Vector3(1.0, 2.0, 0.65), "desc": "Ordine în buncăr (confort).", "comfort": 3.0, "wall": true},
+	"weapon_rack": {"name": "Rastel de arme", "cat": "mobilier", "model": "weapon_rack", "cost": {"wood": 3, "scrap": 2}, "size": Vector3(1.2, 1.6, 0.4), "desc": "Arme la îndemână (confort, decor).", "comfort": 3.0, "wall": true},
+	"hydro_rack": {"name": "Raft hidroponic", "cat": "agricultura", "model": "hydroponic_rack", "cost": {"plastic": 3, "pipe": 2, "electronics": 1}, "size": Vector3(1.4, 1.8, 0.6), "desc": "Cultură verticală de salată și roșii (necesită Hidroponie).", "req": "hydro_1", "wall": true},
+	# --- lights (DecoLight): colour, brightness, shadows and on/off are set per light with [E]
+	"lamp": {"name": "Lampă industrială", "cat": "lumini", "mount": "ceiling", "model": "lamp_cage", "cost": {"electronics": 1, "scrap": 1}, "size": Vector3(0.3, 0.45, 0.3), "power": 0.012,
+		"desc": "Lampă cu grilaj, suspendată de tavan. Lumină puternică pentru o cameră întreagă."},
+	"fluoro": {"name": "Tub fluorescent", "cat": "lumini", "mount": "ceiling", "model": "fluorescent_lamp", "cost": {"electronics": 2, "scrap": 1, "plastic": 1}, "size": Vector3(0.15, 0.25, 1.2), "power": 0.015,
+		"desc": "Lumină rece, uniformă, de atelier. Pâlpâie când pornește."},
+	"sconce": {"name": "Aplică de perete", "cat": "lumini", "mount": "wall", "model": "", "cost": {"electronics": 1, "scrap": 2}, "size": Vector3(0.2, 0.35, 0.35), "power": 0.008, "comfort": 1.0,
+		"desc": "Braț metalic cu o lampă mică cu grilaj. Lumină caldă de-a lungul pereților."},
+	"bulkhead": {"name": "Lampă etanșă de buncăr", "cat": "lumini", "mount": "wall", "model": "", "cost": {"electronics": 1, "scrap": 1, "plastic": 1}, "size": Vector3(0.28, 0.2, 0.12), "power": 0.008,
+		"desc": "Clasica lampă ovală cu grilaj din adăposturile sovietice."},
+	"beacon": {"name": "Girofar", "cat": "lumini", "mount": "wall", "model": "", "cost": {"electronics": 2, "scrap": 1, "plastic": 1}, "size": Vector3(0.16, 0.22, 0.28), "power": 0.01,
+		"desc": "Lumină rotativă de avertizare. Implicit roșie — bună pentru ecluză."},
+	"string_lights": {"name": "Ghirlandă de becuri", "cat": "lumini", "mount": "wall", "model": "", "cost": {"electronics": 2, "cloth": 1, "duct_tape": 1}, "size": Vector3(2.4, 0.25, 0.08), "power": 0.006, "comfort": 3.0,
+		"desc": "Becuri mici pe un fir de 2,4 m. Buncărul începe să semene a casă."},
+	"floor_lamp": {"name": "Lampadar", "cat": "lumini", "mount": "floor", "model": "", "cost": {"electronics": 1, "pipe": 1, "cloth": 2}, "size": Vector3(0.42, 1.62, 0.42), "power": 0.008, "comfort": 3.0,
+		"desc": "Abajur de pânză pe picior metalic. Lumină caldă și difuză, lângă canapea sau pat."},
+	"work_light": {"name": "Proiector pe trepied", "cat": "lumini", "mount": "floor", "model": "", "cost": {"electronics": 2, "pipe": 2, "scrap": 1}, "size": Vector3(0.8, 1.75, 0.8), "power": 0.03,
+		"desc": "Reflector de șantier: fascicul puternic în direcția în care îl rotești, cu umbre."},
+	"lantern": {"name": "Felinar de campanie", "cat": "lumini", "mount": "floor", "model": "", "cost": {"battery_cell": 1, "plastic": 1, "scrap": 1}, "size": Vector3(0.14, 0.22, 0.14), "self_powered": true, "comfort": 1.0,
+		"desc": "Are baterie proprie — luminează și fără curent. Încape pe masă sau pe raft."},
+}
+const BUILD_CATS := [["mobilier", "MOBILIER"], ["lumini", "LUMINI"], ["agricultura", "AGRICULTURĂ"], ["utilitati", "UTILITĂȚI"]]
+const MOUNT_NAMES := {"floor": "Podea / masă", "wall": "Perete", "ceiling": "Tavan"}
+
+## Furniture that ships with the bunker (movable with [G]): model id -> name, wall = backs onto a wall.
+const PROPS := {
+	"table_metal": {"name": "Masă metalică"}, "chair": {"name": "Scaun"}, "canned_food": {"name": "Conserve"},
+	"water_jug": {"name": "Bidon cu apă"}, "radio_station": {"name": "Stație radio R-105"}, "crt_computer": {"name": "Terminal ZX-17"},
+	"bunk_bed": {"name": "Pat", "wall": true}, "metal_shelf": {"name": "Raft metalic", "wall": true}, "locker": {"name": "Dulap", "wall": true},
+	"sofa_old": {"name": "Canapea", "wall": true}, "workbench": {"name": "Banc de lucru", "wall": true}, "toolbox": {"name": "Trusă de scule"},
+	"first_aid_kit": {"name": "Trusă medicală"}, "diesel_generator": {"name": "Generator diesel"}, "planter_box": {"name": "Jardinieră"},
+	"wooden_crate": {"name": "Ladă de lemn"}, "military_crate": {"name": "Ladă militară"}, "camping_stove": {"name": "Aragaz de campanie"},
+	"car_battery": {"name": "Baterie auto"}, "bucket": {"name": "Găleată"}, "fridge_old": {"name": "Frigider vechi", "wall": true},
+	"fire_extinguisher": {"name": "Stingător"}, "jerrycan": {"name": "Canistre"}, "oil_barrel": {"name": "Butoi"},
+	"sandbags": {"name": "Saci de nisip"}, "water_tank": {"name": "Rezervor de apă"}, "water_purifier": {"name": "Purificator de apă"},
+	"air_filter_unit": {"name": "Unitate FVU", "wall": true}, "hydroponic_rack": {"name": "Raft hidroponic", "wall": true},
+	"weapon_rack": {"name": "Rastel de arme", "wall": true},
+}
+
+## Surface loot by container kind (town furniture): item -> max count per roll.
+## Empty tables ("crate", "car") use the location's own loot table.
+const LOOT_KINDS := {
+	"fridge": {"canned_meat": 2, "canned_beans": 2, "water_bottle": 3, "potato": 3, "tomato": 2, "lettuce": 1},
+	"cupboard": {"canned_beans": 2, "crackers": 3, "canned_meat": 1, "water_bottle": 2, "charcoal": 1, "seed_potato": 1, "duct_tape": 1},
+	"pantry": {"canned_meat": 2, "canned_beans": 3, "crackers": 2, "water_bottle": 3, "seeds_tomato": 1, "seeds_lettuce": 1, "seed_potato": 2},
+	"wardrobe": {"cloth": 4, "gas_mask": 1, "bandage": 1, "duct_tape": 1},
+	"drawer": {"bandage": 2, "antirad": 1, "battery_cell": 1, "electronics": 1, "duct_tape": 1, "ammo_9mm": 5},
+	"bag": {"water_bottle": 1, "canned_meat": 1, "bandage": 2, "battery_cell": 1, "ammo_9mm": 6, "mask_filter": 1, "crackers": 2},
+	"medicine": {"bandage": 3, "medkit": 1, "antirad": 2},
+	"tools": {"scrap": 4, "pipe": 2, "duct_tape": 2, "electronics": 1, "wood": 3, "battery_cell": 1, "shovel": 1},
+	"shop": {"canned_meat": 3, "canned_beans": 3, "crackers": 3, "water_bottle": 4, "seeds_tomato": 1, "seeds_lettuce": 1, "plastic": 2},
+	"shelf": {"plastic": 2, "cloth": 2, "electronics": 1, "battery_cell": 1, "charcoal": 2, "water_bottle": 1, "duct_tape": 1},
+	"locker": {"cloth": 2, "gas_mask": 1, "mask_filter": 2, "ammo_9mm": 8, "bandage": 2},
+	"crate": {},
+	"car": {},
 }
 
 ## hours = growth time; light = needs grow light; bed = planter type
@@ -190,6 +246,10 @@ const RADIO := [
 	{"id": "r6", "day": 12, "from": "Frecvență militară criptată", "text": "...PROIECTUL LUMINA... Baza 2214... codul de acces... rezervele de filtre... nu trebuie să afle nimeni ce s-a lansat de aici... (transmisiune întreruptă)", "unlock": "military"},
 	{"id": "r7", "day": 14, "from": "Corbii", "text": "Ascultați, cârtițelor. Noi suntem Corbii. Știm unde sunteți. Lăsați lângă intrare provizii pentru o săptămână sau intrăm noi după ele. Aveți trei zile."},
 	{"id": "r8", "day": 20, "from": "Garda Civilă — Barajul Vadului", "text": "Convoiul de evacuare pleacă de la baraj în ziua 40. Locuri limitate. Aduceți-vă proviziile. Garda Civilă, terminat."},
+	# answers to what the player did (day 0 = gated only by the flag)
+	{"id": "r7_paid", "day": 0, "req_flag": "corbii_paid", "from": "Corbii", "text": "Bravo, cârtițelor. Ați fost cuminți. Proviziile au ajuns unde trebuie. Poate ne mai vedem... poate nu."},
+	{"id": "r7_repelled", "day": 0, "req_flag": "corbii_repelled", "from": "Corbii", "text": "...ușa aia blestemată... (tuse)... Mircea e mort... Lasă, cârtițelor. Nu uităm. Ne mai vedem pe afară."},
+	{"id": "r7_raided", "day": 0, "req_flag": "corbii_raided", "from": "Corbii", "text": "Mulțumim pentru ospitalitate, cârtițelor. Data viitoare lăsați ușa deschisă, să nu mai stricăm nimic."},
 ]
 
 

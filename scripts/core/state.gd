@@ -7,7 +7,9 @@ signal died(reason: String)
 signal inventory_changed
 signal item_gained(id: String, n: int, to_stash: bool)
 
-const SAVE_PATH := "user://save_slot1.json"
+## Debug / self-test runs (--scene, --selftest) point this at a scratch slot so they never
+## overwrite the player's game.
+var save_path := "user://save_slot1.json"
 const FUEL_MAX := 40.0
 const WATER_MAX := 200.0
 
@@ -48,6 +50,9 @@ var flags := {}
 var dig := {}
 var planters := {}
 var built: Array = []
+## Bunker furniture that ships with the level, rearranged by the player:
+## key -> {p: [x, y, z], r: yaw, light: {on, c, l, s}}
+var layout := {}
 var radio_heard: Array = []
 var locations: Array = ["factory"]
 var containers := {}
@@ -100,6 +105,7 @@ func reset() -> void:
 	dig = {}
 	planters = {}
 	built = []
+	layout = {}
 	radio_heard = []
 	locations = ["factory"]
 	containers = {}
@@ -116,7 +122,7 @@ func to_dict() -> Dictionary:
 		"health": health, "food": food, "hydration": hydration, "energy": energy, "radiation": radiation,
 		"fuel": fuel, "generator_on": generator_on, "water": water, "air_filter": air_filter,
 		"air_quality": air_quality, "battery": battery, "battery_max": battery_max,
-		"inventory": inventory, "stash": stash, "upgrades": upgrades, "flags": flags, "dig": dig, "planters": planters, "built": built,
+		"inventory": inventory, "stash": stash, "upgrades": upgrades, "flags": flags, "dig": dig, "planters": planters, "built": built, "layout": layout,
 		"radio_heard": radio_heard, "locations": locations, "containers": containers, "stats": stats,
 		"mask_filter_left": mask_filter_left,
 	}
@@ -151,6 +157,7 @@ func from_dict(d: Dictionary) -> void:
 	dig = d.get("dig", {})
 	planters = d.get("planters", {})
 	built = d.get("built", [])
+	layout = d.get("layout", {})
 	radio_heard = d.get("radio_heard", [])
 	locations = d.get("locations", ["factory"])
 	containers = d.get("containers", {})
@@ -160,7 +167,7 @@ func from_dict(d: Dictionary) -> void:
 
 
 func save_game() -> bool:
-	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var f := FileAccess.open(save_path, FileAccess.WRITE)
 	if f == null:
 		return false
 	f.store_string(JSON.stringify(to_dict(), "\t"))
@@ -169,13 +176,13 @@ func save_game() -> bool:
 
 
 func has_save() -> bool:
-	return FileAccess.file_exists(SAVE_PATH)
+	return FileAccess.file_exists(save_path)
 
 
 func load_game() -> bool:
 	if not has_save():
 		return false
-	var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var f := FileAccess.open(save_path, FileAccess.READ)
 	if f == null:
 		return false
 	var data = JSON.parse_string(f.get_as_text())
@@ -350,6 +357,7 @@ func move_to_backpack(id: String, n: int) -> void:
 
 const GEAR := ["gas_mask", "mask_filter", "hazmat_suit", "geiger", "axe", "pistol", "ammo_9mm", "flashlight", "shovel"]
 const LOADOUT := {"gas_mask": 1, "mask_filter": 4, "hazmat_suit": 1, "geiger": 1, "axe": 1, "pistol": 1, "ammo_9mm": 40,
+	"rifle": 1, "ammo_762": 60, "shotgun": 1, "shells_12": 16,
 	"flashlight": 1, "bandage": 3, "medkit": 1, "antirad": 2, "water_bottle": 2, "canned_meat": 1}
 
 
@@ -378,10 +386,20 @@ func unload_to_stash() -> int:
 	return n
 
 
+var _w_hash := 0
+var _w_cache := -1.0
+
+
+## Cached: the HUD and the player ask several times per frame.
 func total_weight() -> float:
+	var h := inventory.hash()
+	if h == _w_hash and _w_cache >= 0.0:
+		return _w_cache
 	var w := 0.0
 	for k in inventory:
 		w += float(ItemDB.item(k).get("w", 0.1)) * count(k)
+	_w_hash = h
+	_w_cache = w
 	return w
 
 
@@ -473,7 +491,18 @@ func building_count(type: String) -> int:
 
 func fuel_rate() -> float:
 	## litres per game hour while the generator runs
-	return (0.22 + 0.04 * grow_lamp_count() * mul("lamp_power") + 0.05 * building_count("water_collector")) * mul("fuel")
+	return (0.22 + 0.04 * grow_lamp_count() * mul("lamp_power") + 0.05 * building_count("water_collector") + light_power()) * mul("fuel")
+
+
+## Extra generator load of the player-built lights that are switched on (L / game hour).
+func light_power() -> float:
+	var w := 0.0
+	for b in built:
+		var def: Dictionary = ItemDB.BUILDABLES.get(b.get("type", ""), {})
+		var lc: Dictionary = b.get("light", {})
+		if float(def.get("power", 0.0)) > 0.0 and bool(lc.get("on", true)):
+			w += float(def.power) * float(lc.get("l", 1.0))
+	return w
 
 
 ## Surface radiation multiplier — decays following the "7-10" rule of thumb.
@@ -507,28 +536,37 @@ func _step(h: float, sleeping: bool) -> void:
 	else:
 		energy = maxf(energy - h * 100.0 / 18.0 * exertion, 0.0)
 
-	var dmg := 0.0
+	# damage per cause, so the death screen names the one that actually killed you
+	var starve := 0.0
+	var rad_dmg := 0.0
+	var air_dmg := 0.0
 	if food <= 0.0:
-		dmg += h * 6.0
+		starve += h * 6.0
 	if hydration <= 0.0:
-		dmg += h * 12.0
+		starve += h * 12.0
 	if energy <= 0.0:
-		dmg += h * 1.0
+		starve += h * 1.0
 	if radiation > 250.0:
-		dmg += h * (radiation - 250.0) * 0.012
+		rad_dmg += h * (radiation - 250.0) * 0.012
 	if radiation > 1000.0:
-		dmg += h * 30.0
+		rad_dmg += h * 30.0
 	radiation = maxf(radiation - h * 0.35, 0.0)
 
 	if context == "bunker" or sleeping:
 		_bunker_step(h)
 		if air_quality < 35.0:
-			dmg += h * (35.0 - air_quality) * 0.18
+			air_dmg += h * (35.0 - air_quality) * 0.18
+	var dmg := starve + rad_dmg + air_dmg
 	if food > 40.0 and hydration > 40.0 and radiation < 200.0 and dmg <= 0.0:
 		var regen := (3.0 * mul("sleep_heal") * (1.0 + comfort() / 100.0)) if sleeping else 1.2
 		health = minf(health + h * regen, 100.0)
 	if dmg > 0.0:
-		damage(dmg, "starvation")
+		var reason := "starvation"
+		if rad_dmg >= starve and rad_dmg >= air_dmg:
+			reason = "radiation"
+		elif air_dmg > starve:
+			reason = "air"
+		damage(dmg, reason)
 
 
 func _bunker_step(h: float) -> void:
@@ -598,9 +636,18 @@ func damage(amount: float, reason := "") -> void:
 		died.emit(reason)
 
 
+## A broadcast is on air once its day has come (or, for answers, once its flag is set).
+func _radio_due(msg: Dictionary) -> bool:
+	if radio_heard.has(msg.id):
+		return false
+	if msg.has("req_flag"):
+		return bool(flags.get(msg.req_flag, false))
+	return int(msg.day) <= day
+
+
 func _check_radio() -> void:
 	for msg in ItemDB.RADIO:
-		if msg.day <= day and not radio_heard.has(msg.id):
+		if _radio_due(msg):
 			notify.emit("Radioul prinde un semnal nou...", "radio")
 			return
 
@@ -608,7 +655,7 @@ func _check_radio() -> void:
 func pending_radio() -> Array:
 	var res: Array = []
 	for msg in ItemDB.RADIO:
-		if msg.day <= day and not radio_heard.has(msg.id):
+		if _radio_due(msg):
 			res.append(msg)
 	return res
 
@@ -619,6 +666,60 @@ func mark_radio_heard(msg: Dictionary) -> void:
 	if msg.has("unlock") and not locations.has(msg.unlock):
 		locations.append(msg.unlock)
 		notify.emit("Locație nouă: %s" % ItemDB.LOCATIONS[msg.unlock].name, "good")
+	if msg.id == "r7" and not flags.has("corbii"):
+		flags["corbii"] = "threat"
+		flags["corbii_deadline"] = day + 3
+		notify.emit("Corbii cer provizii. Ai timp până în ziua %d (lada de lângă ecluză)." % (day + 3), "danger")
+
+
+# --------------------------------------------------------------------------
+# The Corbii: pay, or hold the door
+# --------------------------------------------------------------------------
+
+## What stands between the raiders and the stash: steel bars, alarm, sandbags, armoury.
+func corbii_defense() -> float:
+	return addv("defense") + minf(building_count("sandbags"), 4) * 0.5 + (1.0 if has_up("armory") else 0.0)
+
+
+## Called every new day: the warning the night before, the raid when the deadline passes.
+func corbii_tick() -> void:
+	if String(flags.get("corbii", "")) != "threat":
+		return
+	var dl := int(flags.get("corbii_deadline", 99))
+	if day == dl - 1 and has_up("alarm"):
+		notify.emit("Senzorii de la intrare prind mișcare noaptea. Corbii dau târcoale.", "danger")
+	if day >= dl:
+		_corbii_raid()
+
+
+func _corbii_raid() -> void:
+	var defense := corbii_defense()
+	if Game.args.has("trace"):
+		print("[corbii] raid day=%d defense=%.1f stash=%d" % [day, defense, stash.size()])
+	if defense >= 2.0:
+		flags["corbii"] = "repelled"
+		flags["corbii_repelled"] = true
+		add("ammo_9mm", 12, true, true)
+		add("bandage", 1, true, true)
+		notify.emit("Noaptea, Corbii au încercat să spargă ușa. Barele au ținut. Au lăsat sânge, o cutie de cartușe și un bandaj.", "good")
+		return
+	flags["corbii"] = "raided"
+	flags["corbii_raided"] = true
+	var frac := clampf(0.45 - 0.12 * defense, 0.15, 0.45)
+	var lost := 0
+	for id in stash.keys():
+		var it := ItemDB.item(id)
+		if it.get("cat", "") == "weapon" or id in ["gas_mask", "hazmat_suit", "geiger", "flashlight", "shovel"]:
+			continue
+		var n := ceili(stash_count(id) * frac)
+		if n > 0:
+			stash[id] = stash_count(id) - n
+			if stash_count(id) <= 0:
+				stash.erase(id)
+			lost += n
+	fuel = maxf(fuel - fuel * 0.3, 0.0)
+	inventory_changed.emit()
+	notify.emit("Noaptea, Corbii au forțat ușa. Lipsesc %d obiecte din depozit și o treime din motorină.%s" % [lost, "" if defense > 0.0 else " Bare de oțel la ușă i-ar fi oprit."], "danger")
 
 
 func available_locations() -> Array:

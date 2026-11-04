@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1tu8orn5es4p"
-path="res://.godot/imported/stone_small_stone_01_diff.jpg-2024abd1f2d67dce0e5af038257f53db.ctex"
+path.s3tc="res://.godot/imported/stone_small_stone_01_diff.jpg-2024abd1f2d67dce0e5af038257f53db.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2acfa864d7cf7b82945803866784ee2c"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/stone_small/stone_small_stone_01_diff.jpg"
-dest_files=["res://.godot/imported/stone_small_stone_01_diff.jpg-2024abd1f2d67dce0e5af038257f53db.ctex"]
+dest_files=["res://.godot/imported/stone_small_stone_01_diff.jpg-2024abd1f2d67dce0e5af038257f53db.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

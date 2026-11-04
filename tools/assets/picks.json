@@ -325,5 +325,20 @@
   "weapon_saiga": {
     "ref": "74e30b71e4a049b2a82b9d18f58e623c",
     "keep": "^Object_9[56]$"
+  },
+  "bed_old": {
+    "ref": "6251708b41514ee6b4fec0e3955c4b69"
+  },
+  "wardrobe_old": {
+    "ref": "f9dd8aa0dd684049911352fa5864ce0c"
+  },
+  "table_wood": {
+    "ref": "0de098dda8d343aaa1e71544ed0c181c"
+  },
+  "bathtub_old": {
+    "ref": "2f1706233a3248cf9a74586fc2e7120c"
+  },
+  "sink_old": {
+    "ref": "a278d63585494921906ab3500c421ff7"
   }
 }

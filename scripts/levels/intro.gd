@@ -12,6 +12,8 @@ const SW_Z_BOTTOM := -62.0
 const DEPTH := -6.0
 const DOOR_Z := -70.0
 const AIRLOCK_Z1 := -78.0
+## Where Alex waits for the bus (on the south sidewalk, facing the street).
+const BUS_STOP := Vector3(0, 0.15, 7.0)
 
 var t := 0.0
 var flashed := false
@@ -28,6 +30,9 @@ var siren_pole: Node3D
 var airlock_lights: Array[Light3D] = []
 var ash: GPUParticles3D
 var _events := {}
+## the living town around the bus stop (traffic, people, lights)
+var city: CityLife
+var factory: FactorySite
 
 var m_grass: Material
 var m_asphalt: Material
@@ -54,10 +59,16 @@ func _ready() -> void:
 	_build_factory()
 	_build_entrance()
 	_build_city()
+	city = CityLife.new()
+	city.name = "CityLife"
+	add_child(city)
+	city.build()
+	factory.spawn_workers(city)
 	nuke = NukeBlast.new()
 	add_child(nuke)
 	nuke.position = BLAST_POS
-	spawn_player(Vector3(0, 0.2, 7.6), 0.0, 2.0)
+	# inside the shelter, in front of the seats, looking at the street
+	spawn_player(BUS_STOP + Vector3(0.6, 0.05, -0.32), 0.0, 2.0)
 	player.footstep_surface = "concrete"
 	Audio.ambient("bg", "ambient_morning", -4.0, 2.0)
 	Settings.set_reverb(0.05, 0.3)
@@ -108,21 +119,37 @@ func _build_ground() -> void:
 
 func _build_street() -> void:
 	Geo.plane(self, Vector2(6000, 10), Vector3(0, 0.05, 0), m_asphalt)
-	# lane markings
+	# lane markings (one merged mesh) — gap at the zebra crossing
 	var white := Geo.color_mat(Color(0.85, 0.85, 0.8), 0.6)
+	var marks := BoxBatch.new()
 	for i in range(-60, 61):
-		Geo.plane(self, Vector2(3.0, 0.15), Vector3(i * 8.0, 0.065, 0), white)
+		if absf(i * 8.0 - 6.0) > 3.0:
+			marks.box(white, Vector3(i * 8.0, 0.062, 0), Vector3(3.0, 0.01, 0.15))
+	marks.commit(self, false)
 	# sidewalks with curbs
 	Geo.box(self, Vector3(6000, 0.15, 3.0), Vector3(0, 0.075, 6.5), m_pave, 0.0, false)
 	Geo.box(self, Vector3(6000, 0.15, 3.0), Vector3(0, 0.075, -6.5), m_pave, 0.0, false)
-	# bus stop where Alex waits
-	Geo.prop(self, "bus_stop", Vector3(0, 0.15, 7.0), PI * 0.5)
+	# bus stop where Alex waits: open side (model +X) toward the street; real walls instead
+	# of a solid box so the player can stand inside it
+	var stop := Geo.prop(self, "bus_stop", BUS_STOP, PI * 0.5, "none")
+	var stop_body := StaticBody3D.new()
+	stop.add_child(stop_body)
+	# model space: glass back at x -0.75, side panels at z +-1.95, seats along the back, roof
+	for s in [[Vector3(-0.75, 1.3, 0), Vector3(0.08, 2.6, 4.0)], [Vector3(0.0, 1.3, 1.96), Vector3(1.55, 2.6, 0.08)],
+			[Vector3(0.0, 1.3, -1.96), Vector3(1.55, 2.6, 0.08)], [Vector3(-0.4, 0.27, 0), Vector3(0.66, 0.54, 3.5)],
+			[Vector3(0.0, 2.78, 0), Vector3(1.62, 0.3, 4.0)]]:
+		var cs := CollisionShape3D.new()
+		var bs := BoxShape3D.new()
+		bs.size = s[1]
+		cs.shape = bs
+		cs.position = s[0]
+		stop_body.add_child(cs)
 	Geo.prop(self, "bench", Vector3(-6, 0.15, 7.2), PI)
-	Geo.prop(self, "trash_bin", Vector3(5.5, 0.15, 7.4), PI)
+	Geo.prop(self, "trash_bin", Vector3(5.5, 0.15, 7.6), PI, "box", 0.7)
 	# parked cars
 	var car_spots := [Vector3(-22, 0, 3.4), Vector3(-34, 0, 3.4), Vector3(16, 0, -3.4), Vector3(48, 0, 3.4), Vector3(-70, 0, -3.4), Vector3(88, 0, 3.4)]
 	for i in car_spots.size():
-		Geo.prop(self, "car_sedan", car_spots[i], PI * 0.5 + (PI if i % 2 == 0 else 0.0))
+		CityLife.paint_car(Geo.prop(self, "car_sedan", car_spots[i], PI * 0.5 + (PI if i % 2 == 0 else 0.0)), CityLife.CAR_COLORS[(i * 4 + 1) % CityLife.CAR_COLORS.size()])
 	# utility poles + street lamps
 	for i in range(-8, 9):
 		var x := i * 34.0 + 12.0
@@ -131,12 +158,15 @@ func _build_street() -> void:
 			siren_pole = pole
 		if i % 2 == 0:
 			Geo.prop(self, "street_lamp", Vector3(x + 17.0, 0.15, 6.4), PI)
-	# trees along the south side
+	# trees in the grass strip between the sidewalk and the shop row (clear of the bus
+	# stop, the zebra crossing and the side street)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 17
 	for i in range(-10, 11):
 		var tx := i * 21.0 + rng.randf_range(-4, 4)
-		Geo.prop(self, "tree_leafy", Vector3(tx, 0, 12.5 + rng.randf_range(0, 3)), rng.randf() * TAU, "box", rng.randf_range(0.8, 1.15))
+		if absf(tx) < 5.0 or absf(tx - 6.0) < 4.0 or absf(tx + 6.0) < 5.0:
+			continue
+		Geo.prop(self, "tree_leafy", Vector3(tx, 0, 10.0 + rng.randf_range(0, 0.6)), rng.randf() * TAU, "box", rng.randf_range(0.75, 1.0))
 	# apartment blocks behind the bus stop (model is 94 m long along Z)
 	for x in [-58.0, 48.0]:
 		Geo.prop(self, "apartment_block", Vector3(x, 0, 40), PI * 0.5)
@@ -146,82 +176,13 @@ func _build_street() -> void:
 	Geo.prop(self, "house_small", Vector3(-175, 0, 18), -0.2)
 
 
+## The Electromaș works north of the street (gate, avenue, halls, railway, the shelter
+## square) — see FactorySite.
 func _build_factory() -> void:
-	# perimeter: Soviet PO-2 concrete fence panels near the gate, plain wall further away
-	var wall_h := 2.5
-	var po2 := Assets.has_model("concrete_fence")
-	var panel_w := 2.41
-	if po2:
-		var x := -40.0
-		while x < 28.0:
-			Geo.prop(self, "concrete_fence", Vector3(x + panel_w * 0.5, 0, -9.0), 0.0)
-			x += panel_w
-		x = 42.0
-		while x < 112.0:
-			Geo.prop(self, "concrete_fence", Vector3(x + panel_w * 0.5, 0, -9.0), 0.0)
-			x += panel_w
-		Geo.box(self, Vector3(90, wall_h, 0.3), Vector3(-85, wall_h * 0.5, -9.0), m_wall)
-		Geo.box(self, Vector3(120, wall_h, 0.3), Vector3(172, wall_h * 0.5, -9.0), m_wall)
-	else:
-		Geo.box(self, Vector3(160, wall_h, 0.35), Vector3(-50, wall_h * 0.5, -9.0), m_wall)
-		Geo.box(self, Vector3(188, wall_h, 0.35), Vector3(136, wall_h * 0.5, -9.0), m_wall)
-	for gx in [29.5, 42.5]:
-		Geo.box(self, Vector3(1.0, 3.4, 1.0), Vector3(gx, 1.7, -9.0), m_brick)
-	# gate arch with the factory name
-	var beam_m := Assets.pbr("painted_metal", {"tile": 1.5, "fallback": Color(0.25, 0.3, 0.27)})
-	Geo.box(self, Vector3(14.2, 0.9, 0.25), Vector3(36, 4.0, -9.0), beam_m)
-	Geo.label3d(self, "UZINA „ELECTROMAȘ”", Vector3(36, 4.0, -8.84), 0.0, 0.42, Color(0.92, 0.88, 0.78))
-	# yard dressing
-	var yard := [["oil_barrel", Vector3(47, 0, -14), 0.3], ["oil_barrel", Vector3(47.7, 0, -14.5), 1.2], ["oil_barrel", Vector3(47.2, 0, -15.3), 2.0],
-		["military_crate", Vector3(24, 0, -14), 0.1], ["military_crate", Vector3(24, 0.37, -14), 0.25], ["wooden_crate", Vector3(25.4, 0, -13.6), 0.4],
-		["tire_pile", Vector3(52, 0, -36), 0.8], ["concrete_barrier", Vector3(60, 0, -30), 1.4], ["concrete_barrier", Vector3(63, 0, -32.5), 1.4],
-		["car_wreck", Vector3(18, 0, -26), 0.4], ["trash_bin", Vector3(44, 0, -12), PI], ["sandbags", Vector3(80, 0, -44), 0.0],
-		["street_lamp", Vector3(50, 0, -20), 0.0], ["street_lamp", Vector3(70, 0, -38), 0.0], ["utility_pole", Vector3(96, 0, -40), 0.0],
-		["tree_leafy", Vector3(10, 0, -14), 0.7], ["tree_leafy", Vector3(92, 0, -14), 2.1], ["bench", Vector3(55, 0, -12.5), PI]]
-	for y in yard:
-		Geo.prop(self, y[0], y[1], y[2])
-	# halls: real industrial buildings when available (factory_hall is long on Z)
-	if Assets.has_model("factory_hall"):
-		Geo.prop(self, "factory_hall", Vector3(-38, 0, -52), PI * 0.5)
-		Geo.prop(self, "factory_hall", Vector3(-8, 0, -40), PI * 0.5)
-		Geo.prop(self, "factory_hall", Vector3(20, 0, -125), PI * 0.5)
-		Geo.prop(self, "factory_hall", Vector3(60, 0, -128), PI * 0.5)
-		Geo.prop(self, "factory_hall", Vector3(-25, 0, -110), 0.0)
-	else:
-		_hall(Rect2(-70, -75, 75, 42), 13.0)
-		_hall(Rect2(-30, -145, 140, 40), 17.0)
-	if Assets.has_model("warehouse"):
-		Geo.prop(self, "warehouse", Vector3(140, 0, -52), PI * 0.5)
-		Geo.prop(self, "warehouse", Vector3(178, 0, -60), 0.0)
-	else:
-		_hall(Rect2(115, -85, 80, 55), 15.0)
-	if Assets.has_model("water_tower"):
-		Geo.prop(self, "water_tower", Vector3(112, 0, -96), 0.4)
-	Geo.prop(self, "tire_pile", Vector3(58, 0, -24), 0.4)
-	Geo.prop(self, "burnt_truck", Vector3(110, 0, -22), 2.6)
-	Geo.prop(self, "scrap_pile", Vector3(70, 0, -18), 0.0, "none")
-	# chimney
-	Geo.cylinder(self, 3.2, 58.0, Vector3(140, 29, -120), m_brick, Vector3.ZERO, true, 32)
-	Geo.cylinder(self, 3.6, 1.6, Vector3(140, 57.2, -120), m_wall)
-	# yard clutter
-	Geo.prop(self, "oil_barrel", Vector3(62, 0, -40), 0.0)
-	Geo.prop(self, "oil_barrel", Vector3(62.8, 0, -40.6), 1.0)
-	Geo.prop(self, "military_crate", Vector3(84, 0, -45), 0.3)
-	Geo.prop(self, "concrete_barrier", Vector3(36, 0, -16), 0.0)
-	Geo.prop(self, "car_wreck", Vector3(98, 0, -30), 1.2)
-	Geo.prop(self, "trash_bin", Vector3(66, 0, -47), 0.0)
-
-
-func _hall(r: Rect2, h: float) -> void:
-	var c := Vector3(r.position.x + r.size.x * 0.5, h * 0.5, r.position.y + r.size.y * 0.5)
-	Geo.box(self, Vector3(r.size.x, h, r.size.y), c, m_brick)
-	Geo.box(self, Vector3(r.size.x + 1.0, 0.6, r.size.y + 1.0), Vector3(c.x, h + 0.3, c.z), m_metal)
-	var glass := Geo.color_mat(Color(0.08, 0.1, 0.12), 0.15, 0.3)
-	var n := int(r.size.x / 7.0)
-	for i in n:
-		var x := r.position.x + 3.5 + i * 7.0
-		Geo.mesh_box(self, Vector3(4.2, 3.6, 0.1), Vector3(x, h * 0.62, r.end.y + 0.02), glass)
-		Geo.mesh_box(self, Vector3(4.2, 2.0, 0.1), Vector3(x, h * 0.28, r.end.y + 0.02), glass)
+	factory = FactorySite.new()
+	factory.name = "Electromas"
+	add_child(factory)
+	factory.build()
 
 
 func _build_entrance() -> void:
@@ -233,10 +194,14 @@ func _build_entrance() -> void:
 	Geo.box(self, Vector3(5.2, 0.4, 7.4), Vector3(cx, pav_h + 0.2, (SW_Z_TOP + SW_Z_HOLE) * 0.5), m_wall)
 	# back wall closes the pavilion above ground only (the stairs continue below it)
 	Geo.box(self, Vector3(4.8, pav_h + 0.5, 0.4), Vector3(cx, (pav_h - 0.5) * 0.5, SW_Z_HOLE - 0.2), m_wall)
-	Geo.label3d(self, "OBIECTIVUL 17", Vector3(cx, pav_h - 0.35, SW_Z_TOP + 0.25), 0.0, 0.42, Color(0.95, 0.85, 0.3))
-	Geo.label3d(self, "ADĂPOST DE PROTECȚIE CIVILĂ", Vector3(cx, pav_h - 0.8, SW_Z_TOP + 0.25), 0.0, 0.2)
+	# concrete fascia over the entrance carrying the signs (2.2 m clear below it)
+	var fascia_z := (SW_Z_TOP + SW_Z_HOLE) * 0.5 + 3.7 - 0.15
+	Geo.box(self, Vector3(5.2, 0.9, 0.3), Vector3(cx, pav_h - 0.45, fascia_z), m_wall)
+	Geo.label3d(self, "OBIECTIVUL 17", Vector3(cx, pav_h - 0.22, fascia_z + 0.16), 0.0, 0.34, Color(0.95, 0.85, 0.3))
+	Geo.label3d(self, "ADĂPOST DE PROTECȚIE CIVILĂ", Vector3(cx, pav_h - 0.66, fascia_z + 0.16), 0.0, 0.17)
+	# red warning lamp on the roof edge
 	var warn := Geo.emissive_mat(Color(1.0, 0.25, 0.1), 4.0)
-	Geo.mesh_box(self, Vector3(0.25, 0.15, 0.15), Vector3(cx, pav_h - 0.08, SW_Z_TOP + 0.1), warn)
+	Geo.mesh_box(self, Vector3(0.3, 0.2, 0.3), Vector3(cx, pav_h + 0.5, fascia_z), warn)
 
 	# stairs (visual steps + smooth ramp collider)
 	var steps := 24
@@ -248,7 +213,11 @@ func _build_entrance() -> void:
 		Geo.mesh_box(self, Vector3(SW_X1 - SW_X0, 0.3, run), Vector3(cx, top - 0.15 + rise, z), m_concrete)
 	var length := Vector2(SW_Z_TOP - SW_Z_BOTTOM, -DEPTH).length()
 	var ang := atan2(-DEPTH, SW_Z_TOP - SW_Z_BOTTOM)
-	Geo.collider(self, Vector3(SW_X1 - SW_X0, 0.2, length), Vector3(cx, DEPTH * 0.5 + 0.12, (SW_Z_TOP + SW_Z_BOTTOM) * 0.5), Vector3(-ang, 0, 0))
+	# the ramp's walking surface runs from ground level at the top to the corridor floor:
+	# its 0.2 m slab sits just below that line (no lip to trip on at the top step)
+	var ramp_n := Vector3(0, SW_Z_TOP - SW_Z_BOTTOM, DEPTH).normalized()
+	var ramp_c := Vector3(cx, DEPTH * 0.5, (SW_Z_TOP + SW_Z_BOTTOM) * 0.5) - ramp_n * 0.1
+	Geo.collider(self, Vector3(SW_X1 - SW_X0, 0.2, length), ramp_c, Vector3(-ang, 0, 0))
 	# stairwell side walls below ground
 	Geo.box(self, Vector3(0.4, 7.0, SW_Z_TOP - DOOR_Z), Vector3(SW_X0 - 0.2, DEPTH * 0.5 + 0.0, (SW_Z_TOP + DOOR_Z) * 0.5), m_wall)
 	Geo.box(self, Vector3(0.4, 7.0, SW_Z_TOP - DOOR_Z), Vector3(SW_X1 + 0.2, DEPTH * 0.5 + 0.0, (SW_Z_TOP + DOOR_Z) * 0.5), m_wall)
@@ -335,10 +304,12 @@ func _process(delta: float) -> void:
 	if t > 2.0 and _once("thought"):
 		HUD.subtitle("Alex", "Iar întârzie autobuzul... Mai bine mergeam pe jos până la uzină.", 4.5)
 	if t > 6.5 and _once("alert"):
+		city.alert()
 		Audio.sfx("ui_click", 2.0, 0.0)
 		HUD.alert("ALERTĂ NAȚIONALĂ", "ATAC NUCLEAR IMINENT ÎN ZONA VADUL NOU. ADĂPOSTIȚI-VĂ IMEDIAT ÎN CEL MAI APROPIAT ADĂPOST. ACESTA NU ESTE UN EXERCIȚIU.", 7.0)
 		player.add_shake(0.05)
 	if t > 8.0 and _once("siren"):
+		city.panic()
 		if siren_pole:
 			Audio.loop_at("siren_air_raid", siren_pole, 8.0, 900.0)
 		Audio.ambient("siren", "siren_air_raid", -12.0, 3.0)
@@ -390,6 +361,7 @@ func _shock_eta() -> float:
 func _flash() -> void:
 	flashed = true
 	nuke.detonate()
+	city.emp()
 	HUD.flash(1.0)
 	player.add_shake(0.15)
 	Audio.ambient("bg", "", 0.0, 0.5)
@@ -515,6 +487,7 @@ func _ceiling_dust() -> void:
 	add_child(p)
 	p.position = Vector3(cx, DEPTH + 3.3, -74.0)
 	p.emitting = true
+	p.finished.connect(p.queue_free)
 
 
 func _spawn_ash() -> void:

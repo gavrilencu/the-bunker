@@ -131,7 +131,9 @@ func apply_quality() -> void:
 	Settings.apply_environment(env, env_profile)
 	if sun:
 		sun.directional_shadow_max_distance = float(sun.get_meta("base_dist", 120.0)) * float(Settings.val("shadow_dist"))
-		sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS if int(Settings.opt("shadows")) == 0 else DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
+		# low: a single orthogonal map (one shadow pass instead of two, ~3 ms on an iGPU)
+		var sq := int(Settings.opt("shadows"))
+		sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL if sq == 0 else (DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS if sq == 1 else DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS)
 
 
 func spawn_player(pos: Vector3, yaw_deg: float, pitch_deg := 0.0) -> Player:

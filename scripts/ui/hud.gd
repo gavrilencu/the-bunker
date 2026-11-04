@@ -10,6 +10,9 @@ var markers := {}
 var rad_effect := 0.0
 var mask_effect := 0.0
 
+const POST_SHADER := preload("res://shaders/post.gdshader")
+const POST_BLUR_SHADER := preload("res://shaders/post_blur.gdshader")
+
 var post_layer: CanvasLayer
 var post: ColorRect
 var post_mat: ShaderMaterial
@@ -38,7 +41,7 @@ var alert_panel: PanelContainer
 var alert_title: Label
 var alert_text: Label
 var perf_label: Label
-var build_hint: Label
+var place_bar: HudWidgets.PlaceBar
 
 # loading screen
 var loading: Control
@@ -99,7 +102,9 @@ func _build() -> void:
 	post.set_anchors_preset(Control.PRESET_FULL_RECT)
 	post.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	post_mat = ShaderMaterial.new()
-	post_mat.shader = load("res://shaders/post.gdshader")
+	# start with the blur variant so its pipeline compiles during the menu, not on the
+	# first panel; _process swaps to the cheap one right away
+	post_mat.shader = POST_BLUR_SHADER
 	post.material = post_mat
 	post_layer.add_child(post)
 
@@ -144,9 +149,7 @@ func _build() -> void:
 	subtitle_panel.add_child(subtitle_label)
 	subtitle_panel.visible = false
 
-	build_hint = UITheme.label("", 17, UITheme.TEXT, "bold")
-	build_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_anchored(build_hint, Control.PRESET_CENTER_BOTTOM, Vector2(-600, -120), Vector2(1200, 60))
+	place_bar = _anchored(HudWidgets.PlaceBar.new(), Control.PRESET_CENTER_BOTTOM, Vector2(-700, -150), Vector2(1400, 110))
 
 	# location / chapter banner
 	banner_box = Control.new()
@@ -315,7 +318,7 @@ func set_mode(m: String) -> void:
 	dosimeter.visible = m == "surface"
 	systems.visible = m == "bunker"
 	objective_w.visible = gameplay
-	build_hint.text = ""
+	set_placement({})
 	if not gameplay:
 		set_interaction("", "", false, 0.0)
 		objective("")
@@ -342,8 +345,12 @@ func _process(delta: float) -> void:
 	post_mat.set_shader_parameter("rad", rad_effect)
 	post_mat.set_shader_parameter("mask", mask_effect)
 	post_mat.set_shader_parameter("mask_fog", clampf(1.0 - State.mask_filter_left / 60.0, 0.0, 1.0) * 0.6 if mask_effect > 0.0 else 0.0)
-	var want_blur := 2.2 if (has_panel() and mode in ["intro", "bunker", "surface", "menu"]) else 0.0
+	var want_blur := 2.2 if (has_panel() and top_panel().blur_world and mode in ["intro", "bunker", "surface", "menu"]) else 0.0
 	_blur = move_toward(_blur, want_blur, delta * 10.0)
+	# the mipmapped (blurrable) shader only while a panel blurs the world
+	var want_shader: Shader = POST_BLUR_SHADER if _blur > 0.001 else POST_SHADER
+	if post_mat.shader != want_shader:
+		post_mat.shader = want_shader
 	post_mat.set_shader_parameter("blur", _blur)
 	post_mat.set_shader_parameter("desat", (State.radiation / 1500.0 if mode in ["bunker", "surface"] else 0.0) + (0.15 if low_hp else 0.0) + _blur * 0.08)
 	_update_perf()
@@ -440,6 +447,7 @@ func _update_vitals(delta: float, p, hud_mode: int) -> void:
 	var active: bool = State.health < 99.0 or not st.is_empty() or (p and is_instance_valid(p) and p.stamina < 99.0) or vitals.needs.values().any(func(x) -> bool: return x < 0.55)
 	vitals.update_fade(delta, active, hud_mode >= 1, 5.0)
 	vitals.tick(delta)
+	weapon_box.tick(delta)
 
 
 func _update_systems() -> void:
@@ -465,8 +473,11 @@ func _update_weapon(delta: float, p, hud_mode: int) -> void:
 	weapon_box.slot = int(info.slot)
 	weapon_box.name_text = info.name
 	weapon_box.mag = int(info.mag)
+	weapon_box.mag_max = int(p.weapons.defn.get("mag", 0))
 	weapon_box.reserve = int(info.reserve)
 	weapon_box.reloading = p.weapons.reloading > 0.0
+	weapon_box.reload_p = (1.0 - p.weapons.reloading / maxf(p.weapons._reload_total, 0.01)) if p.weapons.reloading > 0.0 else -1.0
+	weapon_box.icon_item = p.weapons.current if p.weapons.current not in ["", "hands"] else ""
 	weapon_box.bandages = State.count("bandage") + State.count("medkit")
 	weapon_box.flashlight = p.flashlight.visible
 	var sig := "%s%d%d%s" % [w, weapon_box.mag, weapon_box.reserve, str(weapon_box.reloading)]
@@ -495,7 +506,8 @@ func _update_perf() -> void:
 # Public API
 # --------------------------------------------------------------------------
 
-func set_interaction(title: String, action: String, hold: bool, progress: float, alt := "") -> void:
+## alt: secondary actions [[key, text], ...] (e.g. [G] move, [X] demolish)
+func set_interaction(title: String, action: String, hold: bool, progress: float, alt: Array = []) -> void:
 	prompt.title = title
 	prompt.action = action
 	prompt.hold = hold
@@ -620,8 +632,10 @@ func alert(title: String, text: String, duration := 7.0) -> void:
 	tw.tween_callback(func() -> void: alert_panel.visible = false)
 
 
-func set_build_hint(text: String) -> void:
-	build_hint.text = text
+## Build / move placement feedback ({} hides it). See HudWidgets.PlaceBar.
+func set_placement(info: Dictionary) -> void:
+	place_bar.info = info
+	place_bar.queue_redraw()
 
 
 func hurt(amount: float) -> void:

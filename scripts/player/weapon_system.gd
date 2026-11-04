@@ -17,7 +17,7 @@ const FOREARM := 0.27
 const VM_FOV := 60.0
 
 const RIGS := {
-	"pistol": {"model": "fps_pistol", "body": "PBody", "relief": 0.42, "rear": [0.0, 0.35], "vm_fov": 64.0, "ads_translate": 0.35,
+	"pistol": {"model": "fps_pistol", "body": "PBody", "relief": 0.42, "rear": [0.0, 0.35], "vm_fov": 64.0, "slide_sights": true,
 		"offset": Vector3(0.04, -0.005, 0.02), "tilt": Vector3(0, 3, 0),
 		"anims": {"idle": "Armature|FPS_Pistol_Idle", "walk": "Armature|FPS_Pistol_Walk", "fire": "Armature|FPS_Pistol_Fire",
 			"reload": "Armature|FPS_Pistol_Reload_easy", "reload_empty": "Armature|FPS_Pistol_Reload_full"}},
@@ -34,7 +34,22 @@ const RIGS := {
 		"collapse": ["Arm_L", "IK_Hand_Cntrl_L", "IK_PoleTrgt_L"],
 		"offset": Vector3.ZERO, "tilt": Vector3.ZERO,
 		"anims": {"idle": "Armature|FPS_Pistol_Idle", "walk": "Armature|FPS_Pistol_Walk"}},
+	# empty hands (bunker, surface without a weapon): the same arm, lowered to a relaxed
+	# pose; it reaches out when the player searches or uses something
+	"hands": {"model": "fps_pistol", "body": "PBody", "hands": true,
+		"collapse": ["Arm_L", "IK_Hand_Cntrl_L", "IK_PoleTrgt_L"],
+		"offset": Vector3.ZERO, "tilt": Vector3(-10, 14, -16),
+		"anims": {"idle": "Armature|FPS_Pistol_Idle", "walk": "Armature|FPS_Pistol_Walk"}},
 }
+
+## Interaction reach: 0..1 goal set by the player each tick (held E), or a short pulse.
+var reach_goal := 0.0
+var _reach := 0.0
+var _reach_pulse := 0.0
+
+
+func reach_pulse(t := 0.35) -> void:
+	_reach_pulse = t
 
 
 class ViewRig extends RefCounted:
@@ -60,6 +75,7 @@ class ViewRig extends RefCounted:
 	var axe_desired := Transform3D() # its rest pose in (pre-offset) holder space
 	var axe_hand0 := Transform3D()   # the hand bone at build time, holder space
 	var palm := Vector3.ZERO         # grip point, pre-offset holder space
+	var rest_xf := Transform3D()     # melee rest lean about the fist (view space)
 	var fire_len := 0.3
 	var reload_len := {}            # key -> seconds
 
@@ -97,6 +113,9 @@ var _bob_t := 0.0
 var _breath := 0.0
 var _swing := -1.0
 var _swing_hit := false
+var _swing_side := false   # second swing of a combo (flat sweep)
+var _since_swing := 99.0   # seconds since the last swing ended
+var _hitstop := 0.0
 var _burst := 0
 var _burst_t := 0.0
 var _wall := 0.0
@@ -138,6 +157,7 @@ func setup(p: Player) -> void:
 	flash_light.light_energy = 0.0
 	flash_light.shadow_enabled = false
 	add_child(flash_light)
+	_switching_to = "hands"
 	if State.flags.has("pistol_mag"):
 		State.flags["mag_pistol"] = State.flags.pistol_mag
 		State.flags.erase("pistol_mag")
@@ -164,7 +184,7 @@ func is_gun() -> bool:
 # --------------------------------------------------------------------------
 
 func switch(id: String) -> void:
-	if id != "" and State.count(id) <= 0:
+	if id != "" and id != "hands" and State.count(id) <= 0:
 		HUD.toast("Nu ai %s." % ItemDB.item_name(id).to_lower(), "warn")
 		return
 	if id == current and _switching_to == "__none":
@@ -178,13 +198,13 @@ func best_weapon() -> String:
 	for id in ["rifle", "shotgun", "pistol", "axe"]:
 		if State.count(id) > 0:
 			return id
-	return ""
+	return "hands"
 
 
 func _apply_switch() -> void:
 	var id := _switching_to
 	_switching_to = "__none"
-	if id == "__none" or (id != "" and not ItemDB.WEAPONS.has(id)):
+	if id == "__none" or (id != "" and id != "hands" and not ItemDB.WEAPONS.has(id)):
 		return
 	for k in rigs:
 		var r: ViewRig = rigs[k]
@@ -203,7 +223,8 @@ func _apply_switch() -> void:
 		rig.tree.active = true
 		if rig.has.has("draw"):
 			rig.tree.set("parameters/draw/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-	Audio.sfx("weapon_equip", -8.0, 0.05)
+	if id != "hands":
+		Audio.sfx("weapon_equip", -8.0, 0.05)
 
 
 # --------------------------------------------------------------------------
@@ -261,9 +282,29 @@ func _build_rig(id: String) -> ViewRig:
 	if cfg.get("melee", false):
 		_hide_weapon_meshes(r)
 		_attach_melee(r, String(cfg.get("attach", "weapon_axe")))
+	elif cfg.get("hands", false):
+		_hide_weapon_meshes(r)
+		_place_hands(r)
 	else:
 		_probe_geometry(r)
 	return r
+
+
+## Where the empty fist rests in the view (holder space).
+const HAND_REST := Vector3(0.19, -0.165, -0.38)
+
+
+## Empty hands: put the fist of the pistol rig at HAND_REST, whatever the model's own
+## placement (the weapon probe that normally positions a rig is skipped).
+func _place_hands(r: ViewRig) -> void:
+	var hb := _find_bone(r.skel, "Hand_R")
+	if hb < 0:
+		return
+	var to_h := r.anchor.transform * r.root.transform * r.S
+	var grip := _pistol_grip(r, to_h)
+	var c: Vector3 = grip.get("center", (to_h * r.skel.get_bone_global_pose(hb)).origin)
+	var tilt := Basis.from_euler((r.cfg.get("tilt", Vector3.ZERO) as Vector3) * (PI / 180.0))
+	r.melee_offset = HAND_REST - tilt * c - (r.cfg.get("offset", Vector3.ZERO) as Vector3)
 
 
 func _find_skel(n: Node) -> Skeleton3D:
@@ -532,12 +573,35 @@ func _probe_geometry(r: ViewRig) -> void:
 		if t > 0.86 and h > fh:
 			fh = h
 			front = p
-		if t >= float(rear_w[0]) and t <= float(rear_w[1]) and h > rh:
+		if not r.cfg.get("slide_sights", false) and t >= float(rear_w[0]) and t <= float(rear_w[1]) and h > rh:
 			rh = h
 			rear = p
 		if t > 0.35 and t < 0.6 and p.dot(right) > eh:
 			eh = p.dot(right)
 			ej = p
+	if r.cfg.get("slide_sights", false):
+		# pistols: both sights sit on the slide (everything above the bore line); the rear
+		# sight is the highest point of the slide's back end, the front one of its front end
+		var bore_h := muzzle.dot(up)
+		var smin := INF
+		var smax := -INF
+		for p in pts:
+			if p.dot(up) > bore_h + 0.004:
+				smin = minf(smin, p.dot(fwd))
+				smax = maxf(smax, p.dot(fwd))
+		var slen := maxf(smax - smin, 0.01)
+		fh = -INF
+		for p in pts:
+			var h := p.dot(up)
+			if h <= bore_h + 0.004:
+				continue
+			var ts := (p.dot(fwd) - smin) / slen
+			if ts < 0.22 and h > rh:
+				rh = h
+				rear = p
+			if ts > 0.85 and h > fh:
+				fh = h
+				front = p
 	# the sight line runs through both sight tops; centre it laterally on the bore
 	var bore_side := muzzle.dot(right)
 	front += right * (bore_side - front.dot(right))
@@ -565,84 +629,195 @@ func _probe_geometry(r: ViewRig) -> void:
 	r.eject = inv_body * (ej + up * 0.01)
 	if Game.args.has("trace"):
 		print("[weapon] %s len=%.2f muzzle=%s front=%s rear=%s body=%s" % [r.id, length, muzzle, front, rear, r.skel.get_bone_name(r.body_bone)])
+	if Game.args.has("sightdbg"):
+		# debug: markers on the detected sights, riding on the weapon bone
+		var att := BoneAttachment3D.new()
+		r.skel.add_child(att)
+		att.bone_name = r.skel.get_bone_name(r.body_bone)
+		var to_bone := (to_holder * r.skel.get_bone_global_pose(r.body_bone)).affine_inverse()
+		for e in [[front, Color.GREEN], [rear, Color.MAGENTA], [muzzle, Color.YELLOW]]:
+			var mi := MeshInstance3D.new()
+			var sm := SphereMesh.new()
+			sm.radius = 0.004 / r.anchor.scale.x
+			sm.height = sm.radius * 2.0
+			mi.mesh = sm
+			var mm := StandardMaterial3D.new()
+			mm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			mm.no_depth_test = true
+			mm.albedo_color = e[1]
+			mi.material_override = mm
+			att.add_child(mi)
+			mi.position = r.skel.get_bone_global_pose(r.body_bone).affine_inverse() * (r.S.affine_inverse() * (r.root.transform.affine_inverse() * (r.anchor.transform.affine_inverse() * (e[0] as Vector3))))
 
 
-## Melee: the axe is placed in the right fist; the whole rig is then shifted so the fist
-## sits low on the right of the view, and swings pivot around the right shoulder.
-const AXE_GRIP := Vector3(0.27, -0.34, -0.48)   # where the fist sits in the view (holder space)
-const AXE_SHAFT := Vector3(0.06, 1.0, -0.34)    # handle direction, head end
-const AXE_EDGE := Vector3(-0.45, 0.1, -1.0)     # where the blade edge faces
-const AXE_GRIP_Z := -0.13                         # grip point along the model's long axis (m)
-
-
-## [time, fist position, handle direction (head end), blade edge direction] in view space
+## Melee: the axe handle runs exactly through the fist of the pistol rig — along the axis
+## of the pistol grip the fingers are posed around — with the blade edge forward. At rest
+## the arm leans the axe toward the centre of the view; a swing is the arm rotating about
+## the shoulder while the wrist cocks the axe back over it and snaps it through.
+const AXE_GRIP := Vector3(0.24, -0.2, -0.45)    # where the fist sits in the view (holder space)
+const AXE_GRIP_Z := -0.36                         # grip point along the model's long axis (head end +Z, butt at -0.58)
+## rest pose: handle leaning up-left toward the centre, edge facing forward
+const REST_SHAFT := Vector3(-0.2, 0.75, -0.6)
+const REST_EDGE := Vector3(-0.3, 0.0, -1.0)
+## [time, fist position, handle direction (head end), blade edge direction] in view space:
+## wind-up over the right shoulder, diagonal chop through the centre, follow-through, recover
 const SWING_KEYS := [
-	[0.0, AXE_GRIP, AXE_SHAFT, AXE_EDGE],
-	[0.13, Vector3(0.3, -0.06, -0.3), Vector3(0.25, 0.75, 0.75), Vector3(-0.1, 0.9, -0.4)],
-	[0.19, Vector3(0.2, -0.12, -0.5), Vector3(-0.2, 0.75, -0.7), Vector3(-0.3, -0.5, -0.8)],
-	[0.26, Vector3(0.1, -0.3, -0.5), Vector3(-0.6, -0.1, -0.8), Vector3(0.1, -1.0, -0.1)],
-	[0.36, Vector3(0.08, -0.36, -0.44), Vector3(-0.65, -0.25, -0.7), Vector3(0.1, -1.0, -0.1)],
-	[0.62, AXE_GRIP, AXE_SHAFT, AXE_EDGE],
+	[0.0, AXE_GRIP, REST_SHAFT, REST_EDGE],
+	[0.12, Vector3(0.3, -0.01, -0.42), Vector3(0.3, 0.85, 0.3), Vector3(0.1, 0.2, 1.0)],
+	[0.19, Vector3(0.2, -0.06, -0.5), Vector3(-0.2, 0.75, -0.65), Vector3(-0.25, -0.35, -0.9)],
+	[0.25, Vector3(0.13, -0.2, -0.52), Vector3(-0.65, 0.05, -0.75), Vector3(0.0, -1.0, -0.15)],
+	[0.34, Vector3(0.11, -0.29, -0.48), Vector3(-0.6, -0.45, -0.65), Vector3(0.1, -0.7, 0.6)],
+	[0.62, AXE_GRIP, REST_SHAFT, REST_EDGE],
 ]
+## second swing of a combo: pulled back to the right, flat sweep through the centre
+const SWING_KEYS_SIDE := [
+	[0.0, AXE_GRIP, REST_SHAFT, REST_EDGE],
+	[0.11, Vector3(0.38, -0.06, -0.36), Vector3(0.8, 0.45, 0.25), Vector3(0.05, 0.2, -1.0)],
+	[0.19, Vector3(0.26, -0.12, -0.5), Vector3(0.2, 0.25, -0.95), Vector3(-1.0, 0.0, -0.15)],
+	[0.25, Vector3(0.14, -0.16, -0.52), Vector3(-0.45, 0.15, -0.88), Vector3(-0.9, -0.05, 0.45)],
+	[0.34, Vector3(0.06, -0.2, -0.46), Vector3(-0.9, 0.0, -0.3), Vector3(-0.3, -0.1, 0.95)],
+	[0.62, AXE_GRIP, REST_SHAFT, REST_EDGE],
+]
+const SWING_HIT := 0.25
+const SWING_END := 0.62
+const COMBO_WINDOW := 0.45   # seconds after a swing in which the next one alternates
+const HITSTOP := 0.07        # the axe bites: the swing nearly stops for a moment on impact
 
 
+## Orthonormal frame of the axe: z = handle (head end), x = blade edge.
 static func _frame(shaft: Vector3, edge: Vector3) -> Basis:
 	var sh := shaft.normalized()
 	var ed := (edge - sh * edge.dot(sh)).normalized()
 	return Basis(ed, sh.cross(ed), sh)
 
 
-func _swing_xform(t: float) -> Transform3D:
+## Fist position and axe frame (view space) at time `t` of the swing.
+func _swing_pose(t: float) -> Array:
+	var keys: Array = SWING_KEYS_SIDE if _swing_side else SWING_KEYS
 	var k := 0
-	while k < SWING_KEYS.size() - 2 and t > float(SWING_KEYS[k + 1][0]):
+	while k < keys.size() - 2 and t > float(keys[k + 1][0]):
 		k += 1
-	var a: Array = SWING_KEYS[k]
-	var b: Array = SWING_KEYS[k + 1]
+	var a: Array = keys[k]
+	var b: Array = keys[k + 1]
 	var f := clampf((t - float(a[0])) / maxf(float(b[0]) - float(a[0]), 0.001), 0.0, 1.0)
 	f = f * f * (3.0 - 2.0 * f)
 	var qa := _frame(a[2], a[3]).get_rotation_quaternion()
 	var qb := _frame(b[2], b[3]).get_rotation_quaternion()
-	var bt := Basis(qa.slerp(qb, f))
-	var pos: Vector3 = (a[1] as Vector3).lerp(b[1], f)
-	var rest := _frame(AXE_SHAFT, AXE_EDGE)
-	var rot := bt * rest.inverse()
-	return Transform3D(rot, pos - rot * AXE_GRIP)
+	return [(a[1] as Vector3).lerp(b[1], f), Basis(qa.slerp(qb, f))]
+
+
+## Barrel / up axes of a weapon from its body bone (holder space).
+func _weapon_axes(body_xf: Transform3D) -> Array:
+	var axes := [body_xf.basis.x.normalized(), body_xf.basis.y.normalized(), body_xf.basis.z.normalized()]
+	var fwd := Vector3.FORWARD
+	var best_d := -1.0
+	for ax in axes:
+		var d := absf((ax as Vector3).dot(Vector3.FORWARD))
+		if d > best_d:
+			best_d = d
+			fwd = ax if (ax as Vector3).dot(Vector3.FORWARD) > 0.0 else -ax
+	var up := Vector3.UP
+	var best_u := -1.0
+	for ax in axes:
+		var av: Vector3 = ax
+		if absf(av.dot(fwd)) > 0.7:
+			continue
+		var d := absf(av.dot(Vector3.UP))
+		if d > best_u:
+			best_u = d
+			up = av if av.dot(Vector3.UP) > 0.0 else -av
+	return [fwd, (up - fwd * up.dot(fwd)).normalized()]
+
+
+## The pistol grip inside the fist: centre, axis (toward the slide) and barrel direction,
+## from the pistol's own vertices (holder space).
+func _pistol_grip(r: ViewRig, to_h: Transform3D) -> Dictionary:
+	if r.body_bone < 0:
+		return {}
+	var pts: Array[Vector3] = []
+	for mi in _weapon_meshes(r):
+		for e in _mesh_points(r, mi, 2000):
+			pts.append(to_h * (e[1] as Vector3))
+	if pts.size() < 30:
+		return {}
+	var ax := _weapon_axes(to_h * r.skel.get_bone_global_pose(r.body_bone))
+	var fwd: Vector3 = ax[0]
+	var up: Vector3 = ax[1]
+	var hmin := INF
+	var hmax := -INF
+	var tmin := INF
+	var tmax := -INF
+	for p in pts:
+		hmin = minf(hmin, p.dot(up))
+		hmax = maxf(hmax, p.dot(up))
+		tmin = minf(tmin, p.dot(fwd))
+		tmax = maxf(tmax, p.dot(fwd))
+	# below the slide and behind the trigger guard
+	var grip: Array[Vector3] = []
+	for p in pts:
+		if p.dot(up) < hmax - (hmax - hmin) * 0.42 and p.dot(fwd) < tmin + (tmax - tmin) * 0.45:
+			grip.append(p)
+	if grip.size() < 10:
+		return {}
+	var gmin := INF
+	var gmax := -INF
+	for p in grip:
+		gmin = minf(gmin, p.dot(up))
+		gmax = maxf(gmax, p.dot(up))
+	var center := Vector3.ZERO
+	var top := Vector3.ZERO
+	var bot := Vector3.ZERO
+	var nt := 0
+	var nb := 0
+	for p in grip:
+		center += p
+		var h := p.dot(up)
+		if h > gmax - (gmax - gmin) * 0.3:
+			top += p
+			nt += 1
+		elif h < gmin + (gmax - gmin) * 0.3:
+			bot += p
+			nb += 1
+	center /= grip.size()
+	var axis := (top / maxi(nt, 1) - bot / maxi(nb, 1)).normalized()
+	if Game.args.has("trace"):
+		print("[weapon] grip centre=%s axis=%s fwd=%s (%d pts)" % [center, axis, fwd, grip.size()])
+	return {"center": center, "axis": axis, "fwd": fwd}
 
 
 func _attach_melee(r: ViewRig, model_id: String) -> void:
 	var hb := _find_bone(r.skel, "Hand_R")
 	if hb < 0 or not Assets.has_model(model_id):
 		return
+	var to_h := r.anchor.transform * r.root.transform * r.S
+	var hand_h := to_h * r.skel.get_bone_global_pose(hb)
+	var grip := _pistol_grip(r, to_h)
+	if grip.is_empty():
+		grip = {"center": hand_h.origin, "axis": Vector3(0.0, 1.0, -0.25).normalized(), "fwd": Vector3.FORWARD}
+	var c: Vector3 = grip.center
+	var axis: Vector3 = grip.axis
+	var edge: Vector3 = grip.fwd
+	edge = (edge - axis * edge.dot(axis)).normalized()
+	# model axes: head end +Z, blade edge on -X (the hooked pick on +X)
+	var x := -edge
+	var desired := Transform3D(Basis(x, axis.cross(x), axis), c - axis * AXE_GRIP_Z)
 	var att := BoneAttachment3D.new()
 	r.skel.add_child(att)
 	att.bone_name = r.skel.get_bone_name(hb)
 	var w := Assets.model(model_id)
 	att.add_child(w)
 	Assets.set_shadows(w, false)
-	var to_h := r.anchor.transform * r.root.transform * r.S
-	var hand_h := to_h * r.skel.get_bone_global_pose(hb)
-	# palm centre: between the wrist and the middle-finger knuckles
-	var palm := hand_h.origin
-	var kn := -1
-	for i in r.skel.get_bone_count():
-		if r.skel.get_bone_parent(i) == hb:
-			kn = i
-			break
-	if kn >= 0:
-		palm = palm.lerp((to_h * r.skel.get_bone_global_pose(kn)).origin, 0.7)
-	r.melee_offset = AXE_GRIP - palm
-	var shaft := AXE_SHAFT.normalized()
-	var edge := (AXE_EDGE - shaft * AXE_EDGE.dot(shaft)).normalized()
-	# model axes: long axis +Z (head end), blade edge along +X
-	var b_model := Basis(edge, shaft.cross(edge), shaft)
-	var desired := Transform3D(b_model, palm - shaft * AXE_GRIP_Z)
 	w.transform = hand_h.affine_inverse() * desired
 	r.axe = w
 	r.axe_desired = desired
 	r.axe_hand0 = hand_h
-	r.palm = palm
+	r.palm = c
+	r.melee_offset = AXE_GRIP - c
 	var sh := _find_bone(r.skel, "UpArm_R")
-	r.melee_pivot = ((to_h * r.skel.get_bone_global_pose(sh)).origin if sh >= 0 else palm + Vector3(0.05, 0.1, 0.35)) + r.melee_offset
+	r.melee_pivot = ((to_h * r.skel.get_bone_global_pose(sh)).origin if sh >= 0 else c + Vector3(0.1, 0.15, 0.35)) + r.melee_offset
+	# at rest the arm turns about the fist so the axe takes the rest pose
+	var rb := _frame(REST_SHAFT, REST_EDGE) * _frame(axis, edge).inverse()
+	r.rest_xf = Transform3D(rb, AXE_GRIP - rb * AXE_GRIP)
 
 
 # --------------------------------------------------------------------------
@@ -711,22 +886,28 @@ func tick(delta: float, sprinting: bool, moving_speed: float, on_floor: bool) ->
 	var captured := Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and player.can_move
 	var want_ads := (captured and Input.is_action_pressed("aim") or Game.args.has("ads")) and is_gun() and reloading <= 0.0 and not sprinting and _equip > 0.9
 	ads = move_toward(ads, 1.0 if want_ads else 0.0, delta * 6.5)
-	if captured and current != "" and _equip > 0.95 and not sprinting:
+	if captured and current != "" and _equip > 0.95 and not sprinting and player.combat_enabled:
 		if is_gun():
 			var trig := Input.is_action_pressed("attack") if defn.auto else Input.is_action_just_pressed("attack")
 			if trig and _cd <= 0.0 and reloading <= 0.0:
 				_fire()
-		elif Input.is_action_just_pressed("attack") and _swing < 0.0 and _cd <= 0.0:
+		elif defn.get("type", "") == "melee" and Input.is_action_just_pressed("attack") and _swing < 0.0 and _cd <= 0.0:
 			_start_swing()
+	_since_swing += delta
 	if _swing >= 0.0:
-		_swing += delta
+		var rate := 1.0
+		if _hitstop > 0.0:
+			_hitstop -= delta
+			rate = 0.12
+		_swing += delta * rate
 		if Game.args.has("swingt"):
 			_swing = float(Game.args.swingt)
-		if not _swing_hit and _swing > 0.17:
+		if not _swing_hit and _swing > SWING_HIT:
 			_swing_hit = true
 			_melee_hit()
-		if _swing > 0.62:
+		if _swing > SWING_END:
 			_swing = -1.0
+			_since_swing = 0.0
 	var spd := clampf(moving_speed / 6.0, 0.0, 1.2) if on_floor else 0.0
 	if is_gun():
 		var base: float = lerpf(defn.spread, defn.ads_spread, ads)
@@ -823,22 +1004,44 @@ func _compose(delta: float, rig: ViewRig) -> void:
 	if not rig.has.has("run"):
 		pos += Vector3(0.02, -0.05, 0.03) * _sprint_k
 		rot += Vector3(-14, 28, 12) * _sprint_k
+	# reaching for something (held E, or a pulse on use): the empty hand goes out toward
+	# the centre of the view; a weapon just dips aside
+	_reach_pulse -= delta
+	_reach = move_toward(_reach, maxf(reach_goal, 1.0 if _reach_pulse > 0.0 else 0.0), delta * (7.0 if _reach_pulse > 0.0 or reach_goal > 0.0 else 4.0))
+	var rk := smoothstep(0.0, 1.0, _reach)
+	if cfg.get("hands", false):
+		pos += Vector3(-0.09, 0.05, -0.16) * rk
+		rot += Vector3(4, -16, 14) * rk
+	else:
+		pos += Vector3(0.03, -0.07, 0.03) * rk
+		rot += Vector3(-12, 10, 4) * rk
 	# melee swing: keyframed fist position + axe direction (wind-up over the shoulder,
 	# diagonal chop through the centre, recover); the rig follows rigidly
 	var swing_xf := Transform3D()
 	if rig.cfg.get("melee", false) and rig.axe:
-		var wrist := Basis()
+		# where the axe must be (rotation from its rest pose, fist position)
+		var q := Basis()
+		var fist := AXE_GRIP
 		if _swing >= 0.0:
-			var sx := _swing_xform(_swing)
-			# the arm carries a quarter of the rotation, the wrist turns the axe the rest
-			var q := sx.basis.get_rotation_quaternion()
-			var qa := Quaternion().slerp(q, 0.15)
-			var ba := Basis(qa)
-			var fist: Vector3 = sx * AXE_GRIP
-			swing_xf = Transform3D(ba, fist - ba * AXE_GRIP)
-			wrist = ba.inverse() * sx.basis
-		var g := rig.palm
-		rig.axe.transform = rig.axe_hand0.affine_inverse() * Transform3D(wrist, g - wrist * g) * rig.axe_desired
+			var sp := _swing_pose(_swing)
+			fist = sp[0]
+			q = (sp[1] as Basis) * _frame(REST_SHAFT, REST_EDGE).inverse()
+		# the arm swings about the shoulder (which stays put, out of view) to bring the
+		# fist there; the elbow takes up any change in reach...
+		var pivot := rig.rest_xf * rig.melee_pivot
+		var v0 := AXE_GRIP - pivot
+		var v1 := fist - pivot
+		var arm := Basis()
+		if v0.cross(v1).length() > 0.00001:
+			arm = Basis(Quaternion(v0.normalized(), v1.normalized()))
+		var arm_xf := Transform3D(arm, pivot - arm * pivot)
+		arm_xf.origin += fist - arm_xf * AXE_GRIP
+		swing_xf = arm_xf * rig.rest_xf
+		# ...the wrist turns the axe the rest of the way, about the grip
+		var off := Transform3D(Basis(), rig.melee_offset)
+		var target := Transform3D(q, fist - q * AXE_GRIP)
+		var wh := off.affine_inverse() * rig.rest_xf.affine_inverse() * arm_xf.affine_inverse() * target * rig.rest_xf * off
+		rig.axe.transform = rig.axe_hand0.affine_inverse() * wh * rig.axe_desired
 	# wall avoidance (hip only)
 	pos += Vector3(0.0, -0.05, 0.12) * _wall * (1.0 - ads)
 	rot += Vector3(-22, 26, 0) * _wall * (1.0 - ads)
@@ -949,8 +1152,11 @@ func _start_swing() -> void:
 	if player.stamina < cost:
 		return
 	player.use_stamina(cost)
+	# swings chained quickly alternate: diagonal chop, flat sweep, chop...
+	_swing_side = (not _swing_side) if _since_swing < COMBO_WINDOW else false
 	_swing = 0.0
 	_swing_hit = false
+	_hitstop = 0.0
 	_cd = float(defn.get("rate", 0.6))
 	Audio.sfx("melee_swing", -5.0, 0.08)
 
@@ -980,6 +1186,7 @@ func _melee_hit() -> void:
 		Audio.sfx("melee_hit", -2.0)
 		player.add_shake(0.25)
 		_r_rvel += Vector3(-200, 0, 80)
+		_hitstop = HITSTOP
 		HUD.hitmarker(killed)
 	else:
 		var rq := PhysicsRayQueryParameters3D.create(cam.global_position, cam.global_position - cam.global_basis.z * reach, 1)
@@ -989,6 +1196,9 @@ func _melee_hit() -> void:
 			FX.impact(get_tree().current_scene, r.position, r.normal, FX.surface_of(r.collider, r.normal))
 			_r_rvel += Vector3(-260, 0, 60)
 			player.add_shake(0.2)
+			# solid surface: a longer stop and the axe rebounds a little
+			_hitstop = HITSTOP * 1.4
+			_swing = maxf(_swing - 0.03, SWING_HIT - 0.02)
 
 
 func fov_mult() -> float:
@@ -996,7 +1206,7 @@ func fov_mult() -> float:
 
 
 func hud_info() -> Dictionary:
-	if current == "":
+	if current == "" or current == "hands":
 		return {"name": "Mâini goale", "mag": -1, "reserve": 0, "slot": 0}
 	return {"name": ItemDB.item_name(current), "mag": mag() if is_gun() else -1, "reserve": reserve(), "slot": int(defn.get("slot", 1))}
 

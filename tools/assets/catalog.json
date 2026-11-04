@@ -1,1616 +1,1691 @@
 {
- "_doc": "Logical 3D model catalog. Contract: each id is saved to res://assets/models/<id>/<id>.glb, normalized so that the 'fit' dimension equals the real-world size in meters (fit: h=height Y, l=longest horizontal X/Z, m=max of all axes) and pivot is at bottom-center (min Y = 0, centered X/Z). prio: 1=required for vertical slice, 2=wanted, 3=nice-to-have. tex = max texture resolution after optimization. faces = max face count accepted.",
- "licenses_allowed": [
-  "cc0",
-  "by",
-  "by-sa"
- ],
- "models": [
-  {
-   "id": "vault_door",
-   "prio": 1,
-   "fit": [
-    "h",
-    2.6
-   ],
-   "tex": 2048,
-   "faces": 150000,
-   "q": [
-    "vault door",
-    "bunker blast door",
-    "blast door",
-    "bunker door"
-   ],
-   "note": "Heavy round or rectangular blast door, ideally with frame. Hero asset."
-  },
-  {
-   "id": "bunker_entrance",
-   "prio": 1,
-   "fit": [
-    "h",
-    3.2
-   ],
-   "tex": 2048,
-   "faces": 120000,
-   "q": [
-    "bunker entrance",
-    "concrete bunker entrance",
-    "bomb shelter entrance",
-    "underground shelter entrance"
-   ],
-   "note": "Surface concrete entrance structure with door/opening leading down."
-  },
-  {
-   "id": "bunker_hut",
-   "prio": 2,
-   "fit": [
-    "h",
-    4
-   ],
-   "tex": 2048,
-   "faces": 120000,
-   "q": [
-    "military style building",
-    "quonset hut"
-   ],
-   "note": "EXTRA (added by model pipeline): corrugated military hut with door, alternative surface entrance building."
-  },
-  {
-   "id": "metal_door",
-   "prio": 2,
-   "fit": [
-    "h",
-    2.1
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "industrial metal door",
-    "steel door",
-    "metal door frame"
-   ]
-  },
-  {
-   "id": "bunk_bed",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.8
-   ],
-   "tex": 1024,
-   "faces": 50000,
-   "q": [
-    "military bunk bed",
-    "metal bunk bed",
-    "bunk bed"
-   ]
-  },
-  {
-   "id": "metal_shelf",
-   "prio": 1,
-   "fit": [
-    "h",
-    2
-   ],
-   "tex": 1024,
-   "faces": 50000,
-   "q": [
-    "metal shelf",
-    "storage shelving rack",
-    "industrial shelf"
-   ]
-  },
-  {
-   "id": "wooden_crate",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.6
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "wooden crate"
-   ],
-   "note": "Poly Haven has excellent CC0 crates; prefer those."
-  },
-  {
-   "id": "military_crate",
-   "prio": 1,
-   "fit": [
-    "l",
-    1
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "military crate",
-    "ammo crate",
-    "army supply box"
-   ]
-  },
-  {
-   "id": "oil_barrel",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.9
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "oil barrel",
-    "metal drum barrel",
-    "rusty barrel"
-   ]
-  },
-  {
-   "id": "canned_food",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.12
-   ],
-   "tex": 512,
-   "faces": 5000,
-   "q": [
-    "canned food",
-    "tin can food",
-    "food can"
-   ]
-  },
-  {
-   "id": "water_jug",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.4
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "water canister",
-    "water bottle 5l",
-    "plastic water jug"
-   ]
-  },
-  {
-   "id": "jerrycan",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.45
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "jerrycan",
-    "fuel canister"
-   ]
-  },
-  {
-   "id": "diesel_generator",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.6
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "q": [
-    "diesel generator",
-    "industrial generator",
-    "power generator"
-   ]
-  },
-  {
-   "id": "electrical_panel",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.9
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "electrical panel",
-    "fuse box",
-    "breaker box",
-    "electrical cabinet"
-   ]
-  },
-  {
-   "id": "water_tank",
-   "prio": 1,
-   "fit": [
-    "h",
-    2
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "water tank",
-    "industrial tank",
-    "storage tank"
-   ]
-  },
-  {
-   "id": "water_purifier",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.4
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "water pump",
-    "industrial pump",
-    "water filter machine",
-    "water treatment"
-   ]
-  },
-  {
-   "id": "air_filter_unit",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.2
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "ventilation unit",
-    "industrial fan",
-    "air filter unit",
-    "hvac unit"
-   ]
-  },
-  {
-   "id": "workbench",
-   "prio": 1,
-   "fit": [
-    "l",
-    2
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "q": [
-    "workbench",
-    "work bench tools",
-    "garage workbench"
-   ]
-  },
-  {
-   "id": "toolbox",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.5
-   ],
-   "tex": 512,
-   "faces": 10000,
-   "q": [
-    "toolbox",
-    "metal tool box"
-   ]
-  },
-  {
-   "id": "radio_station",
-   "prio": 1,
-   "fit": [
-    "l",
-    0.6
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "military radio",
-    "old radio transmitter",
-    "ham radio",
-    "soviet radio"
-   ]
-  },
-  {
-   "id": "table_metal",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.6
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "metal table",
-    "industrial table",
-    "old table"
-   ]
-  },
-  {
-   "id": "chair",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.9
-   ],
-   "tex": 512,
-   "faces": 15000,
-   "q": [
-    "old chair",
-    "metal chair",
-    "school chair"
-   ]
-  },
-  {
-   "id": "locker",
-   "prio": 2,
-   "fit": [
-    "h",
-    1.9
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "metal locker",
-    "locker"
-   ]
-  },
-  {
-   "id": "first_aid_kit",
-   "prio": 1,
-   "fit": [
-    "l",
-    0.35
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "first aid kit",
-    "medkit"
-   ]
-  },
-  {
-   "id": "gas_mask",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.3
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "gas mask",
-    "soviet gas mask",
-    "gp-5 gas mask"
-   ]
-  },
-  {
-   "id": "lamp_cage",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.35
-   ],
-   "tex": 512,
-   "faces": 10000,
-   "q": [
-    "industrial cage lamp",
-    "bunker lamp",
-    "industrial lamp"
-   ]
-  },
-  {
-   "id": "fluorescent_lamp",
-   "prio": 2,
-   "fit": [
-    "l",
-    1.2
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "fluorescent light",
-    "tube light fixture",
-    "fluorescent lamp"
-   ]
-  },
-  {
-   "id": "planter_box",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.2
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "raised garden bed",
-    "planter box",
-    "wooden planter",
-    "hydroponic"
-   ]
-  },
-  {
-   "id": "plant_tomato",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.9
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "tomato plant"
-   ]
-  },
-  {
-   "id": "plant_lettuce",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.3
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "lettuce",
-    "cabbage plant",
-    "salad plant"
-   ]
-  },
-  {
-   "id": "plant_potato",
-   "prio": 2,
-   "fit": [
-    "h",
-    0.5
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "potato plant",
-    "small bush plant"
-   ]
-  },
-  {
-   "id": "plant_pepper",
-   "prio": 3,
-   "fit": [
-    "h",
-    0.6
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "jalapeno plant",
-    "pepper plant"
-   ],
-   "note": "EXTRA (added by model pipeline): pepper plant with fruits, alternative crop since no good potato plant exists."
-  },
-  {
-   "id": "mushrooms",
-   "prio": 3,
-   "fit": [
-    "h",
-    0.15
-   ],
-   "tex": 512,
-   "faces": 20000,
-   "q": [
-    "mushrooms cluster",
-    "mushroom"
-   ]
-  },
-  {
-   "id": "crt_computer",
-   "prio": 2,
-   "fit": [
-    "m",
-    0.5
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "old computer",
-    "crt monitor",
-    "retro computer"
-   ]
-  },
-  {
-   "id": "geiger_counter",
-   "prio": 2,
-   "fit": [
-    "m",
-    0.25
-   ],
-   "tex": 512,
-   "faces": 15000,
-   "q": [
-    "geiger counter",
-    "dosimeter"
-   ]
-  },
-  {
-   "id": "flashlight",
-   "prio": 3,
-   "fit": [
-    "m",
-    0.25
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "flashlight",
-    "torch flashlight"
-   ]
-  },
-  {
-   "id": "camping_stove",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.35
-   ],
-   "tex": 512,
-   "faces": 15000,
-   "q": [
-    "camping stove",
-    "gas stove",
-    "portable stove"
-   ],
-   "note": "(pipeline) fit changed to length 0.35 m: chosen model is a flat portable cassette gas stove"
-  },
-  {
-   "id": "fridge_old",
-   "prio": 3,
-   "fit": [
-    "h",
-    1.7
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "old fridge",
-    "retro refrigerator"
-   ]
-  },
-  {
-   "id": "fire_extinguisher",
-   "prio": 2,
-   "fit": [
-    "h",
-    0.6
-   ],
-   "tex": 512,
-   "faces": 8000,
-   "q": [
-    "fire extinguisher"
-   ]
-  },
-  {
-   "id": "sandbags",
-   "prio": 2,
-   "fit": [
-    "l",
-    2.5
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "sandbags",
-    "sandbag wall"
-   ],
-   "note": "(pipeline) fit changed 1.2 -> 2.5 m: chosen model is a curved sandbag barrier wall"
-  },
-  {
-   "id": "sofa_old",
-   "prio": 3,
-   "fit": [
-    "l",
-    2
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "old sofa",
-    "worn couch"
-   ]
-  },
-  {
-   "id": "car_battery",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.3
-   ],
-   "tex": 512,
-   "faces": 5000,
-   "q": [
-    "car battery"
-   ]
-  },
-  {
-   "id": "shovel",
-   "prio": 2,
-   "fit": [
-    "m",
-    1.1
-   ],
-   "tex": 512,
-   "faces": 5000,
-   "q": [
-    "shovel"
-   ]
-  },
-  {
-   "id": "bucket",
-   "prio": 3,
-   "fit": [
-    "h",
-    0.35
-   ],
-   "tex": 512,
-   "faces": 5000,
-   "q": [
-    "metal bucket",
-    "bucket"
-   ]
-  },
-  {
-   "id": "apartment_block",
-   "prio": 1,
-   "fit": [
-    "h",
-    15
-   ],
-   "tex": 2048,
-   "faces": 250000,
-   "q": [
-    "soviet apartment building",
-    "panel building",
-    "khrushchyovka",
-    "apartment block"
-   ],
-   "note": "Eastern-European 5-storey panel block. Used as background in intro."
-  },
-  {
-   "id": "house_small",
-   "prio": 1,
-   "fit": [
-    "h",
-    7
-   ],
-   "tex": 2048,
-   "faces": 150000,
-   "q": [
-    "old house",
-    "village house",
-    "abandoned house"
-   ]
-  },
-  {
-   "id": "car_sedan",
-   "prio": 1,
-   "fit": [
-    "l",
-    4.2
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "q": [
-    "lada",
-    "soviet car",
-    "old sedan car",
-    "vaz 2107"
-   ]
-  },
-  {
-   "id": "car_wreck",
-   "prio": 1,
-   "fit": [
-    "l",
-    4.2
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "q": [
-    "burnt car",
-    "car wreck",
-    "abandoned rusty car"
-   ]
-  },
-  {
-   "id": "bus_wreck",
-   "prio": 3,
-   "fit": [
-    "l",
-    11
-   ],
-   "tex": 2048,
-   "faces": 120000,
-   "q": [
-    "abandoned bus",
-    "wrecked bus"
-   ]
-  },
-  {
-   "id": "tree_leafy",
-   "prio": 1,
-   "fit": [
-    "h",
-    9
-   ],
-   "tex": 2048,
-   "faces": 60000,
-   "q": [
-    "tree realistic",
-    "oak tree",
-    "birch tree"
-   ]
-  },
-  {
-   "id": "tree_dead",
-   "prio": 1,
-   "fit": [
-    "h",
-    7
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "dead tree",
-    "burnt tree"
-   ]
-  },
-  {
-   "id": "street_lamp",
-   "prio": 2,
-   "fit": [
-    "h",
-    7
-   ],
-   "tex": 1024,
-   "faces": 15000,
-   "q": [
-    "street lamp",
-    "soviet street light"
-   ]
-  },
-  {
-   "id": "bench",
-   "prio": 3,
-   "fit": [
-    "l",
-    1.8
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "park bench"
-   ]
-  },
-  {
-   "id": "trash_bin",
-   "prio": 2,
-   "fit": [
-    "h",
-    1.2
-   ],
-   "tex": 1024,
-   "faces": 15000,
-   "q": [
-    "dumpster",
-    "trash container",
-    "garbage container"
-   ]
-  },
-  {
-   "id": "concrete_barrier",
-   "prio": 2,
-   "fit": [
-    "h",
-    1
-   ],
-   "tex": 1024,
-   "faces": 5000,
-   "q": [
-    "concrete barrier",
-    "jersey barrier"
-   ],
-   "note": "(pipeline) fit changed to height 1.0 m to keep realistic proportions of the chosen jersey barrier"
-  },
-  {
-   "id": "utility_pole",
-   "prio": 2,
-   "fit": [
-    "h",
-    9
-   ],
-   "tex": 1024,
-   "faces": 15000,
-   "q": [
-    "power pole",
-    "electric pole",
-    "utility pole"
-   ]
-  },
-  {
-   "id": "bus_stop",
-   "prio": 3,
-   "fit": [
-    "l",
-    4
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "bus stop"
-   ]
-  },
-  {
-   "id": "ruined_building",
-   "prio": 1,
-   "fit": [
-    "h",
-    14
-   ],
-   "tex": 2048,
-   "faces": 250000,
-   "q": [
-    "ruined building",
-    "destroyed building",
-    "abandoned building ruins"
-   ]
-  },
-  {
-   "id": "rubble_pile",
-   "prio": 1,
-   "fit": [
-    "m",
-    3
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "rubble",
-    "debris pile",
-    "concrete rubble"
-   ]
-  },
-  {
-   "id": "supermarket_shelf",
-   "prio": 2,
-   "fit": [
-    "h",
-    1.8
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "supermarket shelf",
-    "store shelf"
-   ]
-  },
-  {
-   "id": "tank_wreck",
-   "prio": 3,
-   "fit": [
-    "l",
-    7
-   ],
-   "tex": 2048,
-   "faces": 150000,
-   "q": [
-    "abandoned tank",
-    "t-72 wreck",
-    "destroyed tank"
-   ]
-  },
-  {
-   "id": "enemy_mutant",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.9
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "mutant animated",
-    "zombie animated",
-    "ghoul animated"
-   ],
-   "note": "Must be rigged WITH embedded animations (idle/walk/run/attack/death ideal). Record animation names in manifest."
-  },
-  {
-   "id": "enemy_hazmat",
-   "prio": 2,
-   "fit": [
-    "h",
-    1.9
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "zombie hazmat"
-   ],
-   "note": "EXTRA (added by model pipeline): zombie in a hazmat suit, fits the nuclear theme. Rigged with animations."
-  },
-  {
-   "id": "enemy_raider",
-   "prio": 2,
-   "fit": [
-    "h",
-    1.8
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "gas mask soldier animated",
-    "stalker animated",
-    "soldier rigged animated"
-   ],
-   "note": "Rigged with animations."
-  },
-  {
-   "id": "survivor_npc",
-   "prio": 3,
-   "fit": [
-    "h",
-    1.75
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "survivor character animated",
-    "man rigged idle"
-   ]
-  },
-  {
-   "id": "weapon_pistol",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.2
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "makarov pistol",
-    "pistol"
-   ]
-  },
-  {
-   "id": "weapon_rifle",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.9
-   ],
-   "tex": 2048,
-   "faces": 40000,
-   "q": [
-    "akm",
-    "ak-47",
-    "ak74"
-   ]
-  },
-  {
-   "id": "weapon_axe",
-   "prio": 2,
-   "fit": [
-    "l",
-    0.7
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "fire axe",
-    "axe"
-   ]
-  },
-  {
-   "id": "factory_hall",
-   "prio": 1,
-   "fit": [
-    "h",
-    13
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "q": [
-    "soviet factory building",
-    "industrial brick building",
-    "abandoned factory",
-    "factory hall"
-   ],
-   "note": "background industrial building, closed shape"
-  },
-  {
-   "id": "warehouse",
-   "prio": 1,
-   "fit": [
-    "h",
-    9
-   ],
-   "tex": 2048,
-   "faces": 150000,
-   "q": [
-    "industrial warehouse",
-    "hangar building",
-    "abandoned warehouse"
-   ]
-  },
-  {
-   "id": "concrete_fence",
-   "prio": 1,
-   "fit": [
-    "h",
-    2.5
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "concrete fence",
-    "soviet concrete fence",
-    "concrete fence panel"
-   ],
-   "note": "PO-2 panels found are square; fitted by height"
-  },
-  {
-   "id": "ruin_wall_a",
-   "prio": 1,
-   "fit": [
-    "l",
-    5
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "destroyed wall",
-    "broken concrete wall",
-    "ruined wall"
-   ]
-  },
-  {
-   "id": "ruin_wall_b",
-   "prio": 1,
-   "fit": [
-    "l",
-    7
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "broken brick wall",
-    "ruined brick wall",
-    "damaged wall rebar"
-   ]
-  },
-  {
-   "id": "ruin_corner",
-   "prio": 1,
-   "fit": [
-    "l",
-    5.2
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "ruined building corner",
-    "broken wall corner",
-    "destroyed corner wall"
-   ]
-  },
-  {
-   "id": "ruin_house",
-   "prio": 1,
-   "fit": [
-    "h",
-    8
-   ],
-   "tex": 2048,
-   "faces": 150000,
-   "q": [
-    "destroyed house",
-    "ruined house",
-    "bombed house"
-   ]
-  },
-  {
-   "id": "ruin_block",
-   "prio": 1,
-   "fit": [
-    "h",
-    14
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "q": [
-    "destroyed apartment building",
-    "ruined building",
-    "damaged building war"
-   ]
-  },
-  {
-   "id": "debris_slab",
-   "prio": 1,
-   "fit": [
-    "l",
-    3
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "broken concrete slab",
-    "concrete slab rebar",
-    "concrete debris"
-   ]
-  },
-  {
-   "id": "water_tower",
-   "prio": 1,
-   "fit": [
-    "h",
-    18
-   ],
-   "tex": 2048,
-   "faces": 100000,
-   "q": [
-    "water tower",
-    "soviet water tower",
-    "industrial water tower"
-   ]
-  },
-  {
-   "id": "enemy_dog",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.8
-   ],
-   "tex": 1024,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "dog animated",
-    "wolf animated",
-    "mutant dog"
-   ],
-   "note": "rigged with run/attack/idle/death"
-  },
-  {
-   "id": "enemy_bandit",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.8
-   ],
-   "tex": 2048,
-   "faces": 80000,
-   "rigged": true,
-   "q": [
-    "soldier animated",
-    "bandit animated",
-    "survivor animated rifle"
-   ],
-   "note": "rigged with gun anims"
-  },
-  {
-   "id": "tire_pile",
-   "prio": 2,
-   "fit": [
-    "m",
-    1.5
-   ],
-   "tex": 1024,
-   "faces": 30000,
-   "q": [
-    "tire pile",
-    "old tires",
-    "tyre stack"
-   ]
-  },
-  {
-   "id": "scrap_pile",
-   "prio": 2,
-   "fit": [
-    "m",
-    2.5
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "scrap pile",
-    "junk pile",
-    "scrap metal"
-   ]
-  },
-  {
-   "id": "road_sign",
-   "prio": 2,
-   "fit": [
-    "h",
-    2.5
-   ],
-   "tex": 1024,
-   "faces": 12000,
-   "q": [
-    "road sign",
-    "old road sign",
-    "street sign"
-   ]
-  },
-  {
-   "id": "burnt_truck",
-   "prio": 2,
-   "fit": [
-    "l",
-    5.8
-   ],
-   "tex": 1024,
-   "faces": 100000,
-   "q": [
-    "burnt truck",
-    "abandoned truck",
-    "rusty truck"
-   ],
-   "note": "GAZ-66 (real length 5.8 m)"
-  },
-  {
-   "id": "shop_ruin",
-   "prio": 2,
-   "fit": [
-    "h",
-    3.2
-   ],
-   "tex": 1024,
-   "faces": 100000,
-   "q": [
-    "ruined shop",
-    "abandoned kiosk",
-    "destroyed shop"
-   ],
-   "note": "90s street kiosk"
-  },
-  {
-   "id": "radiation_sign",
-   "prio": 2,
-   "fit": [
-    "h",
-    2.2
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "radiation sign"
-   ],
-   "note": "EXTRA: dirty radiation warning sign for hotspots"
-  },
-  {
-   "id": "weapon_shotgun",
-   "prio": 1,
-   "fit": [
-    "l",
-    1
-   ],
-   "tex": 2048,
-   "faces": 60000,
-   "q": [
-    "double barrel shotgun",
-    "hunting shotgun",
-    "sawed off shotgun",
-    "toz shotgun"
-   ],
-   "note": "round 3: double-barrel / TOZ hunting shotgun"
-  },
-  {
-   "id": "solar_panel",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.7
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "solar panel",
-    "solar panel stand",
-    "photovoltaic panel"
-   ]
-  },
-  {
-   "id": "radio_antenna",
-   "prio": 1,
-   "fit": [
-    "h",
-    4
-   ],
-   "tex": 1024,
-   "faces": 40000,
-   "q": [
-    "radio antenna",
-    "radio mast",
-    "antenna tower",
-    "military antenna"
-   ]
-  },
-  {
-   "id": "hydroponic_rack",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.4
-   ],
-   "tex": 1024,
-   "faces": 80000,
-   "q": [
-    "hydroponic",
-    "grow rack",
-    "hydroponic shelf",
-    "plant shelf"
-   ]
-  },
-  {
-   "id": "weapon_rack",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.2
-   ],
-   "tex": 1024,
-   "faces": 60000,
-   "q": [
-    "gun rack",
-    "weapon rack",
-    "rifle rack",
-    "weapon locker"
-   ]
-  },
-  {
-   "id": "fps_pistol",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.8
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "rigged": true,
-   "q": [
-    "fps pistol animated",
-    "fps arms pistol",
-    "first person pistol"
-   ],
-   "note": "v0.4: first-person arms + pistol with idle/fire/reload/draw animations",
-   "raw": true
-  },
-  {
-   "id": "fps_rifle",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.9
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "rigged": true,
-   "q": [
-    "fps ak47 animated",
-    "fps akm arms",
-    "first person rifle animated"
-   ],
-   "note": "v0.4: first-person arms + AK rifle with animations",
-   "raw": true
-  },
-  {
-   "id": "fps_shotgun",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.9
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "rigged": true,
-   "q": [
-    "fps shotgun animated",
-    "fps double barrel shotgun",
-    "first person shotgun"
-   ],
-   "note": "v0.4: first-person arms + shotgun",
-   "raw": true
-  },
-  {
-   "id": "fps_melee",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.8
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "rigged": true,
-   "q": [
-    "fps axe animated",
-    "fps knife arms",
-    "first person melee arms"
-   ],
-   "note": "v0.4: first-person arms + melee weapon",
-   "raw": true
-  },
-  {
-   "id": "fps_arms",
-   "prio": 1,
-   "fit": [
-    "m",
-    0.8
-   ],
-   "tex": 2048,
-   "faces": 200000,
-   "rigged": true,
-   "q": [
-    "fps arms rigged",
-    "first person arms",
-    "fps hands"
-   ],
-   "note": "v0.4: generic rigged FP arms",
-   "raw": true
-  },
-  {
-   "id": "enemy_zombie",
-   "prio": 1,
-   "fit": [
-    "h",
-    1.85
-   ],
-   "tex": 2048,
-   "faces": 120000,
-   "rigged": true,
-   "q": [
-    "zombie animated",
-    "mutant animated",
-    "ghoul animated"
-   ],
-   "note": "v0.4: higher quality mutant with death animations"
-  },
-  {
-   "id": "bunker_portal",
-   "prio": 1,
-   "fit": [
-    "l",
-    12
-   ],
-   "tex": 2048,
-   "faces": 250000,
-   "q": [
-    "bunker entrance",
-    "blast door bunker",
-    "military bunker entrance"
-   ],
-   "note": "v0.4: surface portal of the shelter network"
-  },
-  {
-   "id": "rock_a",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.6
-   ],
-   "tex": 1024,
-   "faces": 12000,
-   "q": [
-    "rock"
-   ]
-  },
-  {
-   "id": "rock_b",
-   "prio": 1,
-   "fit": [
-    "l",
-    1.2
-   ],
-   "tex": 1024,
-   "faces": 12000,
-   "q": [
-    "rock"
-   ]
-  },
-  {
-   "id": "boulder",
-   "prio": 1,
-   "fit": [
-    "l",
-    3.2
-   ],
-   "tex": 2048,
-   "faces": 20000,
-   "q": [
-    "boulder"
-   ]
-  },
-  {
-   "id": "stone_small",
-   "prio": 1,
-   "fit": [
-    "l",
-    0.7
-   ],
-   "tex": 1024,
-   "faces": 6000,
-   "q": [
-    "stone"
-   ]
-  },
-  {
-   "id": "log_fallen",
-   "prio": 1,
-   "fit": [
-    "l",
-    6.5
-   ],
-   "tex": 2048,
-   "faces": 24000,
-   "q": [
-    "dead tree trunk"
-   ]
-  },
-  {
-   "id": "tree_stump",
-   "prio": 1,
-   "fit": [
-    "h",
-    0.7
-   ],
-   "tex": 1024,
-   "faces": 10000,
-   "q": [
-    "tree stump"
-   ]
-  },
-  {
-   "id": "branches_dry",
-   "prio": 1,
-   "fit": [
-    "l",
-    2.2
-   ],
-   "tex": 1024,
-   "faces": 9000,
-   "q": [
-    "dry branches"
-   ]
-  },
-  {
-   "id": "tree_dead_b",
-   "prio": 1,
-   "fit": [
-    "h",
-    6.5
-   ],
-   "tex": 1024,
-   "faces": 20000,
-   "q": [
-    "dead tree"
-   ]
-  },
-  {
-   "id": "weapon_saiga",
-   "prio": 1,
-   "fit": [
-    "l",
-    1
-   ],
-   "tex": 2048,
-   "faces": 40000,
-   "q": [
-    "saiga"
-   ],
-   "note": "v0.4: weapon-only mesh of the Saiga FP rig (icons, world)"
-  }
- ]
+  "_doc": "Logical 3D model catalog. Contract: each id is saved to res://assets/models/<id>/<id>.glb, normalized so that the 'fit' dimension equals the real-world size in meters (fit: h=height Y, l=longest horizontal X/Z, m=max of all axes) and pivot is at bottom-center (min Y = 0, centered X/Z). prio: 1=required for vertical slice, 2=wanted, 3=nice-to-have. tex = max texture resolution after optimization. faces = max face count accepted.",
+  "licenses_allowed": [
+    "cc0",
+    "by",
+    "by-sa"
+  ],
+  "models": [
+    {
+      "id": "vault_door",
+      "prio": 1,
+      "fit": [
+        "h",
+        2.6
+      ],
+      "tex": 2048,
+      "faces": 150000,
+      "q": [
+        "vault door",
+        "bunker blast door",
+        "blast door",
+        "bunker door"
+      ],
+      "note": "Heavy round or rectangular blast door, ideally with frame. Hero asset."
+    },
+    {
+      "id": "bunker_entrance",
+      "prio": 1,
+      "fit": [
+        "h",
+        3.2
+      ],
+      "tex": 2048,
+      "faces": 120000,
+      "q": [
+        "bunker entrance",
+        "concrete bunker entrance",
+        "bomb shelter entrance",
+        "underground shelter entrance"
+      ],
+      "note": "Surface concrete entrance structure with door/opening leading down."
+    },
+    {
+      "id": "bunker_hut",
+      "prio": 2,
+      "fit": [
+        "h",
+        4
+      ],
+      "tex": 2048,
+      "faces": 120000,
+      "q": [
+        "military style building",
+        "quonset hut"
+      ],
+      "note": "EXTRA (added by model pipeline): corrugated military hut with door, alternative surface entrance building."
+    },
+    {
+      "id": "metal_door",
+      "prio": 2,
+      "fit": [
+        "h",
+        2.1
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "industrial metal door",
+        "steel door",
+        "metal door frame"
+      ]
+    },
+    {
+      "id": "bunk_bed",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.8
+      ],
+      "tex": 1024,
+      "faces": 50000,
+      "q": [
+        "military bunk bed",
+        "metal bunk bed",
+        "bunk bed"
+      ]
+    },
+    {
+      "id": "metal_shelf",
+      "prio": 1,
+      "fit": [
+        "h",
+        2
+      ],
+      "tex": 1024,
+      "faces": 50000,
+      "q": [
+        "metal shelf",
+        "storage shelving rack",
+        "industrial shelf"
+      ]
+    },
+    {
+      "id": "wooden_crate",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "wooden crate"
+      ],
+      "note": "Poly Haven has excellent CC0 crates; prefer those."
+    },
+    {
+      "id": "military_crate",
+      "prio": 1,
+      "fit": [
+        "l",
+        1
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "military crate",
+        "ammo crate",
+        "army supply box"
+      ]
+    },
+    {
+      "id": "oil_barrel",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "oil barrel",
+        "metal drum barrel",
+        "rusty barrel"
+      ]
+    },
+    {
+      "id": "canned_food",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.12
+      ],
+      "tex": 512,
+      "faces": 5000,
+      "q": [
+        "canned food",
+        "tin can food",
+        "food can"
+      ]
+    },
+    {
+      "id": "water_jug",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.4
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "water canister",
+        "water bottle 5l",
+        "plastic water jug"
+      ]
+    },
+    {
+      "id": "jerrycan",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.45
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "jerrycan",
+        "fuel canister"
+      ]
+    },
+    {
+      "id": "diesel_generator",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.6
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "diesel generator",
+        "industrial generator",
+        "power generator"
+      ]
+    },
+    {
+      "id": "electrical_panel",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "electrical panel",
+        "fuse box",
+        "breaker box",
+        "electrical cabinet"
+      ]
+    },
+    {
+      "id": "water_tank",
+      "prio": 1,
+      "fit": [
+        "h",
+        2
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "water tank",
+        "industrial tank",
+        "storage tank"
+      ]
+    },
+    {
+      "id": "water_purifier",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.4
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "water pump",
+        "industrial pump",
+        "water filter machine",
+        "water treatment"
+      ]
+    },
+    {
+      "id": "air_filter_unit",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.2
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "ventilation unit",
+        "industrial fan",
+        "air filter unit",
+        "hvac unit"
+      ]
+    },
+    {
+      "id": "workbench",
+      "prio": 1,
+      "fit": [
+        "l",
+        2
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "workbench",
+        "work bench tools",
+        "garage workbench"
+      ]
+    },
+    {
+      "id": "toolbox",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.5
+      ],
+      "tex": 512,
+      "faces": 10000,
+      "q": [
+        "toolbox",
+        "metal tool box"
+      ]
+    },
+    {
+      "id": "radio_station",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.6
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "military radio",
+        "old radio transmitter",
+        "ham radio",
+        "soviet radio"
+      ]
+    },
+    {
+      "id": "table_metal",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.6
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "metal table",
+        "industrial table",
+        "old table"
+      ]
+    },
+    {
+      "id": "chair",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 512,
+      "faces": 15000,
+      "q": [
+        "old chair",
+        "metal chair",
+        "school chair"
+      ]
+    },
+    {
+      "id": "locker",
+      "prio": 2,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "metal locker",
+        "locker"
+      ]
+    },
+    {
+      "id": "first_aid_kit",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.35
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "first aid kit",
+        "medkit"
+      ]
+    },
+    {
+      "id": "gas_mask",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.3
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "gas mask",
+        "soviet gas mask",
+        "gp-5 gas mask"
+      ]
+    },
+    {
+      "id": "lamp_cage",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.35
+      ],
+      "tex": 512,
+      "faces": 10000,
+      "q": [
+        "industrial cage lamp",
+        "bunker lamp",
+        "industrial lamp"
+      ]
+    },
+    {
+      "id": "fluorescent_lamp",
+      "prio": 2,
+      "fit": [
+        "l",
+        1.2
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "fluorescent light",
+        "tube light fixture",
+        "fluorescent lamp"
+      ]
+    },
+    {
+      "id": "planter_box",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.2
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "raised garden bed",
+        "planter box",
+        "wooden planter",
+        "hydroponic"
+      ]
+    },
+    {
+      "id": "plant_tomato",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.9
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "tomato plant"
+      ]
+    },
+    {
+      "id": "plant_lettuce",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.3
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "lettuce",
+        "cabbage plant",
+        "salad plant"
+      ]
+    },
+    {
+      "id": "plant_potato",
+      "prio": 2,
+      "fit": [
+        "h",
+        0.5
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "potato plant",
+        "small bush plant"
+      ]
+    },
+    {
+      "id": "plant_pepper",
+      "prio": 3,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "jalapeno plant",
+        "pepper plant"
+      ],
+      "note": "EXTRA (added by model pipeline): pepper plant with fruits, alternative crop since no good potato plant exists."
+    },
+    {
+      "id": "mushrooms",
+      "prio": 3,
+      "fit": [
+        "h",
+        0.15
+      ],
+      "tex": 512,
+      "faces": 20000,
+      "q": [
+        "mushrooms cluster",
+        "mushroom"
+      ]
+    },
+    {
+      "id": "crt_computer",
+      "prio": 2,
+      "fit": [
+        "m",
+        0.5
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "old computer",
+        "crt monitor",
+        "retro computer"
+      ]
+    },
+    {
+      "id": "geiger_counter",
+      "prio": 2,
+      "fit": [
+        "m",
+        0.25
+      ],
+      "tex": 512,
+      "faces": 15000,
+      "q": [
+        "geiger counter",
+        "dosimeter"
+      ]
+    },
+    {
+      "id": "flashlight",
+      "prio": 3,
+      "fit": [
+        "m",
+        0.25
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "flashlight",
+        "torch flashlight"
+      ]
+    },
+    {
+      "id": "camping_stove",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.35
+      ],
+      "tex": 512,
+      "faces": 15000,
+      "q": [
+        "camping stove",
+        "gas stove",
+        "portable stove"
+      ],
+      "note": "(pipeline) fit changed to length 0.35 m: chosen model is a flat portable cassette gas stove"
+    },
+    {
+      "id": "fridge_old",
+      "prio": 3,
+      "fit": [
+        "h",
+        1.7
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "old fridge",
+        "retro refrigerator"
+      ]
+    },
+    {
+      "id": "fire_extinguisher",
+      "prio": 2,
+      "fit": [
+        "h",
+        0.6
+      ],
+      "tex": 512,
+      "faces": 8000,
+      "q": [
+        "fire extinguisher"
+      ]
+    },
+    {
+      "id": "sandbags",
+      "prio": 2,
+      "fit": [
+        "l",
+        2.5
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "sandbags",
+        "sandbag wall"
+      ],
+      "note": "(pipeline) fit changed 1.2 -> 2.5 m: chosen model is a curved sandbag barrier wall"
+    },
+    {
+      "id": "sofa_old",
+      "prio": 3,
+      "fit": [
+        "l",
+        2
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "old sofa",
+        "worn couch"
+      ]
+    },
+    {
+      "id": "car_battery",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.3
+      ],
+      "tex": 512,
+      "faces": 5000,
+      "q": [
+        "car battery"
+      ]
+    },
+    {
+      "id": "shovel",
+      "prio": 2,
+      "fit": [
+        "m",
+        1.1
+      ],
+      "tex": 512,
+      "faces": 5000,
+      "q": [
+        "shovel"
+      ]
+    },
+    {
+      "id": "bucket",
+      "prio": 3,
+      "fit": [
+        "h",
+        0.35
+      ],
+      "tex": 512,
+      "faces": 5000,
+      "q": [
+        "metal bucket",
+        "bucket"
+      ]
+    },
+    {
+      "id": "apartment_block",
+      "prio": 1,
+      "fit": [
+        "h",
+        15
+      ],
+      "tex": 2048,
+      "faces": 250000,
+      "q": [
+        "soviet apartment building",
+        "panel building",
+        "khrushchyovka",
+        "apartment block"
+      ],
+      "note": "Eastern-European 5-storey panel block. Used as background in intro."
+    },
+    {
+      "id": "house_small",
+      "prio": 1,
+      "fit": [
+        "h",
+        7
+      ],
+      "tex": 2048,
+      "faces": 150000,
+      "q": [
+        "old house",
+        "village house",
+        "abandoned house"
+      ]
+    },
+    {
+      "id": "car_sedan",
+      "prio": 1,
+      "fit": [
+        "l",
+        4.2
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "lada",
+        "soviet car",
+        "old sedan car",
+        "vaz 2107"
+      ]
+    },
+    {
+      "id": "car_wreck",
+      "prio": 1,
+      "fit": [
+        "l",
+        4.2
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "q": [
+        "burnt car",
+        "car wreck",
+        "abandoned rusty car"
+      ]
+    },
+    {
+      "id": "bus_wreck",
+      "prio": 3,
+      "fit": [
+        "l",
+        11
+      ],
+      "tex": 2048,
+      "faces": 120000,
+      "q": [
+        "abandoned bus",
+        "wrecked bus"
+      ]
+    },
+    {
+      "id": "tree_leafy",
+      "prio": 1,
+      "fit": [
+        "h",
+        9
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "q": [
+        "tree realistic",
+        "oak tree",
+        "birch tree"
+      ]
+    },
+    {
+      "id": "tree_dead",
+      "prio": 1,
+      "fit": [
+        "h",
+        7
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "dead tree",
+        "burnt tree"
+      ]
+    },
+    {
+      "id": "street_lamp",
+      "prio": 2,
+      "fit": [
+        "h",
+        7
+      ],
+      "tex": 1024,
+      "faces": 15000,
+      "q": [
+        "street lamp",
+        "soviet street light"
+      ]
+    },
+    {
+      "id": "bench",
+      "prio": 3,
+      "fit": [
+        "l",
+        1.8
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "park bench"
+      ]
+    },
+    {
+      "id": "trash_bin",
+      "prio": 2,
+      "fit": [
+        "h",
+        1.2
+      ],
+      "tex": 1024,
+      "faces": 15000,
+      "q": [
+        "dumpster",
+        "trash container",
+        "garbage container"
+      ]
+    },
+    {
+      "id": "concrete_barrier",
+      "prio": 2,
+      "fit": [
+        "h",
+        1
+      ],
+      "tex": 1024,
+      "faces": 5000,
+      "q": [
+        "concrete barrier",
+        "jersey barrier"
+      ],
+      "note": "(pipeline) fit changed to height 1.0 m to keep realistic proportions of the chosen jersey barrier"
+    },
+    {
+      "id": "utility_pole",
+      "prio": 2,
+      "fit": [
+        "h",
+        9
+      ],
+      "tex": 1024,
+      "faces": 15000,
+      "q": [
+        "power pole",
+        "electric pole",
+        "utility pole"
+      ]
+    },
+    {
+      "id": "bus_stop",
+      "prio": 3,
+      "fit": [
+        "l",
+        4
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "bus stop"
+      ]
+    },
+    {
+      "id": "ruined_building",
+      "prio": 1,
+      "fit": [
+        "h",
+        14
+      ],
+      "tex": 2048,
+      "faces": 250000,
+      "q": [
+        "ruined building",
+        "destroyed building",
+        "abandoned building ruins"
+      ]
+    },
+    {
+      "id": "rubble_pile",
+      "prio": 1,
+      "fit": [
+        "m",
+        3
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "rubble",
+        "debris pile",
+        "concrete rubble"
+      ]
+    },
+    {
+      "id": "supermarket_shelf",
+      "prio": 2,
+      "fit": [
+        "h",
+        1.8
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "supermarket shelf",
+        "store shelf"
+      ]
+    },
+    {
+      "id": "tank_wreck",
+      "prio": 3,
+      "fit": [
+        "l",
+        7
+      ],
+      "tex": 2048,
+      "faces": 150000,
+      "q": [
+        "abandoned tank",
+        "t-72 wreck",
+        "destroyed tank"
+      ]
+    },
+    {
+      "id": "enemy_mutant",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "mutant animated",
+        "zombie animated",
+        "ghoul animated"
+      ],
+      "note": "Must be rigged WITH embedded animations (idle/walk/run/attack/death ideal). Record animation names in manifest."
+    },
+    {
+      "id": "enemy_hazmat",
+      "prio": 2,
+      "fit": [
+        "h",
+        1.9
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "zombie hazmat"
+      ],
+      "note": "EXTRA (added by model pipeline): zombie in a hazmat suit, fits the nuclear theme. Rigged with animations."
+    },
+    {
+      "id": "enemy_raider",
+      "prio": 2,
+      "fit": [
+        "h",
+        1.8
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "gas mask soldier animated",
+        "stalker animated",
+        "soldier rigged animated"
+      ],
+      "note": "Rigged with animations."
+    },
+    {
+      "id": "survivor_npc",
+      "prio": 3,
+      "fit": [
+        "h",
+        1.75
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "survivor character animated",
+        "man rigged idle"
+      ]
+    },
+    {
+      "id": "weapon_pistol",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.2
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "makarov pistol",
+        "pistol"
+      ]
+    },
+    {
+      "id": "weapon_rifle",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.9
+      ],
+      "tex": 2048,
+      "faces": 40000,
+      "q": [
+        "akm",
+        "ak-47",
+        "ak74"
+      ]
+    },
+    {
+      "id": "weapon_axe",
+      "prio": 2,
+      "fit": [
+        "l",
+        0.7
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "fire axe",
+        "axe"
+      ]
+    },
+    {
+      "id": "factory_hall",
+      "prio": 1,
+      "fit": [
+        "h",
+        13
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "q": [
+        "soviet factory building",
+        "industrial brick building",
+        "abandoned factory",
+        "factory hall"
+      ],
+      "note": "background industrial building, closed shape"
+    },
+    {
+      "id": "warehouse",
+      "prio": 1,
+      "fit": [
+        "h",
+        9
+      ],
+      "tex": 2048,
+      "faces": 150000,
+      "q": [
+        "industrial warehouse",
+        "hangar building",
+        "abandoned warehouse"
+      ]
+    },
+    {
+      "id": "concrete_fence",
+      "prio": 1,
+      "fit": [
+        "h",
+        2.5
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "concrete fence",
+        "soviet concrete fence",
+        "concrete fence panel"
+      ],
+      "note": "PO-2 panels found are square; fitted by height"
+    },
+    {
+      "id": "ruin_wall_a",
+      "prio": 1,
+      "fit": [
+        "l",
+        5
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "destroyed wall",
+        "broken concrete wall",
+        "ruined wall"
+      ]
+    },
+    {
+      "id": "ruin_wall_b",
+      "prio": 1,
+      "fit": [
+        "l",
+        7
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "broken brick wall",
+        "ruined brick wall",
+        "damaged wall rebar"
+      ]
+    },
+    {
+      "id": "ruin_corner",
+      "prio": 1,
+      "fit": [
+        "l",
+        5.2
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "ruined building corner",
+        "broken wall corner",
+        "destroyed corner wall"
+      ]
+    },
+    {
+      "id": "ruin_house",
+      "prio": 1,
+      "fit": [
+        "h",
+        8
+      ],
+      "tex": 2048,
+      "faces": 150000,
+      "q": [
+        "destroyed house",
+        "ruined house",
+        "bombed house"
+      ]
+    },
+    {
+      "id": "ruin_block",
+      "prio": 1,
+      "fit": [
+        "h",
+        14
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "q": [
+        "destroyed apartment building",
+        "ruined building",
+        "damaged building war"
+      ]
+    },
+    {
+      "id": "debris_slab",
+      "prio": 1,
+      "fit": [
+        "l",
+        3
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "broken concrete slab",
+        "concrete slab rebar",
+        "concrete debris"
+      ]
+    },
+    {
+      "id": "water_tower",
+      "prio": 1,
+      "fit": [
+        "h",
+        18
+      ],
+      "tex": 2048,
+      "faces": 100000,
+      "q": [
+        "water tower",
+        "soviet water tower",
+        "industrial water tower"
+      ]
+    },
+    {
+      "id": "enemy_dog",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.8
+      ],
+      "tex": 1024,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "dog animated",
+        "wolf animated",
+        "mutant dog"
+      ],
+      "note": "rigged with run/attack/idle/death"
+    },
+    {
+      "id": "enemy_bandit",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.8
+      ],
+      "tex": 2048,
+      "faces": 80000,
+      "rigged": true,
+      "q": [
+        "soldier animated",
+        "bandit animated",
+        "survivor animated rifle"
+      ],
+      "note": "rigged with gun anims"
+    },
+    {
+      "id": "tire_pile",
+      "prio": 2,
+      "fit": [
+        "m",
+        1.5
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "tire pile",
+        "old tires",
+        "tyre stack"
+      ]
+    },
+    {
+      "id": "scrap_pile",
+      "prio": 2,
+      "fit": [
+        "m",
+        2.5
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "scrap pile",
+        "junk pile",
+        "scrap metal"
+      ]
+    },
+    {
+      "id": "road_sign",
+      "prio": 2,
+      "fit": [
+        "h",
+        2.5
+      ],
+      "tex": 1024,
+      "faces": 12000,
+      "q": [
+        "road sign",
+        "old road sign",
+        "street sign"
+      ]
+    },
+    {
+      "id": "burnt_truck",
+      "prio": 2,
+      "fit": [
+        "l",
+        5.8
+      ],
+      "tex": 1024,
+      "faces": 100000,
+      "q": [
+        "burnt truck",
+        "abandoned truck",
+        "rusty truck"
+      ],
+      "note": "GAZ-66 (real length 5.8 m)"
+    },
+    {
+      "id": "shop_ruin",
+      "prio": 2,
+      "fit": [
+        "h",
+        3.2
+      ],
+      "tex": 1024,
+      "faces": 100000,
+      "q": [
+        "ruined shop",
+        "abandoned kiosk",
+        "destroyed shop"
+      ],
+      "note": "90s street kiosk"
+    },
+    {
+      "id": "radiation_sign",
+      "prio": 2,
+      "fit": [
+        "h",
+        2.2
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "radiation sign"
+      ],
+      "note": "EXTRA: dirty radiation warning sign for hotspots"
+    },
+    {
+      "id": "weapon_shotgun",
+      "prio": 1,
+      "fit": [
+        "l",
+        1
+      ],
+      "tex": 2048,
+      "faces": 60000,
+      "q": [
+        "double barrel shotgun",
+        "hunting shotgun",
+        "sawed off shotgun",
+        "toz shotgun"
+      ],
+      "note": "round 3: double-barrel / TOZ hunting shotgun"
+    },
+    {
+      "id": "solar_panel",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.7
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "solar panel",
+        "solar panel stand",
+        "photovoltaic panel"
+      ]
+    },
+    {
+      "id": "radio_antenna",
+      "prio": 1,
+      "fit": [
+        "h",
+        4
+      ],
+      "tex": 1024,
+      "faces": 40000,
+      "q": [
+        "radio antenna",
+        "radio mast",
+        "antenna tower",
+        "military antenna"
+      ]
+    },
+    {
+      "id": "hydroponic_rack",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.4
+      ],
+      "tex": 1024,
+      "faces": 80000,
+      "q": [
+        "hydroponic",
+        "grow rack",
+        "hydroponic shelf",
+        "plant shelf"
+      ]
+    },
+    {
+      "id": "weapon_rack",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.2
+      ],
+      "tex": 1024,
+      "faces": 60000,
+      "q": [
+        "gun rack",
+        "weapon rack",
+        "rifle rack",
+        "weapon locker"
+      ]
+    },
+    {
+      "id": "fps_pistol",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "rigged": true,
+      "q": [
+        "fps pistol animated",
+        "fps arms pistol",
+        "first person pistol"
+      ],
+      "note": "v0.4: first-person arms + pistol with idle/fire/reload/draw animations",
+      "raw": true
+    },
+    {
+      "id": "fps_rifle",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.9
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "rigged": true,
+      "q": [
+        "fps ak47 animated",
+        "fps akm arms",
+        "first person rifle animated"
+      ],
+      "note": "v0.4: first-person arms + AK rifle with animations",
+      "raw": true
+    },
+    {
+      "id": "fps_shotgun",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.9
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "rigged": true,
+      "q": [
+        "fps shotgun animated",
+        "fps double barrel shotgun",
+        "first person shotgun"
+      ],
+      "note": "v0.4: first-person arms + shotgun",
+      "raw": true
+    },
+    {
+      "id": "fps_melee",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "rigged": true,
+      "q": [
+        "fps axe animated",
+        "fps knife arms",
+        "first person melee arms"
+      ],
+      "note": "v0.4: first-person arms + melee weapon",
+      "raw": true
+    },
+    {
+      "id": "fps_arms",
+      "prio": 1,
+      "fit": [
+        "m",
+        0.8
+      ],
+      "tex": 2048,
+      "faces": 200000,
+      "rigged": true,
+      "q": [
+        "fps arms rigged",
+        "first person arms",
+        "fps hands"
+      ],
+      "note": "v0.4: generic rigged FP arms",
+      "raw": true
+    },
+    {
+      "id": "enemy_zombie",
+      "prio": 1,
+      "fit": [
+        "h",
+        1.85
+      ],
+      "tex": 2048,
+      "faces": 120000,
+      "rigged": true,
+      "q": [
+        "zombie animated",
+        "mutant animated",
+        "ghoul animated"
+      ],
+      "note": "v0.4: higher quality mutant with death animations"
+    },
+    {
+      "id": "bunker_portal",
+      "prio": 1,
+      "fit": [
+        "l",
+        12
+      ],
+      "tex": 2048,
+      "faces": 250000,
+      "q": [
+        "bunker entrance",
+        "blast door bunker",
+        "military bunker entrance"
+      ],
+      "note": "v0.4: surface portal of the shelter network"
+    },
+    {
+      "id": "rock_a",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.6
+      ],
+      "tex": 1024,
+      "faces": 12000,
+      "q": [
+        "rock"
+      ]
+    },
+    {
+      "id": "rock_b",
+      "prio": 1,
+      "fit": [
+        "l",
+        1.2
+      ],
+      "tex": 1024,
+      "faces": 12000,
+      "q": [
+        "rock"
+      ]
+    },
+    {
+      "id": "boulder",
+      "prio": 1,
+      "fit": [
+        "l",
+        3.2
+      ],
+      "tex": 2048,
+      "faces": 20000,
+      "q": [
+        "boulder"
+      ]
+    },
+    {
+      "id": "stone_small",
+      "prio": 1,
+      "fit": [
+        "l",
+        0.7
+      ],
+      "tex": 1024,
+      "faces": 6000,
+      "q": [
+        "stone"
+      ]
+    },
+    {
+      "id": "log_fallen",
+      "prio": 1,
+      "fit": [
+        "l",
+        6.5
+      ],
+      "tex": 2048,
+      "faces": 24000,
+      "q": [
+        "dead tree trunk"
+      ]
+    },
+    {
+      "id": "tree_stump",
+      "prio": 1,
+      "fit": [
+        "h",
+        0.7
+      ],
+      "tex": 1024,
+      "faces": 10000,
+      "q": [
+        "tree stump"
+      ]
+    },
+    {
+      "id": "branches_dry",
+      "prio": 1,
+      "fit": [
+        "l",
+        2.2
+      ],
+      "tex": 1024,
+      "faces": 9000,
+      "q": [
+        "dry branches"
+      ]
+    },
+    {
+      "id": "tree_dead_b",
+      "prio": 1,
+      "fit": [
+        "h",
+        6.5
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "dead tree"
+      ]
+    },
+    {
+      "id": "weapon_saiga",
+      "prio": 1,
+      "fit": [
+        "l",
+        1
+      ],
+      "tex": 2048,
+      "faces": 40000,
+      "q": [
+        "saiga"
+      ],
+      "note": "v0.4: weapon-only mesh of the Saiga FP rig (icons, world)"
+    },
+    {
+      "id": "bed_old",
+      "prio": 3,
+      "fit": [
+        "l",
+        2.0
+      ],
+      "tex": 1024,
+      "faces": 30000,
+      "q": [
+        "old bed",
+        "soviet bed",
+        "vintage single bed"
+      ]
+    },
+    {
+      "id": "wardrobe_old",
+      "prio": 3,
+      "fit": [
+        "h",
+        2.0
+      ],
+      "tex": 1024,
+      "faces": 25000,
+      "q": [
+        "old wardrobe",
+        "soviet wardrobe",
+        "vintage wardrobe closet"
+      ]
+    },
+    {
+      "id": "table_wood",
+      "prio": 3,
+      "fit": [
+        "l",
+        1.3
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "old wooden table",
+        "kitchen table wood",
+        "dining table old"
+      ]
+    },
+    {
+      "id": "bathtub_old",
+      "prio": 3,
+      "fit": [
+        "l",
+        1.6
+      ],
+      "tex": 1024,
+      "faces": 20000,
+      "q": [
+        "old bathtub",
+        "dirty bathtub",
+        "cast iron bathtub"
+      ]
+    },
+    {
+      "id": "sink_old",
+      "prio": 3,
+      "fit": [
+        "h",
+        0.85
+      ],
+      "tex": 1024,
+      "faces": 15000,
+      "q": [
+        "old sink",
+        "bathroom sink dirty",
+        "pedestal sink"
+      ]
+    }
+  ]
 }

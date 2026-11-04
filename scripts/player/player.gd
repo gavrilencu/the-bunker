@@ -12,6 +12,8 @@ const CROUCH_H := 1.15
 const EYE := 1.64
 const CROUCH_EYE := 1.0
 const INTERACT_DIST := 2.7
+## Curbs, thresholds and single steps up to this height are climbed without jumping.
+const STEP_HEIGHT := 0.32
 
 var head: Node3D
 var cam: Camera3D
@@ -48,6 +50,10 @@ var _was_on_floor := true
 var _fall_speed := 0.0
 var _stamina_delay := 0.0
 var _demolish_target := -1
+## mv_key of the bunker object under the crosshair that [G] can pick up ("" = none)
+var _move_target := ""
+## camera lag after stepping up (eased back to 0 so steps don't jolt the view)
+var _step_offset := 0.0
 
 @onready var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity", 9.8)
 
@@ -137,6 +143,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			Game.level.open_local_map()
 	elif event.is_action_pressed("demolish") and _demolish_target >= 0 and Game.level and Game.level.has_method("demolish"):
 		Game.level.demolish(_demolish_target)
+	elif event.is_action_pressed("move_object") and _move_target != "" and not Game.build_mode_active and Game.level and Game.level.has_method("start_move"):
+		Game.level.start_move(_move_target)
 	elif event.is_action_pressed("heal") and ctx in ["bunker", "surface"]:
 		if not State.use_item("bandage"):
 			if not State.use_item("medkit"):
@@ -171,8 +179,9 @@ func _physics_process(delta: float) -> void:
 	_move(delta)
 	_interact(delta)
 	_camera_fx(delta)
+	# the viewmodel (hands or weapon) runs everywhere; attacks are gated by combat_enabled
+	weapons.tick(delta, sprinting, Vector2(velocity.x, velocity.z).length(), is_on_floor())
 	if combat_enabled:
-		weapons.tick(delta, sprinting, Vector2(velocity.x, velocity.z).length(), is_on_floor())
 		spread = weapons.spread_now * 14.0
 
 
@@ -207,13 +216,16 @@ func _move(delta: float) -> void:
 	var accel := 11.0 if on_floor else 2.5
 	velocity.x = lerpf(velocity.x, dir.x * spd, minf(accel * delta, 1.0))
 	velocity.z = lerpf(velocity.z, dir.z * spd, minf(accel * delta, 1.0))
+	if on_floor and dir != Vector3.ZERO:
+		_step_up(delta)
 	move_and_slide()
 
 	var target_h := CROUCH_H if crouching else STAND_H
 	capsule.height = lerpf(capsule.height, target_h, minf(12.0 * delta, 1.0))
 	col_shape.position.y = capsule.height * 0.5
 	_eye = lerpf(_eye, CROUCH_EYE if crouching else EYE, minf(10.0 * delta, 1.0))
-	head.position.y = _eye
+	_step_offset = move_toward(_step_offset, 0.0, delta * maxf(1.2, _step_offset * 9.0))
+	head.position.y = _eye - _step_offset
 
 	var hspeed := Vector2(velocity.x, velocity.z).length()
 	if on_floor and hspeed > 0.5:
@@ -229,6 +241,40 @@ func _move(delta: float) -> void:
 		weapons.land(clampf(_fall_speed / 8.0, 0.1, 1.0))
 		_fall_speed = 0.0
 	_was_on_floor = on_floor
+
+
+## Climbs a ledge in front of the feet (curb, doorstep, stair) when the capsule would
+## otherwise stop against it: probe forward at foot level, retry from STEP_HEIGHT up,
+## and if the way is clear there, drop onto the walkable top and lift the body to it.
+func _step_up(delta: float) -> void:
+	var motion := Vector3(velocity.x, 0.0, velocity.z) * delta
+	if motion.length() < 0.0005:
+		return
+	motion = motion.normalized() * maxf(motion.length(), 0.06)
+	var xf := global_transform
+	var col := KinematicCollision3D.new()
+	if not test_move(xf, motion, col):
+		return
+	# a walkable slope is handled by move_and_slide; only real ledges need a step
+	if col.get_normal().angle_to(Vector3.UP) <= floor_max_angle:
+		return
+	var raised := xf
+	if test_move(xf, Vector3.UP * STEP_HEIGHT, col):
+		raised.origin += col.get_travel()
+	else:
+		raised.origin += Vector3.UP * STEP_HEIGHT
+	if test_move(raised, motion):
+		return  # a wall, not a step
+	var ahead := raised.translated(motion)
+	if not test_move(ahead, Vector3.DOWN * (STEP_HEIGHT + 0.05), col):
+		return  # nothing to stand on up there
+	if col.get_normal().angle_to(Vector3.UP) > floor_max_angle:
+		return
+	var rise := ahead.origin.y + col.get_travel().y - xf.origin.y
+	if rise <= 0.005 or rise > STEP_HEIGHT + 0.01:
+		return
+	global_position.y += rise
+	_step_offset = minf(_step_offset + rise, 0.4)
 
 
 func use_stamina(amount: float) -> void:
@@ -265,35 +311,48 @@ func _interact(delta: float) -> void:
 	var prompt := ""
 	var target: Interactable = null
 	_demolish_target = -1
+	_move_target = ""
+	var move_name := ""
 	if can_interact and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not Game.build_mode_active:
 		ray.force_raycast_update()
 		var c := ray.get_collider()
 		var n: Node = c
 		while n and not (n is Interactable):
-			if n.has_meta("built_index"):
-				_demolish_target = int(n.get_meta("built_index"))
+			_note_target(n)
 			n = n.get_parent()
 			if n is Player or n == get_tree().current_scene:
 				n = null
 		if n is Interactable:
-			if n.has_meta("built_index"):
-				_demolish_target = int(n.get_meta("built_index"))
+			_note_target(n)
 			target = n
 			prompt = target.get_prompt()
 			if prompt == "":
 				target = null
+		if _move_target != "" and c:
+			var m: Node = c
+			while m and not m.has_meta("mv_name"):
+				m = m.get_parent()
+			move_name = String(m.get_meta("mv_name")) if m else ""
 	if target != _target:
 		_hold = 0.0
 		_target = target
 	var progress := 0.0
-	var alt := "Demontează (50% înapoi)" if _demolish_target >= 0 and State.context == "bunker" else ""
+	var alt: Array = []
+	if State.context == "bunker":
+		if _move_target != "":
+			alt.append(["G", "Mută"])
+		if _demolish_target >= 0:
+			alt.append(["X", "Demontează (50% înapoi)"])
+	var reaching := 0.0
 	if _target:
 		var ht := _target.get_hold_time()
 		if ht <= 0.0:
 			if Input.is_action_just_pressed("interact"):
+				weapons.reach_pulse()
 				_target.use(self)
 		else:
 			if Input.is_action_pressed("interact"):
+				reaching = 1.0
 				_hold += delta
 				progress = clampf(_hold / ht, 0.0, 1.0)
 				if _hold >= ht:
@@ -309,10 +368,19 @@ func _interact(delta: float) -> void:
 			title = parts[0]
 			action = parts[1]
 		HUD.set_interaction(title, action, ht > 0.0, progress, alt)
-	elif alt != "":
-		HUD.set_interaction("Construcție", "", false, 0.0, alt)
+	elif not alt.is_empty():
+		HUD.set_interaction(move_name if move_name != "" else "Construcție", "", false, 0.0, alt)
 	else:
 		HUD.set_interaction("", "", false, 0.0)
+	weapons.reach_goal = reaching
+
+
+## Records what [G] / [X] can act on while walking up from the hit collider.
+func _note_target(n: Node) -> void:
+	if _demolish_target < 0 and n.has_meta("built_index"):
+		_demolish_target = int(n.get_meta("built_index"))
+	if _move_target == "" and n.has_meta("mv_key"):
+		_move_target = String(n.get_meta("mv_key"))
 
 
 func _camera_fx(delta: float) -> void:
@@ -333,13 +401,21 @@ func add_shake(amount: float) -> void:
 	shake = clampf(maxf(shake, amount), 0.0, 3.0)
 
 
+## Sleep: the head sinks to the pillow and rolls onto its side (and back up on waking).
+func lie_down(on: bool, dur := 0.9) -> void:
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(head, "position:y", 0.55 if on else EYE, dur)
+	tw.tween_property(head, "rotation:z", -0.55 if on else 0.0, dur)
+	tw.tween_property(head, "rotation:x", -0.25 if on else 0.0, dur)
+
+
 # --------------------------------------------------------------------------
 # Combat glue
 # --------------------------------------------------------------------------
 
 func enable_combat(on: bool) -> void:
 	combat_enabled = on
-	weapons.switch(weapons.best_weapon() if on else "")
+	weapons.switch(weapons.best_weapon() if on else "hands")
 
 
 func equip(w: String) -> void:

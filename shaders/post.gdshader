@@ -1,8 +1,10 @@
 shader_type canvas_item;
 // Full-screen post effect: chromatic aberration, vignette, film grain,
 // damage tint, radiation sparkle, gas-mask lenses, flash, desaturation.
+// No mipmaps here (a mip chain of the screen every frame is expensive on weak GPUs):
+// the blurred variant lives in post_blur.gdshader and is swapped in by the HUD.
 
-uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
 uniform float vignette : hint_range(0.0, 1.0) = 0.38;
 uniform float grain : hint_range(0.0, 0.3) = 0.035;
 uniform float aberration : hint_range(0.0, 8.0) = 0.9;
@@ -30,11 +32,10 @@ void fragment() {
 	// subtle: strongest at the lens edges, never a red halo on the viewmodel
 	float ab = (aberration * 0.6 + damage * 3.0 + rad * 1.1) * (0.12 + d * d * 2.2);
 	vec2 off = normalize(c + 1e-5) * SCREEN_PIXEL_SIZE * ab;
-	float lod = blur;
 	vec3 col;
-	col.r = textureLod(screen_tex, uv + off, lod).r;
-	col.g = textureLod(screen_tex, uv, lod).g;
-	col.b = textureLod(screen_tex, uv - off, lod).b;
+	col.r = texture(screen_tex, uv + off).r;
+	col.g = texture(screen_tex, uv).g;
+	col.b = texture(screen_tex, uv - off).b;
 
 	float l = dot(col, vec3(0.299, 0.587, 0.114));
 	col = mix(col, vec3(l), desat);

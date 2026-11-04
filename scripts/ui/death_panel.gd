@@ -5,6 +5,7 @@ const REASONS := {
 	"shockwave": "Unda de șoc te-a prins la suprafață.",
 	"starvation": "Corpul a cedat: foame, sete sau epuizare.",
 	"radiation": "Doza de radiație a fost letală.",
+	"air": "Aerul din buncăr a devenit irespirabil. Filtrul FVU trebuia schimbat.",
 	"suffocation": "Filtrul s-a terminat. Aerul de afară te-a ucis.",
 	"enemy": "Ai fost ucis la suprafață.",
 	"bleed": "Ai sângerat până la moarte. Bandajele salvează vieți.",

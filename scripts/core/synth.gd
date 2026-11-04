@@ -22,6 +22,9 @@ static func make(id: String) -> AudioStreamWAV:
 		"ambient_wasteland": return _wind(12.0, 0.45, false)
 		"ambient_morning": return _birds(12.0)
 		"generator_loop": return _engine(4.0)
+		"car_engine": return _car_engine(3.0)
+		"car_horn": return _horn(0.55)
+		"city_traffic": return _traffic(14.0)
 		"radio_static": return _static(6.0)
 		"geiger_click": return _click(0.012, 1.0)
 		"ui_click": return _click(0.05, 0.5)
@@ -184,6 +187,53 @@ static func _birds(sec: float) -> AudioStreamWAV:
 				var f: float = c[1] + c[3] * (u / c[2])
 				v += sin(TAU * f * u) * sin(PI * u / c[2]) * 0.18
 		s[i] = v
+	return _to_wav(s)
+
+
+## Petrol engine idling / cruising (loops cleanly: whole cycles of the firing frequency).
+static func _car_engine(sec: float) -> AudioStreamWAV:
+	var s := _buf(sec)
+	var lp := 0.0
+	var lp2 := 0.0
+	for i in s.size():
+		var t := float(i) / RATE
+		var fire := pow(0.5 + 0.5 * sin(TAU * 36.0 * t), 4.0)
+		lp += (randf_range(-1, 1) - lp) * 0.05
+		lp2 += (lp - lp2) * 0.1
+		s[i] = (fire * 0.35 + lp2 * 2.2 * (0.4 + fire) + sin(TAU * 72.0 * t) * 0.08) * 0.55
+	return _to_wav(s)
+
+
+## Two-tone car horn.
+static func _horn(sec: float) -> AudioStreamWAV:
+	var s := _buf(sec)
+	for i in s.size():
+		var t := float(i) / RATE
+		var v := tanh(3.0 * (sin(TAU * 415.0 * t) + sin(TAU * 523.0 * t) * 0.8))
+		var env := minf(t / 0.02, 1.0) * minf((sec - t) / 0.05, 1.0)
+		s[i] = v * env * 0.35
+	return _to_wav(s)
+
+
+## Distant city: low traffic rumble with cars swelling past now and then.
+static func _traffic(sec: float) -> AudioStreamWAV:
+	var s := _buf(sec)
+	var lp := 0.0
+	var lp2 := 0.0
+	var passes: Array = []
+	for k in 7:
+		passes.append([randf_range(0.5, sec - 3.0), randf_range(2.0, 3.5), randf_range(0.5, 1.0)])
+	for i in s.size():
+		var t := float(i) / RATE
+		lp += (randf_range(-1, 1) - lp) * 0.04
+		lp2 += (lp - lp2) * 0.06
+		var swell := 0.0
+		for p in passes:
+			var u: float = (t - p[0]) / p[1]
+			if u > 0.0 and u < 1.0:
+				swell += sin(PI * u) * sin(PI * u) * p[2]
+		var env := minf(t / 1.0, 1.0) * minf((sec - t) / 1.0, 1.0)
+		s[i] = lp2 * (1.6 + swell * 2.4) * env + sin(TAU * 55.0 * t) * 0.02 * swell
 	return _to_wav(s)
 
 

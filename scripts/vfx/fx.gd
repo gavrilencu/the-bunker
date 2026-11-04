@@ -170,6 +170,29 @@ static func _decal(parent: Node, pos: Vector3, normal: Vector3) -> void:
 			old.queue_free()
 
 
+## Short additive billboard flash (NPC gunfire).
+static func muzzle_flash(parent: Node, pos: Vector3, size := 0.18) -> void:
+	var mi := MeshInstance3D.new()
+	var qm := QuadMesh.new()
+	qm.size = Vector2(size, size)
+	mi.mesh = qm
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	mat.albedo_texture = flash_texture()
+	mat.albedo_color = Color(1.0, 0.8, 0.5)
+	mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	mi.material_override = mat
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(mi)
+	mi.global_position = pos
+	mi.rotation.z = randf() * TAU
+	var tw := mi.create_tween()
+	tw.tween_interval(1.5 if Game.args.has("slowfx") else 0.06)
+	tw.tween_callback(mi.queue_free)
+
+
 static func tracer(parent: Node, from: Vector3, to: Vector3) -> void:
 	var mi := MeshInstance3D.new()
 	var bm := BoxMesh.new()
@@ -187,7 +210,7 @@ static func tracer(parent: Node, from: Vector3, to: Vector3) -> void:
 	mi.global_position = (from + to) * 0.5
 	mi.look_at(to, Vector3.UP if absf((to - from).normalized().y) < 0.98 else Vector3.RIGHT)
 	var tw := mi.create_tween()
-	tw.tween_property(mat, "albedo_color:a", 0.0, 0.07)
+	tw.tween_property(mat, "albedo_color:a", 0.0, 1.5 if Game.args.has("slowfx") else 0.07)
 	tw.tween_callback(mi.queue_free)
 
 
@@ -224,7 +247,7 @@ static func shell(parent: Node, pos: Vector3, right: Vector3, shotgun := false) 
 	var tw := mi.create_tween()
 	tw.tween_method(func(_x: float) -> void:
 		if is_instance_valid(mi) and not mi.has_meta("landed"):
-			if tick.call(1.0 / 60.0):
+			if tick.call(minf(mi.get_process_delta_time(), 0.05)):
 				mi.set_meta("landed", true)
 				Audio.sfx_at("shell_casing", mi.global_position, -14.0, 12.0, 0.2), 0.0, 1.0, 1.0)
 	tw.tween_interval(6.0)

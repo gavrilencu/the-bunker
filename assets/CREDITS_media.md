@@ -22,6 +22,18 @@ All assets are CC0 / public domain unless listed otherwise; CC BY / CC BY-SA ite
 | wood_planks | [Old Planks 02](https://polyhaven.com/a/old_planks_02) | Rob Tuytel | CC0 1.0 |
 | gravel | [Rubble](https://polyhaven.com/a/rubble) | Amal Kumar | CC0 1.0 |
 | pavement | [Concrete Pavement](https://polyhaven.com/a/concrete_pavement) | Charlotte Baglioni | CC0 1.0 |
+| wallpaper | [Decrepit Wallpaper](https://polyhaven.com/a/decrepit_wallpaper) | Rob Tuytel | CC0 1.0 |
+| paint_peeling | [Peeling Painted Wall](https://polyhaven.com/a/peeling_painted_wall) | Dimitrios Savva | CC0 1.0 |
+| plaster_int | [Painted Plaster Wall](https://polyhaven.com/a/painted_plaster_wall) | Amal Kumar | CC0 1.0 |
+| floor_wood_old | [Wood Floor Worn](https://polyhaven.com/a/wood_floor_worn) | Dimitrios Savva | CC0 1.0 |
+| parquet | [Herringbone Parquet](https://polyhaven.com/a/herringbone_parquet) | Jenelle van Heerden, Sergej Majboroda | CC0 1.0 |
+| linoleum | [Old Linoleum Flooring 01](https://polyhaven.com/a/old_linoleum_flooring_01) | Charlotte Baglioni | CC0 1.0 |
+| tiles_bath | [Dirty Tiles](https://polyhaven.com/a/dirty_tiles) | Matterfield, Jenelle van Heerden | CC0 1.0 |
+| tiles_floor | [Interior Tiles](https://polyhaven.com/a/interior_tiles) | Charlotte Baglioni | CC0 1.0 |
+| ceiling | [Ceiling Interior](https://polyhaven.com/a/ceiling_interior) | Dimitrios Savva | CC0 1.0 |
+| carpet | [Dirty Carpet](https://polyhaven.com/a/dirty_carpet) | Rohit Seervi | CC0 1.0 |
+| upholstery | [Rough Linen](https://polyhaven.com/a/rough_linen) | colormass, Rico Cilliers | CC0 1.0 |
+| kitchen_wood | [Kitchen Wood](https://polyhaven.com/a/kitchen_wood) | Rob Tuytel | CC0 1.0 |
 
 ## HDRI skies
 

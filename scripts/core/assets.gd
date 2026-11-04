@@ -136,12 +136,90 @@ func model(id: String) -> Node3D:
 	var ps: PackedScene = _scene_cache[id]
 	if ps:
 		var inst := ps.instantiate()
+		if SLIM.has(id):
+			_slim(inst, float(SLIM[id]))
 		if inst is Node3D:
 			return inst
 		var wrap := Node3D.new()
 		wrap.add_child(inst)
 		return wrap
 	return _placeholder(id)
+
+
+## Heavy Sketchfab props (a small stone has 6k triangles, the ruined mill 170k): the
+## share of the original triangle count to keep. The importer already generated LOD
+## index sets with meshoptimizer; the finest one under the share becomes the mesh.
+const SLIM := {
+	"ruined_building": 0.2, "factory_hall": 0.35, "concrete_fence": 0.12,
+	"car_sedan": 0.3, "car_wreck": 0.3, "street_lamp": 0.25, "sandbags": 0.2,
+	"rock_a": 0.15, "rock_b": 0.15, "boulder": 0.15, "stone_small": 0.1,
+	"tree_dead": 0.3, "tree_dead_b": 0.25, "tree_leafy": 0.4, "log_fallen": 0.2, "tree_stump": 0.25,
+	"ruin_block": 0.25, "branches_dry": 0.3, "lamp_cage": 0.2, "chair": 0.3, "oil_barrel": 0.3, "bunk_bed": 0.3,
+	"workbench": 0.25, "locker": 0.4, "military_crate": 0.35, "fridge_old": 0.45, "sofa_old": 0.45, "metal_shelf": 0.5,
+	"wooden_crate": 0.4, "table_metal": 0.5, "radio_station": 0.2, "supermarket_shelf": 0.5,
+}
+var _slim_cache := {}  # source Mesh -> slimmed ArrayMesh
+var slim_stats := [0, 0, 0]  # triangles before / after, milliseconds spent (--act=fps prints it)
+
+
+func _slim(root: Node, ratio: float) -> void:
+	for mi in root.find_children("*", "MeshInstance3D", true, false):
+		var m: Mesh = mi.mesh
+		if m == null:
+			continue
+		if not _slim_cache.has(m):
+			_slim_cache[m] = _slim_mesh(m, ratio)
+			# drop the full-resolution copy: it would otherwise sit on the GPU all session
+			# (every instance of this model goes through here and gets the slim mesh)
+			if m is ArrayMesh:
+				(m as ArrayMesh).clear_surfaces()
+		mi.mesh = _slim_cache[m]
+
+
+func _slim_mesh(m: Mesh, ratio: float) -> Mesh:
+	var t0 := Time.get_ticks_usec()
+	var out := ArrayMesh.new()
+	for si in m.get_surface_count():
+		var d: Dictionary = RenderingServer.mesh_get_surface(m.get_rid(), si)
+		var vc: int = d.get("vertex_count", 0)
+		var ic: int = d.get("index_count", 0)
+		var arrays := m.surface_get_arrays(si)
+		var target := int(ic * ratio)
+		var pick: PackedByteArray = PackedByteArray()
+		var pick_n := -1
+		var coarsest: PackedByteArray = PackedByteArray()
+		var coarsest_n := ic
+		var stride := 2 if vc <= 65535 else 4
+		for l in d.get("lods", []):
+			var bytes: PackedByteArray = l.index_data
+			var n := bytes.size() / stride
+			if n <= target and n > pick_n:
+				pick = bytes
+				pick_n = n
+			if n < coarsest_n:
+				coarsest = bytes
+				coarsest_n = n
+		if pick_n < 0 and coarsest_n < ic:
+			pick = coarsest
+			pick_n = coarsest_n
+		slim_stats[0] += ic / 3
+		if pick_n > 0:
+			slim_stats[1] += pick_n / 3
+			if stride == 4:
+				arrays[Mesh.ARRAY_INDEX] = pick.to_int32_array()
+			else:
+				var idx := PackedInt32Array()
+				idx.resize(pick_n)
+				for i in pick_n:
+					idx[i] = pick.decode_u16(i * 2)
+				arrays[Mesh.ARRAY_INDEX] = idx
+		else:
+			slim_stats[1] += ic / 3
+		out.add_surface_from_arrays(m.surface_get_primitive_type(si), arrays)
+		out.surface_set_material(out.get_surface_count() - 1, m.surface_get_material(si))
+		out.surface_set_name(out.get_surface_count() - 1, m.surface_get_name(si))
+	slim_stats[2] += (Time.get_ticks_usec() - t0) / 1000
+	return out
 
 
 ## Instantiates a sub-part saved next to a model, e.g. ("vault_door", "vault_door_leaf").

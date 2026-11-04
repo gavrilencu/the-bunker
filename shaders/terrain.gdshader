@@ -23,6 +23,8 @@ uniform vec3 ash_tint : source_color = vec3(1.0);
 uniform vec3 dirt_tint : source_color = vec3(0.95, 0.9, 0.85);
 uniform vec3 grass_tint : source_color = vec3(0.78, 0.7, 0.52);
 uniform float normal_strength = 1.0;
+// 0 = single-scale sampling (10 fetches instead of 17; the "Scăzut" geometry preset)
+uniform int detail = 1;
 
 varying vec3 wpos;
 varying vec4 mask;
@@ -54,13 +56,24 @@ void fragment() {
 	float macro2 = texture(macro_noise, uv * 0.047 + vec2(0.3, 0.7)).r;
 	float slope = 1.0 - clamp(wnormal.y, 0.0, 1.0);
 
-	vec3 c_ash = two_scale(ash_albedo, uv * ash_tile) * ash_tint * mix(0.82, 1.12, macro);
-	vec3 c_dirt = two_scale(dirt_albedo, uv * dirt_tile) * dirt_tint;
-	vec3 c_grav = two_scale(gravel_albedo, uv * gravel_tile) * vec3(0.62, 0.6, 0.57);
+	vec3 c_ash, c_dirt, c_grav, n_ash, n_dirt;
+	if (detail > 0) {
+		c_ash = two_scale(ash_albedo, uv * ash_tile);
+		c_dirt = two_scale(dirt_albedo, uv * dirt_tile);
+		c_grav = two_scale(gravel_albedo, uv * gravel_tile);
+		n_ash = two_scale_n(ash_normal, uv * ash_tile);
+		n_dirt = two_scale_n(dirt_normal, uv * dirt_tile);
+	} else {
+		c_ash = texture(ash_albedo, uv * ash_tile).rgb;
+		c_dirt = texture(dirt_albedo, uv * dirt_tile).rgb;
+		c_grav = texture(gravel_albedo, uv * gravel_tile).rgb;
+		n_ash = texture(ash_normal, uv * ash_tile).rgb;
+		n_dirt = texture(dirt_normal, uv * dirt_tile).rgb;
+	}
+	c_ash *= ash_tint * mix(0.82, 1.12, macro);
+	c_dirt *= dirt_tint;
+	c_grav *= vec3(0.62, 0.6, 0.57);
 	vec3 c_road = texture(road_albedo, uv * road_tile).rgb * mix(0.85, 1.05, macro2);
-
-	vec3 n_ash = two_scale_n(ash_normal, uv * ash_tile);
-	vec3 n_dirt = two_scale_n(dirt_normal, uv * dirt_tile);
 	vec3 n_grav = texture(gravel_normal, uv * gravel_tile).rgb;
 	vec3 n_road = texture(road_normal, uv * road_tile).rgb;
 
@@ -73,7 +86,8 @@ void fragment() {
 	float h_grav = dot(c_grav, vec3(0.33));
 	w_dirt = smoothstep(0.0, 1.0, clamp(w_dirt * 1.6 - 0.3 + (h_dirt - h_ash) * 0.8, 0.0, 1.0));
 	w_grav = smoothstep(0.0, 1.0, clamp(w_grav * 1.6 - 0.3 + (h_grav - h_ash) * 0.8, 0.0, 1.0));
-	float w_r = smoothstep(0.25, 0.75, w_road + (texture(road_albedo, uv * road_tile * 0.5).r - 0.4) * 0.35);
+	float road_break = detail > 0 ? texture(road_albedo, uv * road_tile * 0.5).r : c_road.r;
+	float w_r = smoothstep(0.25, 0.75, w_road + (road_break - 0.4) * 0.35);
 
 	vec3 col = mix(c_ash, c_dirt, w_dirt);
 	vec3 nrm = mix(n_ash, n_dirt, w_dirt);

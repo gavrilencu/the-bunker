@@ -24,7 +24,22 @@ const PICKS = {
   wood_planks:    { src: 'polyhaven', asset: 'old_planks_02' },
   gravel:         { src: 'polyhaven', asset: 'rubble' },
   pavement:       { src: 'polyhaven', asset: 'concrete_pavement' },
+  // interiors (v0.6): wallpaper, peeling paint, floors, tiles, ceiling, carpet, upholstery, furniture wood
+  // (1K: a dozen extra 2K sets is too much VRAM on the integrated GPUs the game targets)
+  wallpaper:      { src: 'polyhaven', asset: 'decrepit_wallpaper', size: 1024 },
+  paint_peeling:  { src: 'polyhaven', asset: 'peeling_painted_wall', size: 1024 },
+  plaster_int:    { src: 'polyhaven', asset: 'painted_plaster_wall', size: 1024 },
+  floor_wood_old: { src: 'polyhaven', asset: 'wood_floor_worn', size: 1024 },
+  parquet:        { src: 'polyhaven', asset: 'herringbone_parquet', size: 1024 },
+  linoleum:       { src: 'polyhaven', asset: 'old_linoleum_flooring_01', size: 1024 },
+  tiles_bath:     { src: 'polyhaven', asset: 'dirty_tiles', size: 1024 },
+  tiles_floor:    { src: 'polyhaven', asset: 'interior_tiles', size: 1024 },
+  ceiling:        { src: 'polyhaven', asset: 'ceiling_interior', size: 1024 },
+  carpet:         { src: 'polyhaven', asset: 'dirty_carpet', size: 1024 },
+  upholstery:     { src: 'polyhaven', asset: 'rough_linen', size: 1024 },
+  kitchen_wood:   { src: 'polyhaven', asset: 'kitchen_wood', size: 1024 },
 };
+let OUT_SIZE = 2048;
 const METALLIC_IDS = new Set(['painted_metal', 'rusty_metal', 'metal_plate']);
 
 const OUT = ensureDir(path.join(ASSETS, 'textures'));
@@ -33,11 +48,11 @@ const manifest = readJSON(manifestPath);
 
 async function copyAsJpg(src, dst) {
   // Re-encode to baseline JPG 2048 (keeps size predictable, strips metadata).
-  await sharp(src).resize(2048, 2048, { fit: 'fill' }).jpeg({ quality: 90, mozjpeg: true }).toFile(dst);
+  await sharp(src).resize(OUT_SIZE, OUT_SIZE, { fit: 'fill' }).jpeg({ quality: 90, mozjpeg: true }).toFile(dst);
 }
 
 async function channelToJpg(src, channel, dst) {
-  const { data, info } = await sharp(src).resize(2048, 2048, { fit: 'fill' }).extractChannel(channel).raw().toBuffer({ resolveWithObject: true });
+  const { data, info } = await sharp(src).resize(OUT_SIZE, OUT_SIZE, { fit: 'fill' }).extractChannel(channel).raw().toBuffer({ resolveWithObject: true });
   let sum = 0; for (let i = 0; i < data.length; i += 97) sum += data[i];
   const mean = sum / Math.ceil(data.length / 97) / 255;
   await sharp(data, { raw: { width: info.width, height: info.height, channels: 1 } }).jpeg({ quality: 92 }).toFile(dst);
@@ -94,6 +109,7 @@ for (const [id, p] of Object.entries(PICKS)) {
   if (only.length && !only.includes(id)) continue;
   try {
     console.log(`texture ${id} <- ${p.src}:${p.asset}`);
+    OUT_SIZE = p.size || 2048;
     const meta = p.src === 'polyhaven' ? await polyhaven(id, p.asset) : await ambientcg(id, p.asset);
     const dir = path.join(OUT, id);
     const maps = fs.readdirSync(dir).filter(x => x.endsWith('.jpg')).map(x => x.replace('.jpg', ''));

@@ -14,7 +14,7 @@ const DEFS := [
 	# ---------------- GRAFICĂ ----------------
 	{"id": "upscaler", "tab": "grafica", "label": "Scalare / upscaling", "type": "choice", "choices": ["Biliniară", "AMD FSR 1.0", "AMD FSR 2.2"], "p": [1, 1, 0, 2, 2],
 		"desc": "FSR 2.2 reconstruiește imaginea temporal (calitate apropiată de nativ la rezoluție redusă și antialiasing excelent). FSR 1.0 e mai rapid, dar mai puțin precis."},
-	{"id": "render_scale", "tab": "grafica", "label": "Rezoluție de randare", "type": "choice", "choices": ["50%", "59%", "67%", "77%", "85%", "100%", "125%", "150%"], "values": [0.5, 0.59, 0.67, 0.77, 0.85, 1.0, 1.25, 1.5], "p": [3, 4, 5, 5, 5],
+	{"id": "render_scale", "tab": "grafica", "label": "Rezoluție de randare", "type": "choice", "choices": ["50%", "59%", "67%", "77%", "85%", "100%", "125%", "150%"], "values": [0.5, 0.59, 0.67, 0.77, 0.85, 1.0, 1.25, 1.5], "p": [2, 4, 5, 5, 5],
 		"desc": "Procentul din rezoluția ecranului la care se randează scena 3D. Peste 100% = supersampling (doar cu scalarea biliniară)."},
 	{"id": "aa", "tab": "grafica", "label": "Antialiasing", "type": "choice", "choices": ["Dezactivat", "FXAA", "SMAA", "TAA", "TAA + SMAA", "MSAA 2x", "MSAA 4x", "MSAA 8x"], "p": [1, 2, 4, 3, 3],
 		"desc": "SMAA: margini curate, cost mic. TAA: elimină pâlpâirea, poate estompa ușor. MSAA: cel mai fin pe geometrie, cost mare. Cu FSR 2.2, antialiasingul e inclus."},
@@ -32,11 +32,11 @@ const DEFS := [
 		"desc": "Reflexii pe suprafețe lucioase, bălți, metal."},
 	{"id": "vfog", "tab": "grafica", "label": "Ceață volumetrică", "type": "choice", "choices": ["Dezactivată", "Scăzută", "Medie", "Ridicată", "Ultra"], "p": [0, 1, 2, 3, 4],
 		"desc": "Raze de lumină prin praf și ceață, atmosferă densă. Ultra folosește o grilă 3D foarte fină."},
-	{"id": "glow", "tab": "grafica", "label": "Strălucire (bloom)", "type": "toggle", "p": [1, 1, 1, 1, 1],
-		"desc": "Halou în jurul surselor de lumină puternice."},
+	{"id": "glow", "tab": "grafica", "label": "Strălucire (bloom)", "type": "choice", "choices": ["Dezactivată", "Ușoară", "Completă"], "p": [1, 2, 2, 2, 2],
+		"desc": "Halou în jurul surselor de lumină puternice. „Ușoară” costă o treime pe plăcile integrate."},
 	{"id": "aniso", "tab": "grafica", "label": "Filtrare texturi", "type": "choice", "choices": ["Biliniară", "Anizotropic 2x", "Anizotropic 4x", "Anizotropic 8x", "Anizotropic 16x"], "p": [1, 2, 3, 4, 4],
 		"desc": "Claritatea texturilor văzute din unghi (podele, drumuri)."},
-	{"id": "lod", "tab": "grafica", "label": "Detaliu geometric (LOD)", "type": "choice", "choices": ["Scăzut", "Mediu", "Ridicat", "Ultra"], "values": [4.0, 2.0, 1.0, 0.5], "p": [0, 1, 2, 3, 3],
+	{"id": "lod", "tab": "grafica", "label": "Detaliu geometric (LOD, teren)", "type": "choice", "choices": ["Scăzut", "Mediu", "Ridicat", "Ultra"], "values": [4.0, 2.0, 1.0, 0.5], "p": [0, 1, 2, 3, 3],
 		"desc": "Cât de repede modelele trec la variante simplificate cu distanța."},
 	{"id": "particles", "tab": "grafica", "label": "Particule", "type": "choice", "choices": ["Puține", "Normale", "Multe"], "values": [0.4, 1.0, 1.6], "p": [0, 1, 1, 2, 2],
 		"desc": "Densitatea prafului, cenușii și efectelor (se aplică la următoarea încărcare de nivel)."},
@@ -204,6 +204,8 @@ func _register_inputs() -> void:
 	_bind("map", [KEY_M])
 	_bind("upgrades", [KEY_U])
 	_bind("demolish", [KEY_X])
+	_bind("move_object", [KEY_G])
+	_bind("snap_toggle", [KEY_T])
 	_bind("heal", [KEY_H])
 	_bind("attack", [], [MOUSE_BUTTON_LEFT])
 	_bind("aim", [], [MOUSE_BUTTON_RIGHT])
@@ -373,7 +375,12 @@ func apply_environment(env: Environment, profile: Dictionary = {}) -> void:
 	env.ssr_max_steps = 48 if ssr == 1 else 96
 	var vf := int(v.get("vfog", 2))
 	env.volumetric_fog_enabled = vf > 0 and profile.get("vfog", true)
-	env.glow_enabled = int(v.get("glow", 1)) == 1
+	var glow := int(v.get("glow", 1))
+	env.glow_enabled = glow > 0
+	# light glow: linear upscale and three levels (about a third of the cost on an iGPU)
+	RenderingServer.environment_glow_set_use_bicubic_upscale(glow >= 2)
+	env.set_glow_level(4, 0.6 if glow >= 2 else 0.0)
+	env.set_glow_level(5, 0.4 if glow >= 2 else 0.0)
 	env.tonemap_exposure = float(env.get_meta("base_exposure", 1.0)) * float(v.get("brightness", 1.0))
 	env.adjustment_contrast = float(env.get_meta("base_contrast", 1.0)) * float(v.get("contrast", 1.0))
 	if env.sdfgi_enabled:

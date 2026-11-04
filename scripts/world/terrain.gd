@@ -268,6 +268,8 @@ func _material() -> ShaderMaterial:
 	nt.noise = fn
 	nt.generate_mipmaps = true
 	m.set_shader_parameter("macro_noise", nt)
+	# "Scăzut" geometry detail: single-scale ground sampling (10 fetches instead of 17)
+	m.set_shader_parameter("detail", 0 if int(Settings.opt("lod")) == 0 else 1)
 	return m
 
 

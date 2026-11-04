@@ -30,28 +30,28 @@ const PAINT := {
 	"infirmary": Color(0.75, 0.78, 0.76),
 }
 
+## Keep-out in front of the blast door (XZ), so it can always be reached.
+const BLAST_DOOR_CLEAR := Rect2(-1.6, -14.6, 3.2, 1.9)
+
 var csg: CSGCombiner3D
 var open_rooms: Array = []
-var lights: Array = []  # [{light, base, kind}]
-var grow_lamps: Array[Vector3] = []
+var lights: Array = []  # [{light, base, kind}] — emergency + grow lights
+var deco_lights: Array[DecoLight] = []
+var _shadow_t := 0.0
+var grow_lamps: Array[Node3D] = []
 var planter_nodes: Array[Planter] = []
 var gen_node: Node3D
 var built_nodes := {}  # index -> root node
+## Everything the player can rearrange with [G]: "f:<layout key>" | "b:<built index>" -> root node
+var movables := {}
 var airlock_pivot: Node3D
 var _upgrade_nodes: Array = []
 var gen_sound: AudioStreamPlayer3D
 var _last_power := ""
 var _flicker_t := 0.0
 var _tut_t := 0.0
-
-# build mode
-var build_type := ""
-var ghost: Node3D
-var ghost_rot := 0.0
-var ghost_valid := false
-var ghost_flip := false
-var ghost_ok_mat: StandardMaterial3D
-var ghost_bad_mat: StandardMaterial3D
+## Active build / move placement (null when none).
+var placing: Placement
 
 
 func _ready() -> void:
@@ -84,8 +84,6 @@ func _ready() -> void:
 	_furnish()
 	_spawn_built()
 	_update_lit()
-	ghost_ok_mat = _ghost_mat(Color(0.3, 1.0, 0.45, 0.35))
-	ghost_bad_mat = _ghost_mat(Color(1.0, 0.25, 0.2, 0.35))
 	State.refresh_caps()
 	_apply_upgrade_visuals()
 
@@ -178,12 +176,13 @@ func _ceiling_details(room: String, r: Rect2, h: float) -> void:
 		"green": spots = [Vector3(0, 0, 7.2)]
 		"workshop": spots = [Vector3(-10.8, 0, 10.0)]
 		"infirmary": spots = [Vector3(10.3, 0, 10.0)]
-	for s in spots:
-		var lm := Geo.prop(self, "lamp_cage", Vector3(s.x, h - 0.35, s.z), 0.0, "none")
-		Assets.set_shadows(lm, false)
-		var warm := Color(1.0, 0.8, 0.58) if room != "infirmary" else Color(0.9, 0.95, 1.0)
-		var l := Geo.omni(self, Vector3(s.x, h - 0.45, s.z), warm, 2.8, 12.0)
-		lights.append({"light": l, "base": 2.8, "kind": "main"})
+	# the room's ceiling lamps are regular DecoLights: adjustable with [E], movable with [G]
+	for k in spots.size():
+		var s: Vector3 = spots[k]
+		var key := "lamp_%s_%d" % [room, k]
+		var lay: Dictionary = State.layout.get_or_add(key, {})
+		var cfg: Dictionary = lay.get_or_add("light", {"on": true, "c": 2 if room == "infirmary" else 0, "l": 1.15, "s": true})
+		_fx(_deco_light("lamp", Vector3(s.x, h, s.z), 0.0, cfg), key, "", "Lampă de tavan", "ceiling")
 	# emergency red light by the doorway
 	var em := Geo.omni(self, Vector3(r.get_center().x, h - 0.2, r.get_center().y), Color(1.0, 0.16, 0.08), 0.0, 9.0, false)
 	lights.append({"light": em, "base": 1.5, "kind": "emergency"})
@@ -238,6 +237,7 @@ func _container(key: String, title: String, model: String, pos: Vector3, rot: fl
 	Geo.fit_box(c, m, 1.0, 1.0)
 	c.setup(key, title, items)
 	c.set_ghost(false)
+	_fx(c, "c_" + key, model, title)
 	return c
 
 
@@ -263,29 +263,35 @@ func _furnish_room(room: String) -> void:
 			door.used.connect(func(_by: Node) -> void: _door_use())
 			door.set_ghost(true)
 			_container("airlock_locker", "Dulap ecluză", "locker", Vector3(2.05, 0, -9.0), -PI * 0.5, {"gas_mask": 1, "mask_filter": 2, "geiger": 1})
-			Geo.prop(self, "sandbags", Vector3(-1.5, 0, -12.6), 0.2)
-			Geo.prop(self, "fire_extinguisher", Vector3(2.15, 0, -13.9), 0.0)
+			_fx(Geo.prop(self, "sandbags", Vector3(-1.5, 0, -12.6), 0.2), "airlock_sandbags", "sandbags")
+			_fx(Geo.interact_prop(self, "wooden_crate", Vector3(-2.1, 0, -10.6), 0.35, _tribute_prompt, _tribute_menu), "airlock_tribute", "wooden_crate")
+			_fx(Geo.prop(self, "fire_extinguisher", Vector3(2.15, 0, -13.9), 0.0), "airlock_ext", "fire_extinguisher")
 			Geo.label3d(self, "ECLUZA  ·  OBIECTIVUL 17", Vector3(0, 2.75, -14.55), 0.0, 0.2, Color(0.95, 0.8, 0.3))
 		"hall":
 			# beds keep clear of the storage doorway (west wall, z -1.3..1.3)
-			for z in [-3.9, 3.0]:
-				Geo.interact_prop(self, "bunk_bed", Vector3(-6.45, 0, z), PI * 0.5, func() -> String: return "Pat — Dormi", _sleep_menu)
+			for k in 2:
+				_fx(Geo.interact_prop(self, "bunk_bed", Vector3(-6.45, 0, [-3.9, 3.0][k]), PI * 0.5, func() -> String: return "Pat — Dormi", _sleep_menu), "hall_bed_%d" % k, "bunk_bed")
 			var table := Geo.prop(self, "table_metal", Vector3(0.6, 0, 0.6), 0.0)
 			var ty := _top(table)
-			Geo.prop(self, "chair", Vector3(-0.5, 0, 1.4), PI * 0.6)
-			Geo.prop(self, "chair", Vector3(1.8, 0, -0.2), -PI * 0.4)
-			Geo.prop(self, "canned_food", Vector3(0.2, ty, 0.5), 0.3, "none")
-			Geo.prop(self, "canned_food", Vector3(0.32, ty, 0.62), 1.2, "none")
-			Geo.prop(self, "water_jug", Vector3(1.1, ty, 0.8), 0.0, "none")
+			_fx(table, "hall_table", "table_metal")
+			_fx(Geo.prop(self, "chair", Vector3(-0.5, 0, 1.4), PI * 0.6), "hall_chair_0", "chair")
+			_fx(Geo.prop(self, "chair", Vector3(1.8, 0, -0.2), -PI * 0.4), "hall_chair_1", "chair")
+			_fx(Geo.prop(self, "canned_food", Vector3(0.2, ty, 0.5), 0.3), "hall_can_0", "canned_food")
+			_fx(Geo.prop(self, "canned_food", Vector3(0.32, ty, 0.62), 1.2), "hall_can_1", "canned_food")
+			_fx(Geo.prop(self, "water_jug", Vector3(1.1, ty, 0.8), 0.0), "hall_jug", "water_jug")
 			var radio_table := Geo.prop(self, "table_metal", Vector3(4.9, 0, -5.5), PI)
-			Geo.interact_prop(self, "radio_station", Vector3(4.6, _top(radio_table), -5.5), PI, _radio_prompt, _radio_use)
-			Geo.prop(self, "chair", Vector3(4.6, 0, -4.6), PI)
-			Geo.interact_prop(self, "workbench", Vector3(-3.6, 0, -5.68), PI * 0.5, func() -> String: return "Banc de lucru — Fabrică", func() -> void: HUD.open_panel(CraftPanel.new()))
+			var radio_y := _top(radio_table)
+			_fx(radio_table, "hall_radio_table", "table_metal")
+			_fx(Geo.interact_prop(self, "radio_station", Vector3(4.6, radio_y, -5.5), PI, _radio_prompt, _radio_use), "hall_radio", "radio_station")
+			_fx(Geo.prop(self, "chair", Vector3(4.6, 0, -4.6), PI), "hall_chair_2", "chair")
+			_fx(Geo.interact_prop(self, "workbench", Vector3(-3.6, 0, -5.68), -PI * 0.5, func() -> String: return "Banc de lucru — Fabrică", func() -> void: HUD.open_panel(CraftPanel.new())), "hall_workbench", "workbench")
 			var term_table := Geo.prop(self, "table_metal", Vector3(6.2, 0, 2.6), PI * 0.5)
-			Geo.interact_prop(self, "crt_computer", Vector3(6.2, _top(term_table), 2.6), -PI * 0.5, func() -> String: return "Terminal ZX-17 — Starea buncărului", _terminal)
-			Geo.prop(self, "sofa_old", Vector3(3.2, 0, 4.2), PI)
-			Geo.prop(self, "locker", Vector3(-4.4, 0, 4.55), PI)
-			Geo.prop(self, "fire_extinguisher", Vector3(6.75, 0, -1.6), -PI * 0.5)
+			var term_y := _top(term_table)
+			_fx(term_table, "hall_term_table", "table_metal")
+			_fx(Geo.interact_prop(self, "crt_computer", Vector3(6.2, term_y, 2.6), -PI * 0.5, func() -> String: return "Terminal ZX-17 — Starea buncărului", _terminal), "hall_terminal", "crt_computer")
+			_fx(Geo.prop(self, "sofa_old", Vector3(3.2, 0, 4.2), PI), "hall_sofa", "sofa_old")
+			_fx(Geo.prop(self, "locker", Vector3(-4.4, 0, 4.55), PI), "hall_locker", "locker")
+			_fx(Geo.prop(self, "fire_extinguisher", Vector3(6.75, 0, -1.6), -PI * 0.5), "hall_ext", "fire_extinguisher")
 		"storage":
 			_container("shelf_food", "Raft cu conserve", "metal_shelf", Vector3(-15.65, 0, -2.4), PI * 0.5, {"canned_meat": 4, "canned_beans": 4, "crackers": 3})
 			_container("shelf_water", "Raft cu apă și medicamente", "metal_shelf", Vector3(-15.65, 0, 0.0), PI * 0.5, {"water_bottle": 6, "bandage": 3, "antirad": 2})
@@ -294,43 +300,44 @@ func _furnish_room(room: String) -> void:
 			_container("crate_seeds", "Ladă de stat — rezervă agricolă", "military_crate", Vector3(-11.0, 0, 2.4), 0.0, {"seeds_lettuce": 2, "seeds_tomato": 2, "seed_potato": 2, "spores_mushroom": 2, "soil": 2})
 			_container("fuel_drums", "Canistre de motorină", "jerrycan", Vector3(-13.6, 0, -3.5), 0.0, {"fuel_can": 3})
 			_container("medkit_store", "Trusă de prim ajutor", "first_aid_kit", Vector3(-9.2, 0, -3.6), 0.0, {"medkit": 1, "bandage": 2})
-			Geo.prop(self, "oil_barrel", Vector3(-12.6, 0, -3.4), 0.0)
-			Geo.prop(self, "oil_barrel", Vector3(-12.0, 0, -3.5), 1.0)
-			Geo.prop(self, "metal_shelf", Vector3(-12.0, 0, 2.7), PI)
-			Geo.interact_prop(self, "locker", Vector3(-10.4, 0, -3.55), 0.0, func() -> String: return "Depozitul buncărului — Deschide  (%d obiecte)" % State.stash.size(), func() -> void:
+			_fx(Geo.prop(self, "oil_barrel", Vector3(-12.6, 0, -3.4), 0.0), "storage_barrel_0", "oil_barrel")
+			_fx(Geo.prop(self, "oil_barrel", Vector3(-12.0, 0, -3.5), 1.0), "storage_barrel_1", "oil_barrel")
+			_fx(Geo.prop(self, "metal_shelf", Vector3(-12.0, 0, 2.7), PI), "storage_shelf", "metal_shelf")
+			_fx(Geo.interact_prop(self, "locker", Vector3(-10.4, 0, -3.55), 0.0, func() -> String: return "Depozitul buncărului — Deschide  (%d obiecte)" % State.stash.size(), func() -> void:
 				var inv := InventoryPanel.new()
 				inv.view = "stash"
-				HUD.open_panel(inv))
+				HUD.open_panel(inv)), "storage_stash", "locker", "Depozitul buncărului")
 			Geo.label3d(self, "DEPOZIT", Vector3(-7.95, 2.7, 0), PI * 0.5, 0.25)
 		"tech":
-			gen_node = Geo.interact_prop(self, "diesel_generator", Vector3(13.4, 0, -4.3), 0.0, _gen_prompt, _gen_menu)
+			gen_node = _fx(Geo.interact_prop(self, "diesel_generator", Vector3(13.4, 0, -4.3), 0.0, _gen_prompt, _gen_menu), "tech_generator", "diesel_generator")
+			# fixed installation (wired into the wall)
 			Geo.interact_prop(self, "electrical_panel", Vector3(9.6, 0.9, -4.85), 0.0, func() -> String: return "Panou electric — Consum", _panel_info)
-			Geo.interact_prop(self, "water_tank", Vector3(15.9, 0, 2.9), 0.0, _tank_prompt, _tank_menu)
-			Geo.interact_prop(self, "water_purifier", Vector3(13.0, 0, 3.4), PI, func() -> String: return "Purificator de apă — Purifică", _purifier_menu)
-			Geo.interact_prop(self, "air_filter_unit", Vector3(9.0, 0, 3.2), PI, _air_prompt, _air_menu)
-			Geo.prop(self, "oil_barrel", Vector3(16.4, 0, -4.4), 0.0)
-			Geo.prop(self, "toolbox", Vector3(10.6, 0, -4.5), 0.4)
+			_fx(Geo.interact_prop(self, "water_tank", Vector3(15.9, 0, 2.9), 0.0, _tank_prompt, _tank_menu), "tech_tank", "water_tank")
+			_fx(Geo.interact_prop(self, "water_purifier", Vector3(13.0, 0, 3.4), PI, func() -> String: return "Purificator de apă — Purifică", _purifier_menu), "tech_purifier", "water_purifier")
+			_fx(Geo.interact_prop(self, "air_filter_unit", Vector3(9.0, 0, 3.2), PI, _air_prompt, _air_menu), "tech_fvu", "air_filter_unit")
+			_fx(Geo.prop(self, "oil_barrel", Vector3(16.4, 0, -4.4), 0.0), "tech_barrel", "oil_barrel")
+			_fx(Geo.prop(self, "toolbox", Vector3(10.6, 0, -4.5), 0.4), "tech_toolbox", "toolbox")
 			Geo.label3d(self, "CAMERA TEHNICĂ", Vector3(7.65, 2.7, 0), -PI * 0.5, 0.25)
 		"green":
-			_planter("g1", "planter", Vector3(-2.6, 0, 8.6), 0.0)
-			_planter("g2", "planter", Vector3(-2.6, 0, 11.6), 0.0)
-			_planter("g3", "planter", Vector3(2.6, 0, 8.6), 0.0)
-			_planter("m1", "mushroom_bed", Vector3(2.6, 0, 13.2), 0.0)
-			_grow_lamp(Vector3(-2.6, 0, 10.1), false)
-			_grow_lamp(Vector3(2.6, 0, 7.4), false)
-			Geo.prop(self, "bucket", Vector3(0.6, 0, 14.0), 0.0)
+			_fx(_planter("g1", "planter", Vector3(-2.6, 0, 8.6), 0.0), "planter_g1", "planter_box")
+			_fx(_planter("g2", "planter", Vector3(-2.6, 0, 11.6), 0.0), "planter_g2", "planter_box")
+			_fx(_planter("g3", "planter", Vector3(2.6, 0, 8.6), 0.0), "planter_g3", "planter_box")
+			_fx(_planter("m1", "mushroom_bed", Vector3(2.6, 0, 13.2), 0.0), "planter_m1", "planter_box", "Pat de ciuperci")
+			_fx(_grow_lamp(Vector3(-2.6, 0, 10.1), false), "grow_0", "", "Lampă de creștere")
+			_fx(_grow_lamp(Vector3(2.6, 0, 7.4), false), "grow_1", "", "Lampă de creștere")
+			_fx(Geo.prop(self, "bucket", Vector3(0.6, 0, 14.0), 0.0), "green_bucket", "bucket")
 			Geo.label3d(self, "SERA", Vector3(0, 2.7, 5.65), PI, 0.25)
 		"workshop":
 			_container("ws_toolbox", "Trusă de scule", "toolbox", Vector3(-15.4, 0.0, 7.0), PI * 0.5, {"electronics": 3, "duct_tape": 2, "scrap": 4})
 			_container("ws_locker", "Dulap vechi", "locker", Vector3(-15.6, 0, 9.4), PI * 0.5, {"cloth": 3, "battery_cell": 2, "electronics": 1})
 			_container("ws_crates", "Lăzi sovietice", "military_crate", Vector3(-12.0, 0, 13.4), PI, {"wood": 6, "pipe": 2, "gunpowder": 2, "canned_meat": 3})
-			Geo.prop(self, "workbench", Vector3(-10.5, 0, 6.5), 0.0)
-			Geo.prop(self, "car_battery", Vector3(-8.2, 0, 13.4), 0.0)
+			_fx(Geo.prop(self, "workbench", Vector3(-10.5, 0, 6.32), -PI * 0.5), "ws_workbench", "workbench")
+			_fx(Geo.prop(self, "car_battery", Vector3(-8.2, 0, 13.4), 0.0), "ws_battery", "car_battery")
 		"infirmary":
 			_container("inf_kit", "Dulap medical", "first_aid_kit", Vector3(14.6, 0.9, 8.0), -PI * 0.5, {"medkit": 2, "bandage": 4, "antirad": 3})
 			_container("inf_locker", "Dulap infirmerie", "locker", Vector3(14.6, 0, 11.4), -PI * 0.5, {"cloth": 4, "plastic": 2, "charcoal": 2, "air_filter": 1})
-			Geo.interact_prop(self, "bunk_bed", Vector3(8.0, 0, 13.4), 0.0, func() -> String: return "Pat — Dormi", _sleep_menu)
-			Geo.prop(self, "fridge_old", Vector3(6.2, 0, 13.4), 0.0)
+			_fx(Geo.interact_prop(self, "bunk_bed", Vector3(8.0, 0, 13.4), 0.0, func() -> String: return "Pat — Dormi", _sleep_menu), "inf_bed", "bunk_bed")
+			_fx(Geo.prop(self, "fridge_old", Vector3(6.2, 0, 13.4), 0.0), "inf_fridge", "fridge_old")
 
 
 func _planter(key: String, bed: String, pos: Vector3, rot: float, model := "planter_box") -> Planter:
@@ -344,29 +351,42 @@ func _planter(key: String, bed: String, pos: Vector3, rot: float, model := "plan
 	return p
 
 
+## Grow-light stand (pole + magenta bar); a StaticBody so it can be aimed at and moved.
 func _grow_lamp(pos: Vector3, built: bool) -> Node3D:
-	var root := Node3D.new()
+	var root := StaticBody3D.new()
 	add_child(root)
 	root.position = pos
-	var pole_m := Assets.pbr("painted_metal", {"tile": 1.0, "fallback": Color(0.3, 0.3, 0.3)})
-	Geo.cylinder(root, 0.03, 2.4, Vector3(0, 1.2, 0), pole_m)
-	var bar := Geo.mesh_box(root, Vector3(1.2, 0.06, 0.18), Vector3(0, 2.4, 0), Geo.emissive_mat(Color(1.0, 0.45, 0.85), 4.0))
-	bar.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_grow_lamp_mesh(root)
+	var cs := CollisionShape3D.new()
+	var sh := BoxShape3D.new()
+	sh.size = Vector3(0.12, 2.4, 0.12)
+	cs.shape = sh
+	cs.position.y = 1.2
+	root.add_child(cs)
+	var bar: MeshInstance3D = root.get_meta("bar")
 	var l := Geo.omni(root, Vector3(0, 2.25, 0), Color(1.0, 0.55, 0.85), 1.2, 4.5, false)
 	lights.append({"light": l, "base": 1.2, "kind": "grow", "mesh": bar})
-	grow_lamps.append(pos)
-	root.set_meta("lamp_pos", pos)
+	grow_lamps.append(root)
 	if built:
 		_apply_power(true)
 	return root
 
 
+func _grow_lamp_mesh(root: Node3D) -> void:
+	var pole_m := Assets.pbr("painted_metal", {"tile": 1.0, "fallback": Color(0.3, 0.3, 0.3)})
+	Geo.cylinder(root, 0.03, 2.4, Vector3(0, 1.2, 0), pole_m)
+	var bar := Geo.mesh_box(root, Vector3(1.2, 0.06, 0.18), Vector3(0, 2.4, 0), Geo.emissive_mat(Color(1.0, 0.45, 0.85), 4.0))
+	bar.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.set_meta("bar", bar)
+
+
 func _update_lit() -> void:
 	planter_nodes = planter_nodes.filter(func(x) -> bool: return is_instance_valid(x) and not x.is_queued_for_deletion())
+	grow_lamps = grow_lamps.filter(func(x) -> bool: return is_instance_valid(x) and not x.is_queued_for_deletion())
 	for p in planter_nodes:
 		var lit: bool = p.has_meta("self_lit")
 		for g in grow_lamps:
-			if Vector2(p.position.x - g.x, p.position.z - g.z).length() < 3.2:
+			if Vector2(p.position.x - g.position.x, p.position.z - g.position.z).length() < 3.2:
 				lit = true
 				break
 		State.planters[p.key]["lit"] = lit
@@ -384,30 +404,35 @@ func _spawn_built_one(i: int) -> void:
 		return
 	var p: Array = b.p
 	var pos := Vector3(p[0], p[1], p[2])
-	var rot := float(b.get("r", 0.0))
-	var before := get_child_count()
-	_spawn_built_type(i, type, pos, rot)
-	# the first node added for this entry is its root
-	if get_child_count() > before:
-		var root := get_child(before)
-		root.set_meta("built_index", i)
-		built_nodes[i] = root
-		for k in range(before + 1, get_child_count()):
-			get_child(k).set_meta("built_extra", i)
-
-
-func _spawn_built_type(i: int, type: String, pos: Vector3, rot: float) -> void:
 	var def: Dictionary = ItemDB.BUILDABLES[type]
+	# saves from before ceiling mounting stored lamps at floor height
+	if def.get("mount", "floor") == "ceiling" and pos.y < 1.0:
+		pos.y = ceiling_at(pos)
+		b["p"] = [pos.x, pos.y, pos.z]
+	var root := _spawn_built_type(i, type, pos, float(b.get("r", 0.0)), b)
+	if root == null:
+		return
+	root.set_meta("built_index", i)
+	built_nodes[i] = root
+	_register(root, "b:%d" % i, def.name, def.get("mount", "floor"), def.get("wall", false))
+
+
+## Spawns built entry `i` and returns its root node (everything else is parented to it).
+func _spawn_built_type(i: int, type: String, pos: Vector3, rot: float, b: Dictionary) -> Node3D:
+	var def: Dictionary = ItemDB.BUILDABLES[type]
+	if DecoLight.is_light(type):
+		return _deco_light(type, pos, rot, b.get_or_add("light", DecoLight.default_cfg(type)))
 	match type:
 		"planter", "mushroom_bed":
-			_planter("b%d" % i, type, pos, rot)
+			return _planter("b%d" % i, type, pos, rot)
 		"hydro_rack":
 			var pl := _planter("b%d" % i, "planter", pos, rot, "hydroponic_rack")
 			pl.set_meta("self_lit", true)
+			return pl
 		"grow_lamp":
-			_grow_lamp(pos, true)
+			return _grow_lamp(pos, true)
 		"stove":
-			Geo.interact_prop(self, def.model, pos, rot, func() -> String: return "Aragaz de campanie — Gătește", func() -> void: HUD.open_panel(CraftPanel.new("stove")))
+			return Geo.interact_prop(self, def.model, pos, rot, func() -> String: return "Aragaz de campanie — Gătește", func() -> void: HUD.open_panel(CraftPanel.new("stove")))
 		"bike_generator":
 			var it := Interactable.new()
 			add_child(it)
@@ -423,18 +448,28 @@ func _spawn_built_type(i: int, type: String, pos: Vector3, rot: float) -> void:
 			it.prompt_func = func() -> String: return "Pedalează 1 oră (baterii %d%%)" % roundi(State.battery / State.battery_max * 100.0)
 			it.hold_time = 1.0
 			it.used.connect(func(_by: Node) -> void: _pedal())
+			return it
 		"bed":
-			Geo.interact_prop(self, "bunk_bed", pos, rot, func() -> String: return "Pat — Dormi", _sleep_menu)
-		"lamp":
-			var lm := Geo.prop(self, "lamp_cage", Vector3(pos.x, H - 0.35, pos.z), rot, "none")
-			var l := Geo.omni(self, Vector3(pos.x, H - 0.5, pos.z), Color(1.0, 0.8, 0.58), 1.2, 7.0, false)
-			lights.append({"light": l, "base": 1.2, "kind": "main"})
-			lm.set_meta("built", i)
+			return Geo.interact_prop(self, "bunk_bed", pos, rot, func() -> String: return "Pat — Dormi", _sleep_menu)
 		"water_collector":
-			Geo.interact_prop(self, def.model, pos, rot, func() -> String: return "Condensator de apă — %s" % ("funcționează" if State.power_state() == "gen" else "fără curent"), func() -> void: pass)
+			return Geo.interact_prop(self, def.model, pos, rot, func() -> String: return "Condensator de apă — %s" % ("funcționează" if State.power_state() == "gen" else "fără curent"), func() -> void:
+				var n := State.building_count("water_collector")
+				HUD.toast("Condensatoare: %d → ~%d L de apă pe zi%s" % [n, roundi(6.0 * n), "" if State.power_state() == "gen" else " (oprite: fără curent)"], "info"))
 		_:
 			if def.model != "":
-				Geo.prop(self, def.model, pos, rot)
+				return Geo.prop(self, def.model, pos, rot)
+	return null
+
+
+func _deco_light(type: String, pos: Vector3, rot: float, cfg: Dictionary) -> DecoLight:
+	var dl := DecoLight.new()
+	add_child(dl)
+	dl.position = pos
+	dl.rotation.y = rot
+	dl.setup(type, cfg)
+	dl.apply_power(State.power_state())
+	deco_lights.append(dl)
+	return dl
 
 
 func _bike_mesh(parent: Node3D) -> void:
@@ -485,12 +520,12 @@ func demolish(i: int) -> void:
 	for c in get_children():
 		if c.get_meta("built_index", -1) == i or c.get_meta("built_extra", -1) == i:
 			pos = c.global_position if c is Node3D else pos
-			if c.has_meta("lamp_pos"):
-				grow_lamps.erase(c.get_meta("lamp_pos"))
 			c.queue_free()
 	built_nodes.erase(i)
+	movables.erase("b:%d" % i)
 	State.planters.erase("b%d" % i)
 	lights = lights.filter(func(e) -> bool: return is_instance_valid(e.light) and not (e.light as Node).is_queued_for_deletion() and not _freed_parent(e.light))
+	deco_lights = deco_lights.filter(func(d) -> bool: return is_instance_valid(d) and not d.is_queued_for_deletion())
 	State.refresh_caps()
 	_update_lit.call_deferred()
 	_dust_puff(pos)
@@ -556,14 +591,14 @@ func map_config() -> Dictionary:
 		markers.append({"pos": pos, "icon": icon, "color": col, "label": label, "small": small})
 	var ps := State.power_state()
 	add.call(Vector3(0, 0, -13.6), "objective", Color(1.0, 0.35, 0.25), "Ușa blindată")
-	add.call(Vector3(13.4, 0, -4.3), "power", UITheme.GOOD if ps == "gen" else UITheme.DANGER, "Generator %.0f L" % State.fuel)
-	add.call(Vector3(15.9, 0, 2.9), "water", UITheme.RADIO, "Apă %d L" % roundi(State.water))
-	add.call(Vector3(9.0, 0, 3.2), "air", UITheme.WARN if State.air_filter < 30.0 else UITheme.TEXT, "FVU %d%%" % roundi(State.air_filter))
-	add.call(Vector3(4.6, 0, -5.5), "radio", UITheme.ACCENT if not State.pending_radio().is_empty() else UITheme.TEXT, "Radio")
-	add.call(Vector3(-3.6, 0, -5.7), "tool", UITheme.TEXT, "Banc de lucru")
-	add.call(Vector3(-10.4, 0, -3.55), "res", UITheme.TEXT, "Depozit")
-	for z in [-3.9, 3.0]:
-		add.call(Vector3(-6.45, 0, z), "energy", UITheme.TEXT_DIM, "", true)
+	add.call(_pos_of("tech_generator", Vector3(13.4, 0, -4.3)), "power", UITheme.GOOD if ps == "gen" else UITheme.DANGER, "Generator %.0f L" % State.fuel)
+	add.call(_pos_of("tech_tank", Vector3(15.9, 0, 2.9)), "water", UITheme.RADIO, "Apă %d L" % roundi(State.water))
+	add.call(_pos_of("tech_fvu", Vector3(9.0, 0, 3.2)), "air", UITheme.WARN if State.air_filter < 30.0 else UITheme.TEXT, "FVU %d%%" % roundi(State.air_filter))
+	add.call(_pos_of("hall_radio", Vector3(4.6, 0, -5.5)), "radio", UITheme.ACCENT if not State.pending_radio().is_empty() else UITheme.TEXT, "Radio")
+	add.call(_pos_of("hall_workbench", Vector3(-3.6, 0, -5.7)), "tool", UITheme.TEXT, "Banc de lucru")
+	add.call(_pos_of("storage_stash", Vector3(-10.4, 0, -3.55)), "res", UITheme.TEXT, "Depozit")
+	for k in 2:
+		add.call(_pos_of("hall_bed_%d" % k, Vector3(-6.45, 0, [-3.9, 3.0][k])), "energy", UITheme.TEXT_DIM, "", true)
 	for p in planter_nodes:
 		if is_instance_valid(p):
 			var d := p.data()
@@ -585,7 +620,13 @@ func map_config() -> Dictionary:
 			["seed", UITheme.GOOD, "Cultură gata de recoltat"], ["seed", UITheme.WARN, "Cultură care trebuie udată"], ["weight", UITheme.WARN, "Dărâmături de săpat"],
 			["objective", Color(1.0, 0.35, 0.25), "Ieșirea la suprafață"]],
 		"info": ["Confort: %d  ·  Îmbunătățiri: %d/%d" % [roundi(State.comfort()), State.upgrades.size(), ItemDB.UPGRADES.size()],
-			"[U] dezvoltare  ·  [B] construcție  ·  [X] demontează"]}
+			"[U] dezvoltare  ·  [B] construcție  ·  [G] mută  ·  [X] demontează"]}
+
+
+## Current position of a movable default piece (falls back to where it ships).
+func _pos_of(key: String, fallback: Vector3) -> Vector3:
+	var n: Node3D = movables.get("f:" + key)
+	return n.global_position if n and is_instance_valid(n) else fallback
 
 
 func on_upgrade(_id: String) -> void:
@@ -606,12 +647,13 @@ func _apply_upgrade_visuals() -> void:
 			_upgrade_nodes.append(Geo.box(self, Vector3(3.6, 0.12, 0.14), Vector3(0, 0.6 + k * 0.8, -13.45), steel))
 	if State.has_up("battery_2"):
 		for k in 4:
-			_upgrade_nodes.append(Geo.prop(self, "car_battery", Vector3(8.4 + k * 0.38, 0, -4.6), 0.0))
+			_upgrade_nodes.append(_fx(Geo.prop(self, "car_battery", Vector3(8.4 + k * 0.38, 0, -4.6), 0.0), "up_battery_%d" % k, "car_battery"))
 	if State.has_up("well") and open_rooms.has("workshop"):
-		var w := Geo.interact_prop(self, "water_purifier", Vector3(-7.2, 0, 12.8), PI, func() -> String: return "Puț de adâncime — +10 L/zi", func() -> void: pass)
-		_upgrade_nodes.append(w)
+		var w := Geo.interact_prop(self, "water_purifier", Vector3(-7.2, 0, 12.8), PI, func() -> String: return "Puț de adâncime — +10 L/zi", func() -> void:
+			HUD.toast("Puțul aduce 10 L de apă pe zi, fără curent. Rezervă: %d / %d L" % [roundi(State.water), roundi(State.WATER_MAX)], "info"))
+		_upgrade_nodes.append(_fx(w, "up_well", "water_purifier", "Puț de adâncime"))
 	if State.has_up("armory") and Assets.has_model("weapon_rack"):
-		_upgrade_nodes.append(Geo.prop(self, "weapon_rack", Vector3(-2.05, 0, -8.0), PI * 0.5))
+		_upgrade_nodes.append(_fx(Geo.prop(self, "weapon_rack", Vector3(-2.05, 0, -8.0), PI * 0.5), "up_rack", "weapon_rack"))
 	if State.has_up("radio_2"):
 		var mast := Assets.pbr("painted_metal", {"tile": 1.0})
 		_upgrade_nodes.append(Geo.cylinder(self, 0.03, 2.8, Vector3(6.6, 1.4, -5.8), mast))
@@ -621,6 +663,44 @@ func _apply_upgrade_visuals() -> void:
 
 func _door_prompt() -> String:
 	return "Ușa blindată — Ieși la suprafață"
+
+
+## The crate by the airlock where the Corbii want their "protection" supplies left.
+func _tribute_prompt() -> String:
+	match String(State.flags.get("corbii", "")):
+		"threat":
+			return "Ladă pentru Corbi — Lasă proviziile cerute (termen: ziua %d)" % int(State.flags.get("corbii_deadline", 0))
+		"paid":
+			return "Ladă pentru Corbi — Goală. Au luat tot peste noapte"
+		"repelled":
+			return "Ladă pentru Corbi — Nu mai are rost"
+		"raided":
+			return "Ladă pentru Corbi — Prea târziu"
+	return ""
+
+
+func _tribute_menu() -> void:
+	if String(State.flags.get("corbii", "")) != "threat":
+		return
+	var food := State.available("canned_meat") + State.available("canned_beans")
+	var water := State.available("water_bottle")
+	var ok := food >= 7 and water >= 7
+	HUD.choose("Corbii", "„Lăsați lângă intrare provizii pentru o săptămână sau intrăm noi după ele.” Termen: ziua %d.\nAi conserve %d / 7 și apă %d / 7. Apărarea buncărului: %.1f (bare la ușă, alarmă, saci de nisip, armurerie; de la 2 ușa ține)." % [int(State.flags.get("corbii_deadline", 0)), food, water, State.corbii_defense()], [
+		{"text": "Lasă 7 conserve și 7 sticle de apă", "enabled": ok, "cb": func() -> void:
+			var left := 7
+			for id in ["canned_meat", "canned_beans"]:
+				var n := mini(left, State.available(id))
+				if n > 0:
+					State.take(id, n)
+					left -= n
+			State.take("water_bottle", 7)
+			State.flags["corbii"] = "paid"
+			State.flags["corbii_paid"] = true
+			Audio.sfx("pickup", -3.0)
+			HUD.toast("Ai lăsat proviziile în ladă. Rămâne de văzut dacă se țin de cuvânt.", "info")},
+		{"text": "Nu le dau nimic. Să vină.", "cb": func() -> void:
+			HUD.toast("Ușa blindată și apărarea ta vor decide. Barele de oțel și sacii de nisip ajută.", "warn")},
+	])
 
 
 func _door_use() -> void:
@@ -672,9 +752,10 @@ func _gen_menu() -> void:
 
 func _panel_info() -> void:
 	var ps := State.power_state()
-	var info := "Sursă: %s\nGenerator: %.2f L/oră (lămpi de creștere: %d, condensatoare: %d)\nBaterii: %d / %d%%" % [
+	var on := deco_lights.filter(func(d) -> bool: return is_instance_valid(d) and bool(d.cfg.get("on", true))).size()
+	var info := "Sursă: %s\nGenerator: %.2f L/oră (lămpi de creștere: %d, condensatoare: %d, lumini: %.3f L/oră)\nLumini aprinse: %d din %d\nBaterii: %d / %d%%" % [
 		{"gen": "generator", "battery": "baterii de avarie", "none": "NICIUNA"}[ps], State.fuel_rate(), State.grow_lamp_count(),
-		State.building_count("water_collector"), roundi(State.battery), roundi(State.battery_max)]
+		State.building_count("water_collector"), State.light_power() * State.mul("fuel"), on, deco_lights.size(), roundi(State.battery), roundi(State.battery_max)]
 	HUD.choose("Panou electric", info, [{"text": "OK", "cb": func() -> void: pass}])
 
 
@@ -698,13 +779,14 @@ func _tank_menu() -> void:
 func _purifier_menu() -> void:
 	var n := State.available("dirty_water")
 	var powered := State.power_state() == "gen"
-	HUD.choose("Purificator de apă", "Transformă apa murdară adusă de la suprafață în apă potabilă (5 L / canistră, 30 min). Are nevoie de generator.%s" % ("" if powered else "\nGENERATORUL E OPRIT."), [
+	var per := 5.0 * State.mul("purify")  # "Membrană de osmoză" doubles the yield
+	HUD.choose("Purificator de apă", "Transformă apa murdară adusă de la suprafață în apă potabilă (%d L / canistră, 30 min). Are nevoie de generator.%s" % [roundi(per), "" if powered else "\nGENERATORUL E OPRIT."], [
 		{"text": "Purifică toată apa murdară (ai %d canistre)" % n, "enabled": n > 0 and powered, "cb": func() -> void:
 			State.take("dirty_water", n)
 			State.simulate(30.0 * n, false)
-			State.water = minf(State.water + 5.0 * n, State.WATER_MAX)
+			State.water = minf(State.water + per * n, State.WATER_MAX)
 			Audio.sfx("water_pour", -2.0)
-			HUD.toast("+%d L apă potabilă" % (5 * n), "good")},
+			HUD.toast("+%d L apă potabilă" % roundi(per * n), "good")},
 	])
 
 
@@ -783,6 +865,9 @@ func _apply_power(force := false) -> void:
 				l.light_energy = e.base if ps == "gen" else 0.0
 				if e.has("mesh"):
 					(e.mesh as MeshInstance3D).visible = ps == "gen"
+	for d in deco_lights:
+		if is_instance_valid(d):
+			d.apply_power(ps)
 	if gen_node:
 		var running := ps == "gen"
 		if running and gen_sound == null:
@@ -795,20 +880,34 @@ func _apply_power(force := false) -> void:
 
 func _process(delta: float) -> void:
 	_apply_power()
+	_shadow_t -= delta
+	if _shadow_t <= 0.0:
+		_shadow_t = 0.3
+		_shadow_budget()
 	_flicker_t -= delta
 	if _flicker_t <= 0.0 and State.power_state() == "gen":
 		_flicker_t = randf_range(4.0, 14.0)
-		var mains := lights.filter(func(e) -> bool: return e.kind == "main")
+		var mains := deco_lights.filter(func(d) -> bool: return is_instance_valid(d) and d.rig.get("flicker", false) and d.is_lit())
 		if not mains.is_empty():
-			var e: Dictionary = mains[randi() % mains.size()]
-			var l: Light3D = e.light
-			var tw := create_tween()
-			for i in randi_range(2, 6):
-				tw.tween_property(l, "light_energy", e.base * randf_range(0.05, 0.4), 0.04)
-				tw.tween_property(l, "light_energy", e.base, randf_range(0.03, 0.12))
+			(mains[randi() % mains.size()] as DecoLight).flicker(randi_range(2, 6))
 	_tutorial(delta)
-	if build_type != "":
-		_update_ghost()
+
+
+## Only the few lamps nearest the player cast shadows: every shadowed omni light
+## renders the bunker six more times per frame.
+func _shadow_budget() -> void:
+	if player == null:
+		return
+	var n: int = [2, 3, 4, 6][clampi(int(Settings.opt("shadows")), 0, 3)]
+	var cands: Array[DecoLight] = []
+	for d in deco_lights:
+		if is_instance_valid(d) and bool(d.cfg.get("s", false)) and d.is_lit():
+			cands.append(d)
+	var pp := player.global_position
+	cands.sort_custom(func(a: DecoLight, b: DecoLight) -> bool:
+		return a.global_position.distance_squared_to(pp) < b.global_position.distance_squared_to(pp))
+	for i in cands.size():
+		cands[i].set_shadow_ok(i < n)
 
 
 func _tutorial(delta: float) -> void:
@@ -847,166 +946,204 @@ func _tutorial(delta: float) -> void:
 			if State.day >= 2:
 				State.flags["tut"] = 5
 		5:
-			HUD.objective("Ziua %d — supraviețuiește. [B] construcție · [Tab] inventar" % State.day)
+			HUD.objective("Ziua %d — supraviețuiește. [B] construcție · [G] mută mobila · [Tab] inventar" % State.day)
 			State.flags["tut"] = 6
 		_:
 			HUD.objective("")
 
 
 # --------------------------------------------------------------------------
-# Build mode
+# Build & arrange mode
 # --------------------------------------------------------------------------
 
-func _ghost_mat(c: Color) -> StandardMaterial3D:
-	var m := StandardMaterial3D.new()
-	m.albedo_color = c
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.no_depth_test = false
-	return m
+## Registers a piece of furniture that ships with the bunker as movable ([G]) and
+## applies the position the player gave it (State.layout). Returns the node.
+func _fx(n: Node3D, key: String, model := "", title := "", mount := "floor") -> Node3D:
+	var lay: Dictionary = State.layout.get(key, {})
+	if lay.has("p"):
+		var p: Array = lay.p
+		n.position = Vector3(p[0], p[1], p[2])
+		n.rotation.y = float(lay.get("r", n.rotation.y))
+	var info: Dictionary = ItemDB.PROPS.get(model, {})
+	_register(n, "f:" + key, title if title != "" else info.get("name", "Obiect"), mount, info.get("wall", false))
+	return n
 
 
-func start_build(type: String) -> void:
-	cancel_build()
-	build_type = type
-	Game.build_mode_active = true
-	var def: Dictionary = ItemDB.BUILDABLES[type]
-	ghost = Node3D.new()
-	add_child(ghost)
-	if def.model != "":
-		ghost.add_child(Assets.model(def.model))
-	else:
-		var holder := Node3D.new()
-		ghost.add_child(holder)
-		_bike_mesh(holder)
-	Assets.set_shadows(ghost, false)
-	HUD.set_build_hint("CONSTRUCȚIE: %s — click stânga plasează · R / rotița rotește · Esc / click dreapta anulează\nCost: %s" % [def.name, ItemDB.cost_text(def.cost)])
+func _register(n: Node3D, key: String, title: String, mount: String, wall: bool) -> void:
+	n.set_meta("mv_key", key)
+	n.set_meta("mv_name", title)
+	n.set_meta("mv_mount", mount)
+	n.set_meta("mv_wall", wall)
+	movables[key] = n
 
 
-func cancel_build() -> void:
-	if ghost:
-		ghost.queue_free()
-		ghost = null
-	build_type = ""
-	Game.build_mode_active = false
-	HUD.set_build_hint("")
+## Ceiling height above `p` (the airlock is lower than the other rooms).
+func ceiling_at(p: Vector3) -> float:
+	return 3.0 if ROOMS.airlock.has_point(Vector2(p.x, p.z)) else H
 
 
-func _update_ghost() -> void:
-	if ghost == null or player == null:
-		return
-	var cam := player.cam
-	var space := get_world_3d().direct_space_state
-	var from := cam.global_position
-	var to := from - cam.global_basis.z * 6.0
-	var q := PhysicsRayQueryParameters3D.create(from, to, 1)
-	q.exclude = [player.get_rid()]
-	var r := space.intersect_ray(q)
-	var def: Dictionary = ItemDB.BUILDABLES[build_type]
-	ghost_valid = false
-	if not r.is_empty() and (r.normal as Vector3).y > 0.8 and (r.position as Vector3).y < 0.3:
-		var p: Vector3 = r.position
-		p.x = snappedf(p.x, 0.25)
-		p.z = snappedf(p.z, 0.25)
-		p.y = 0.0
-		ghost.global_position = p
-		ghost.rotation.y = ghost_rot
-		if def.get("wall", false):
-			_snap_to_wall(ghost, def.size)
-		ghost.visible = true
-		ghost_valid = _inside_rooms(p, def.size) and _free_space(p, def.size) and p.distance_to(player.global_position) > 0.9 and State.has_all(def.cost)
-	else:
-		ghost.visible = false
-	var mat := ghost_ok_mat if ghost_valid else ghost_bad_mat
-	Assets.for_each_geometry(ghost, func(g: GeometryInstance3D) -> void: g.material_override = mat)
-
-
-## Pushes wall-type furniture flush against the nearest wall, facing the room.
-func _snap_to_wall(g: Node3D, size: Vector3) -> void:
-	var space := get_world_3d().direct_space_state
-	var best := 1.1
-	var best_n := Vector3.ZERO
-	var best_p := Vector3.ZERO
-	var from := g.global_position + Vector3.UP * 0.6
-	for d in [Vector3.RIGHT, Vector3.LEFT, Vector3.FORWARD, Vector3.BACK]:
-		var q := PhysicsRayQueryParameters3D.create(from, from + d * 1.1, 1)
-		q.exclude = [player.get_rid()]
-		var r := space.intersect_ray(q)
-		if not r.is_empty() and r.collider == csg:
-			var dist := from.distance_to(r.position)
-			if dist < best:
-				best = dist
-				best_n = r.normal
-				best_p = r.position
-	if best_n != Vector3.ZERO:
-		var yaw := atan2(best_n.x, best_n.z) + (PI if ghost_flip else 0.0)
-		g.rotation.y = yaw
-		var depth := size.z * 0.5 + 0.03
-		var np := best_p + best_n * depth
-		g.global_position = Vector3(np.x, 0.0, np.z)
-		ghost_rot = yaw
-
-
-func _inside_rooms(p: Vector3, size: Vector3) -> bool:
-	var half := maxf(size.x, size.z) * 0.5
+## The open room containing every footprint corner ("" = none).
+func room_at(corners: PackedVector2Array) -> String:
 	for room in open_rooms:
-		var r: Rect2 = ROOMS[room]
-		if p.x - half > r.position.x + 0.1 and p.x + half < r.end.x - 0.1 and p.z - half > r.position.y + 0.1 and p.z + half < r.end.y - 0.1:
+		var r: Rect2 = (ROOMS[room] as Rect2).grow(0.02)
+		var inside := true
+		for c in corners:
+			if not r.has_point(c):
+				inside = false
+				break
+		if inside:
+			return room
+	return ""
+
+
+## True when a floor footprint would narrow a doorway (open or still to be dug) or
+## stand in front of the blast door.
+func blocks_passage(corners: PackedVector2Array) -> bool:
+	var zones: Array[Rect2] = [BLAST_DOOR_CLEAR]
+	for d in DOORS:
+		zones.append((d as Rect2).grow(0.55))
+	for k in DIGS:
+		zones.append((DIGS[k].door as Rect2).grow(0.55))
+	for z in zones:
+		var poly := PackedVector2Array([z.position, Vector2(z.end.x, z.position.y), z.end, Vector2(z.position.x, z.end.y)])
+		if not Geometry2D.intersect_polygons(corners, poly).is_empty():
 			return true
 	return false
 
 
-func _free_space(p: Vector3, size: Vector3) -> bool:
-	var space := get_world_3d().direct_space_state
-	var q := PhysicsShapeQueryParameters3D.new()
-	var sh := BoxShape3D.new()
-	sh.size = Vector3(size.x * 0.9, maxf(size.y - 0.2, 0.2), size.z * 0.9)
-	q.shape = sh
-	q.transform = Transform3D(Basis(Vector3.UP, ghost_rot), p + Vector3(0, size.y * 0.5 + 0.1, 0))
-	q.collision_mask = 1 | 2
-	var hits := space.intersect_shape(q, 8)
-	for h in hits:
-		if h.collider != csg:
-			return false
-	return true
+func start_build(type: String) -> void:
+	cancel_build()
+	var def: Dictionary = ItemDB.BUILDABLES[type]
+	var g := _make_preview(type)
+	add_child(g)
+	g.global_position = player.global_position - player.global_basis.z * 2.0
+	var p := Placement.new()
+	p.level = self
+	p.target = g
+	p.preview = true
+	p.title = "Construiește: " + def.name
+	p.cost_line = "Cost: " + ItemDB.cost_text(def.cost) + ("   ·   " + ItemDB.MOUNT_NAMES[def.mount] if def.has("mount") else "")
+	p.mount = def.get("mount", "floor")
+	p.wall_furniture = def.get("wall", false)
+	p.extra_check = func() -> String: return "" if State.has_all(def.cost) else "Materiale insuficiente"
+	p.done.connect(_on_build_done.bind(p, type))
+	placing = p
+	add_child(p)
 
 
-func _place() -> void:
-	if not ghost_valid:
-		Audio.sfx("ui_click", -2.0)
+func cancel_build() -> void:
+	if placing and is_instance_valid(placing):
+		placing.cancel()
+	placing = null
+
+
+## What build mode shows under the crosshair: the real fixture / model, never collidable.
+func _make_preview(type: String) -> Node3D:
+	var def: Dictionary = ItemDB.BUILDABLES[type]
+	if DecoLight.is_light(type):
+		var dl := DecoLight.new().setup(type, DecoLight.default_cfg(type), true)
+		dl.apply_power(State.power_state())
+		return dl
+	var root := Node3D.new()
+	match type:
+		"bike_generator":
+			_bike_mesh(root)
+		"grow_lamp":
+			_grow_lamp_mesh(root)
+		_:
+			root.add_child(Assets.model(def.model))
+	Assets.set_shadows(root, false)
+	return root
+
+
+func _on_build_done(ok: bool, p: Placement, type: String) -> void:
+	placing = null
+	var xf := p.target.global_transform
+	p.target.queue_free()
+	if not ok:
 		return
-	var def: Dictionary = ItemDB.BUILDABLES[build_type]
+	var def: Dictionary = ItemDB.BUILDABLES[type]
 	if not State.consume(def.cost):
 		return
-	var p := ghost.global_position
-	State.built.append({"type": build_type, "p": [p.x, p.y, p.z], "r": ghost_rot})
+	var pos := xf.origin
+	State.built.append({"type": type, "p": [pos.x, pos.y, pos.z], "r": xf.basis.get_euler().y})
 	var idx := State.built.size() - 1
 	_spawn_built_one(idx)
 	State.refresh_caps()
 	if built_nodes.has(idx) and built_nodes[idx] is Node3D:
 		var n: Node3D = built_nodes[idx]
-		n.scale = Vector3(0.6, 0.05, 0.6)
+		n.scale = Vector3(0.6, 0.05, 0.6) if def.get("mount", "floor") == "floor" else Vector3(0.6, 0.6, 0.6)
 		create_tween().tween_property(n, "scale", Vector3.ONE, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	_dust_puff(p)
+	_dust_puff(pos)
 	Audio.sfx("build_place", -2.0)
 	_update_lit()
 	Audio.sfx("craft", -2.0)
 	HUD.toast("Construit: %s" % def.name, "good")
 	State.simulate(30.0, false)
-	cancel_build()
+	# Shift+click keeps building the same thing
+	if p.repeat and State.has_all(def.cost):
+		start_build.call_deferred(type)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if build_type == "":
+## Picks up a movable piece of furniture / light ([G]); objects lying on it come along.
+func start_move(key: String) -> void:
+	if placing or not movables.has(key):
 		return
-	if event.is_action_pressed("attack"):
-		_place()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("aim") or event.is_action_pressed("pause"):
-		cancel_build()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("rotate") or event.is_action_pressed("wheel_up"):
-		ghost_rot += deg_to_rad(15.0)
-		ghost_flip = not ghost_flip
-	elif event.is_action_pressed("wheel_down"):
-		ghost_rot -= deg_to_rad(15.0)
+	var n: Node3D = movables[key]
+	if not is_instance_valid(n) or n.is_queued_for_deletion():
+		return
+	var p := Placement.new()
+	p.level = self
+	p.target = n
+	p.title = "Mută: " + String(n.get_meta("mv_name", "Obiect"))
+	p.mount = n.get_meta("mv_mount", "floor")
+	p.wall_furniture = n.get_meta("mv_wall", false)
+	p.riders = _riders_of(n)
+	if not p.riders.is_empty():
+		p.cost_line = "Iei și ce e pe el (%d)" % p.riders.size()
+	p.done.connect(_on_move_done.bind(p))
+	placing = p
+	add_child(p)
+	Audio.sfx("pickup", -6.0)
+
+
+func _on_move_done(ok: bool, p: Placement) -> void:
+	placing = null
+	if not ok:
+		return
+	var moved: Array[Node3D] = [p.target]
+	moved.append_array(p.riders)
+	for n in moved:
+		_save_pose(n)
+	_update_lit()
+	Audio.sfx("build_place", -6.0)
+
+
+## Movable objects resting on top of `n` (cans on a table, a radio on its desk...).
+func _riders_of(n: Node3D) -> Array[Node3D]:
+	var res: Array[Node3D] = []
+	if n.get_meta("mv_mount", "floor") != "floor":
+		return res
+	var a := Assets.model_aabb(n)
+	var inv := n.global_transform.affine_inverse()
+	for k in movables:
+		var o: Node3D = movables[k]
+		if o == n or not is_instance_valid(o) or o.get_meta("mv_mount", "floor") != "floor" or o.global_position.y < 0.15:
+			continue
+		var lp := inv * o.global_position
+		if absf(lp.y - a.end.y) < 0.08 and lp.x > a.position.x - 0.02 and lp.x < a.end.x + 0.02 and lp.z > a.position.z - 0.02 and lp.z < a.end.z + 0.02:
+			res.append(o)
+	return res
+
+
+func _save_pose(n: Node3D) -> void:
+	var key: String = n.get_meta("mv_key", "")
+	var pose := [n.position.x, n.position.y, n.position.z]
+	if key.begins_with("b:"):
+		var b: Dictionary = State.built[int(key.substr(2))]
+		b["p"] = pose
+		b["r"] = n.rotation.y
+	elif key.begins_with("f:"):
+		var lay: Dictionary = State.layout.get_or_add(key.substr(2), {})
+		lay["p"] = pose
+		lay["r"] = n.rotation.y

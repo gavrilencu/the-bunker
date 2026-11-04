@@ -6,6 +6,8 @@ signal closed
 
 var title := ""
 var panel_width := 760.0
+## Blur the 3D view behind the panel (off for panels that preview changes live).
+var blur_world := true
 var frame: PanelContainer
 var body: VBoxContainer
 var header: HBoxContainer
